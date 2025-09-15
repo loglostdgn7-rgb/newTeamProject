@@ -127,6 +127,7 @@ public class UserService {
             }
         }
     }
+
     /*********************************************/
 
     //회원가입
@@ -228,7 +229,7 @@ public class UserService {
         logger.info("loginUser(업데이트 됨): {}", loginUser);
     }
 
-
+    /********************************************/
     //로그인 연동/ sns 로그인은 핸들러로
     //oauth2 토큰
     private String request_oauth2_user_token(String clientName, String code) {
@@ -299,6 +300,14 @@ public class UserService {
 
         userMapper.insertSnsUser(user.getId(), snsId, clientName);
     }
+
+    //sns 연동 해제
+    public void unlink_sns(String userId, String clientName){
+        userMapper.deleteSnsUser(userId, clientName);
+        logger.info("{} 사용자의 {} 연동을 해제 함", userId, clientName);
+    }
+
+    /********************************************/
 
     //회원 탈퇴
     public void delete_user_by_id(String userId) {

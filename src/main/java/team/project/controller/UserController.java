@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -289,6 +290,7 @@ public class UserController {
 
         return ResponseEntity.ok("basket product deleted");
     }
+
     /*************************************************/
     @GetMapping("/my-page/order")
     public void get_order() {
@@ -323,11 +325,13 @@ public class UserController {
         //SNS 연동 가능한 제공자 목록
         var snsUsers = userForView.getSnsUsers().stream()
                 .collect(Collectors.toMap(u -> u.getClientName().toLowerCase(), u -> u));
+
         model.addAttribute("snsUsers", snsUsers);
 
         return "user/my-page/profile";
     }
 
+    /****************************************/
     @PostMapping("/my-page/profile")
     public String post_profile(
             @AuthenticationPrincipal UserDTO loginUser,
@@ -339,7 +343,6 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", "프로필 정보가 수정되었습니다");
         return "redirect:/user/my-page/profile";
     }
-
 
     // SNS 연동[로그인 한 계정을 sns 계정과 연동]
     @GetMapping("my-page/oauth2/{clientName}")
@@ -354,6 +357,22 @@ public class UserController {
         return "redirect:/user/my-page/profile";
     }
 
+    //sns 연동 해제
+    @PostMapping("/my-page/unlink-sns/{clientName}")
+    public String unlink_sns(
+            @AuthenticationPrincipal UserDTO user,
+            @PathVariable String clientName
+    ) {
+
+        userService.unlink_sns(user.getId(), clientName);
+
+        if (user.getSnsUsers() != null)
+            user.getSnsUsers().removeIf(snsUser -> snsUser.getClientName().equalsIgnoreCase(clientName));
+
+        return "redirect:/user/my-page/profile";
+    }
+
+    /********************************************/
 
     @GetMapping("/my-page/review")
     public void get_review() {

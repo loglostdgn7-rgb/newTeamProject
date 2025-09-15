@@ -86,4 +86,10 @@
         WHERE id = #{id}
     </delete>
 
+    <delete id="deleteSnsUser">
+        DELETE
+        FROM sns_user
+        WHERE user_id = #{userId} AND client_name = #{clientName}
+    </delete>
+
 </mapper>

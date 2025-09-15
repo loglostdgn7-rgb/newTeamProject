@@ -86,30 +86,42 @@ profileForm.onsubmit = event => {
     }
 }
 
-/*********************************/
-const snsLinkBtns = document.querySelectorAll(".sns-connect-container button");
+/************** 로그인 된 회원 sns 연동 버튼 *******************/
+const snsLinkBtns = document.querySelectorAll(".sns-link-button");
+
 snsLinkBtns.forEach(btn => {
-    btn.onclick = () => {
+
+    btn.onclick = async () => {
         if (btn.disabled) {
             return;
         }
 
-        const clientName = btn.id.toLowerCase();
-        switch (clientName) {
-            case "kakao":
-                sns_link_request(
-                    "https://kauth.kakao.com/oauth/authorize",
-                    "a81aac1853d61ba221c90fb237b6238b",
-                    clientName
-                );
-                break;
-            case "naver":
-                sns_link_request(
-                    "https://nid.naver.com/oauth2.0/authorize",
-                    "OotspZMgxoac95UFeF9I",
-                    clientName
-                );
-                break;
+        try {
+            const response = await fetch("/api/config");
+            const config = await response.json();
+            const KAKAO_CLIENT_ID = config.KAKAO_CLIENT_ID;
+            const NAVER_CLIENT_ID = config.NAVER_CLIENT_ID;
+
+            const clientName = btn.id.toLowerCase();
+            switch (clientName) {
+                case "kakao":
+                    sns_link_request(
+                        "https://kauth.kakao.com/oauth/authorize",
+                        KAKAO_CLIENT_ID,
+                        clientName
+                    );
+                    break;
+                case "naver":
+                    sns_link_request(
+                        "https://nid.naver.com/oauth2.0/authorize",
+                        NAVER_CLIENT_ID,
+                        clientName
+                    );
+                    break;
+            }
+        } catch (error) {
+            console.error("sns 키를 가져 오는데 실패했습니다.: " + error)
+            alert("SNS 연동에 실패했습니다. 잠시 후 다시 시도해 주세요");
         }
     }
 })
@@ -127,3 +139,35 @@ function sns_link_request(AUTH_ENDPOINT, CLIENT_ID, CLIENT_NAME) {
 
     console.log("다 작동했다");
 }
+
+//sns 연동 해제
+const unlinkBtns = document.querySelectorAll(".unlink");
+
+unlinkBtns.forEach(btn => {
+    btn.onclick = async () => {
+        const clientName = btn.dataset.clientName;
+
+        if (confirm(clientName.charAt(0).toUpperCase() + clientName.slice(1) + " 연동을 해제 하시겠습니까?")) {
+            try {
+                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+                const response = await fetch(`/user/my-page/unlink-sns/${clientName}`, {
+                    method: "post",
+                    headers:{
+                        [header]:token
+                    }
+                });
+                if (response.ok) {
+                    alert("연동이 해제 되었습니다.");
+                    location.reload();
+                } else {
+                    alert("연동 해제에 실패하였습니다. 다시 시도해 주세요");
+                }
+            } catch (error) {
+                console.error("연동 해제중 에러 발생" + error);
+                alert("처리중 에러가 발생했습니다. 다시 시도해주세요");
+            }
+        }
+    }
+});
+
