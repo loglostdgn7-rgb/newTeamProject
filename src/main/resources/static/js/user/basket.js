@@ -1,7 +1,7 @@
 //상품 종류 갯수 표시
 const basketProductSortSpan = document.querySelector(".product-sort");
 
-const basket_product_sort_count = ()=>{
+const basket_product_sort_count = () => {
     const lis = document.querySelectorAll(".product");
     basketProductSortSpan.textContent = `(${lis.length})`;
 }
@@ -15,15 +15,20 @@ const update_basket_summary = () => {
     fetch("/user/basket/summary")
         .then(response => {
             if (response.ok) return response.json();
-            else throw Error("가격 정보 로딩 실패");
-        }).then(prices => {
-        //가격을 한국 포맷으로 바꾸고
-        const format = num => num.toLocaleString("ko-KR");
+            throw Error("가격 정보 로딩 실패");
+        })
+        .then(prices => {
+            //가격을 한국 포맷으로 바꾸고
+            const format = num => num.toLocaleString("ko-KR");
 
-        document.querySelector(".product-total-price").textContent = format(prices.productTotalPrice);
-        document.querySelector(".shipping-price").textContent = format(prices.shippingPrice);
-        document.querySelector(".order-total").textContent = format(prices.orderTotalPrice);
-    }).catch(error => console.error("가격 업데이트 중 에러: " + error));
+            document.querySelector(".product-total-price").textContent = format(prices.productTotalPrice);
+            document.querySelector(".shipping-price").textContent = format(prices.shippingPrice);
+            document.querySelector(".order-total").textContent = format(prices.orderTotalPrice);
+        })
+        .catch(error => {
+            console.error("가격 업데이트 중 에러: " + error);
+            alert("가격 업데이트중 에러가 발생. 다시 시도해 주세요");
+        });
 }
 
 //장바구니 체크
@@ -58,26 +63,30 @@ plus_minus_Btns.forEach(iTag => {
 
         //수량이 변경 되었으면
         if (newQuantity !== currentQuantity) {
-            //자료 준비하고
-            const updateData = {
-                productId: productId,
-                quantity: newQuantity
-            }
-
-            //통신하기
-            fetch(`/user/basket/update`, {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    [header]: token
-                },
-                body: JSON.stringify(updateData)
-            }).then(response => {
-                if (response.ok) {
-                    amountSpan.textContent = newQuantity;
-                    update_basket_summary();
-                } else throw Error("서버 응답 실패");
-            }).catch(error => console.error("수량 업데이트 중 실패") + error);
+                //통신하기
+                fetch(`/user/basket/update`, {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                        [header]: token
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        quantity: newQuantity
+                    })
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            amountSpan.textContent = newQuantity;
+                            update_basket_summary();
+                        }
+                        alert("장바구니 담기에 실패하였습니다. 다시 시도해 주세요");
+                        throw Error("서버 응답 실패");
+                    })
+                    .catch(error => {
+                        console.error("수량 업데이트 중 실패: " + error);
+                        alert("수량 업데이트에 에러가 발생했습니다. 다시 시도해 주세요");
+                    });
         }
     }
 });
@@ -97,14 +106,16 @@ removeBtns.forEach(aTag => {
             headers: {
                 [header]: token
             }
-        }).then(response => {
+        })
+            .then(response => {
             if (response.ok) {
                 closestProductLi.remove();
                 update_basket_summary();
                 check_basket_isEmpty();
                 basket_product_sort_count();
             } else throw Error("서버 응답 실패");
-        }).catch(error => console.error("삭제 중 에러" + error));
+        })
+            .catch(error => console.error("삭제 중 에러" + error));
     }
 });
 //장바구니 페이지에 처음 들어오면 확인

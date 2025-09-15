@@ -76,6 +76,7 @@ findIdForm.onsubmit = event => {
             if (response.ok) {
                 return response.json();
             }
+            alert("아이디 찾기에 실패 했습니다. 다시 시도해 주세요");
             throw Error("서버 응답 에러");
         })
         .then(data => {
@@ -89,7 +90,9 @@ findIdForm.onsubmit = event => {
                 const userIdContent = document.querySelector(".user-id-content");
                 userIdContent.textContent = data.userId;
             }
-        }).catch(error => {
-        console.log("Fetch Error: " + error);
-    })
+        })
+        .catch(error => {
+            console.error("아이디를 찾는 도중 에러 발생: " + error);
+            alert("아이디를 찾는 도중 에러 발생했습니다. 다시 시도해 주세요");
+        })
 }

@@ -148,25 +148,27 @@ unlinkBtns.forEach(btn => {
         const clientName = btn.dataset.clientName;
 
         if (confirm(clientName.charAt(0).toUpperCase() + clientName.slice(1) + " 연동을 해제 하시겠습니까?")) {
-            try {
-                const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-                const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-                const response = await fetch(`/user/my-page/unlink-sns/${clientName}`, {
-                    method: "post",
-                    headers:{
-                        [header]:token
-                    }
-                });
-                if (response.ok) {
-                    alert("연동이 해제 되었습니다.");
-                    location.reload();
-                } else {
-                    alert("연동 해제에 실패하였습니다. 다시 시도해 주세요");
+
+            const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+            const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+            await fetch(`/user/my-page/unlink-sns/${clientName}`, {
+                method: "post",
+                headers: {
+                    [header]: token
                 }
-            } catch (error) {
-                console.error("연동 해제중 에러 발생" + error);
-                alert("처리중 에러가 발생했습니다. 다시 시도해주세요");
-            }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("연동이 해제 되었습니다.");
+                        location.reload();
+                    }
+                    alert("연동 해제에 실패하였습니다. 다시 시도해 주세요");
+                    throw Error("서버 응담 에러");
+                })
+                .catch(error => {
+                    console.error("연동 해제중 에러 발생: " + error);
+                    alert("연동 해제 처리중 에러가 발생했습니다. 다시 시도해주세요");
+                })
         }
     }
 });
