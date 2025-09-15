@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'Helvetica';
+    src: url("../fonts/helvetica/Helvetica.ttf") format('ttf');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: url("../fonts/helvetica/Helvetica Bold.ttf") format('ttf');
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+:root {
+    --font-xx-small: 8px;
+    --font-x-small: 10px;
+    --font-small: 13px;
+    --font-basic: 15px;
+    --font-regular: 18px;
+    --font-medium: 20px;
+    --font-large: 23px;
+
+    --basic-red: #ff0000;
+    --basic-black: #000000FF;
+    --gray: #686868;
+    --gray-bright: #acacac;
+    --basic-white: #FFFFFFFF;
+
+}
+
+
+* {
+    font-family: Helvetica;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: var(--font-basic);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 0 40px;
+    /*background-color: pink;*/
+}
+
+
+
+main {
+    margin-top: 50px;
+    padding-bottom: 50px;
+    flex: 1;
+}
+
+
+li {
+    list-style: none;
+}
+
+a,
+button {
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+
+}
+
+input {
+    outline: none;
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/user/my-page/review.css}">
+</th:block>
+
+
+<main layout:fragment="content">
+    <div class="aside-container">
+        <aside th:replace="~{layout/aside :: aside}"></aside>
+        <section class="review-section">
+            여긴 "리뷰" 페이지 입니다
+            아직 구현 안됐지롱
+        </section>
+    </div>
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

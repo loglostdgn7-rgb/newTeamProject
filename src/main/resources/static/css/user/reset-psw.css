@@ -1,0 +1,52 @@
+.reset-psw-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 80px 0;
+}
+
+form.reset-psw-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+
+.reset-psw-container > label {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.reset-psw-container > .last-label {
+    margin-bottom: 50px;
+
+}
+
+.reset-psw-container > label > span {
+    min-width: 100px;
+}
+
+
+.reset-psw-container > button {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+}
+
+.reset-psw-container > label > input {
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.reset-psw-container > label > span,
+.reset-psw-container > label > input,
+.reset-psw-container > button {
+    font-size: var(--font-small);
+}
+
+.reset-psw-container > label > input::placeholder {
+
+}

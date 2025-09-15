@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/user/login.css}">
+</th:block>
+
+<th:block layout:fragment="js">
+    <script th:src="@{/js/user/login.js}" defer></script>
+</th:block>
+
+
+<main layout:fragment="content">
+    <section class="login-section" th:data-message="${message}">
+        <form th:action="@{/user/login}" method="post">
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+            <h1>LOGIN</h1>
+            <label>
+                <input type="text" name="id" placeholder="ID" maxlength="20">
+            </label>
+            <label>
+                <input type="password" name="password" placeholder="PASSWORD" maxlength="60">
+            </label>
+            <div class="login-btn-container">
+                <button type="submit">LOGIN</button>
+                <button type="button"><a th:href="@{/user/signup}">SIGNUP</a></button>
+            </div>
+        </form>
+<!--                    oauth2 로그인 안될때 메세지-->
+        <div th:if="errorMessage" class="alert alert-danger" role="alert">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <div class="forgot-container">
+            <span>Forgot Your <a th:href="@{/user/find-id}">ID</a> or <a th:href="@{/user/find-psw}">Password</a>?</span>
+        </div>
+        <div class="other-login-container">
+            <a href="/oauth2/authorization/kakao"><img th:src="@{/images/logos/kakao_login.png}" alt=""></a>
+            <a href="/oauth2/authorization/naver"><img th:src="@{/images/logos/naver_login.png}" alt=""></a>
+        </div>
+        <div class="guest-login-container"><a href="#">비회원 구매</a></div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

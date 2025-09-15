@@ -1,0 +1,125 @@
+.login-section {
+    margin: 130px auto;
+    width: 400px;
+}
+
+.alert-danger {
+    color: var(--basic-red);
+    margin-bottom: 50px;
+}
+
+.login-section > form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.login-section > form > h1,
+.login-section > form > label:first-of-type,
+.login-section > .forgot-container {
+    margin-bottom: 70px;
+}
+
+.login-section > form > label {
+    height: 30px;
+    border-bottom: 2px solid var(--gray-bright);
+}
+
+.login-section > form > label:last-of-type {
+    margin-bottom: 30px;
+}
+
+.login-section > form > label > input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0 10px;
+}
+
+.login-section > form > label > input::placeholder {
+    font-size: var(--font-small);
+}
+
+.login-section > form > .login-btn-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.login-section > form > .login-btn-container > button,
+.login-section > form > .login-btn-container > button > a {
+    font-size: var(--font-small);
+    border: 0;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--basic-red);
+    }
+}
+
+.login-section > form > .login-btn-container > button:first-child {
+    padding: 10px 10px 10px 0;
+    background-color: unset;
+}
+
+.login-section > form > .login-btn-container > button:last-child {
+    padding: 10px 0 10px 10px;
+    background-color: unset;
+}
+
+/***************************************/
+.login-section > .forgot-container > span {
+    font-size: var(--font-small);
+
+}
+
+.login-section > .forgot-container > span > a {
+    font-size: var(--font-small);
+    text-decoration: underline;
+
+    &:hover {
+        color: var(--basic-red);
+    }
+}
+
+/***********************************/
+.login-section > .other-login-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.login-section > .other-login-container > a {
+    display: flex;
+    align-items: center;
+    width: 190px;
+    height: 50px;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.login-section > .other-login-container > a > img {
+    width: 100%;
+    height: 100%;
+}
+
+
+.login-section > .other-login-container {
+    margin-bottom: 50px;
+}
+
+/*******************************/
+.login-section > .guest-login-container > a {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    font-size: var(--font-small);
+
+    &:hover {
+        color: var(--basic-red);
+    }
+}

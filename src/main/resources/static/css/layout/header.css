@@ -1,0 +1,104 @@
+
+header {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    background-color: var(--basic-white);
+    padding: 0 40px;
+    z-index: 800;
+}
+
+header > nav {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+
+}
+
+header > nav > ul {
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+header > nav > ul > li {
+    height: 100%;
+    padding: 0 5px;
+    display: flex;
+    align-items: center;
+}
+
+header > nav > ul.left-section > li {
+    padding: 0;
+}
+
+header > nav > ul.left-section > li > a {
+    padding-left: 0;
+}
+
+header > nav > ul.left-section > li > a > .logo-img {
+    width: 100px;
+}
+
+header > nav > ul .search-btn,
+header > nav > ul .bi-cart3,
+header > nav > ul a,
+header > nav > ul button {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 8px;
+    border: none;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--basic-red);
+    }
+}
+
+.product-list-section > li.selected a {
+    color: var(--basic-red);
+}
+
+header > nav > ul .search-input-i {
+    margin-right: 5px;
+}
+
+header > nav > ul.right-section > li.search-input-container {
+    display: flex;
+    align-items: center;
+    height: 25px;
+    border: 1px solid var(--basic-black);
+    background-color: var(--basic-white);
+}
+
+header > nav > ul.right-section > li.search-input-container {
+    display: none;
+}
+
+
+header > nav > .right-section > .search-input-container .search-input {
+    border: none;
+    height: 100%;
+    background-color: unset;
+}
+
+header > nav > .right-section > .login-container > a,
+header > nav > .right-section > .logout-container > a {
+    &:hover {
+        color: var(--basic-red);
+    }
+}
+
+header > nav > .right-section > .logout-container {
+    display: flex;
+}
+
+header > nav > .right-section > .my-page-container {
+    display: flex;
+}

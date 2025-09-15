@@ -1,0 +1,126 @@
+.find-id-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    /*height: 300px;*/
+    margin: 80px auto;
+}
+
+.find-id-section > h1 {
+    margin-bottom: 50px;
+}
+
+.find-id-section > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 50px;
+}
+
+
+/*form 안의 모든 input, select, button*/
+.find-id-section > form input{
+    padding: 0 5px;
+}
+.find-id-section > form input,
+.find-id-section > form select,
+.find-id-section > form button {
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    margin: 0 5px;
+    outline: none;
+}
+
+/*모든 글자크기*/
+.find-id-section > form input,
+.find-id-section > form select,
+.find-id-section > form button,
+.find-id-section > form span,
+.find-id-section > form div {
+    font-size: var(--font-small);
+}
+
+.find-id-section > form select,
+.find-id-section > form input {
+    height: 25px;
+}
+
+.find-id-section > form.find-id-container > .find-id-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.find-id-section > form.find-id-container > .find-id-box > ul.find-id-case {
+    width: 100%;
+}
+
+.find-id-section > form.find-id-container > .find-id-box > ul.find-id-case > li {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+/*각 input 앞의 글자*/
+.find-id-section > form.find-id-container > .find-id-box > ul.find-id-case > li > span {
+    display: flex;
+    width: 80px;
+}
+
+/*아이디 input*/
+.find-id-section > form.find-id-container > .find-id-box > ul.find-id-case > li:first-child input {
+    width: 200px;
+}
+
+/*번호입력 input*/
+.find-id-section > form.find-id-container > .find-id-box > ul.find-id-case > li.find-id-tel-li input {
+    width: 50px;
+}
+
+.find-id-section > form.find-id-container > .find-id-box > .find-id-authentication-button-box {
+
+}
+
+.find-id-section > form.find-id-container > .find-id-box > .find-id-authentication-button-box > button {
+    width: 100px;
+    margin: 0;
+    padding: 7px;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+}
+.find-id-section > form.find-id-container > .find-id-box > .find-id-authentication-button-box > .find-id-authentication-check-div{
+    font-size: var(--font-x-small);
+    text-align: center;
+    color: var(--basic-red);
+}
+
+.find-id-section > form.find-id-container > button {
+    margin: 0 0;
+    padding: 10px;
+
+    &:hover {
+        color: var(--basic-white);
+        background-color: var(--basic-red);
+    }
+}
+
+.find-id-section > .user-id-div{
+    display: none;
+    /*display: flex;*/
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.user-id-div >h1{
+    margin-bottom: 50px;
+}

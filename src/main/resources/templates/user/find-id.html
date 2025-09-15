@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/user/find-id.css}">
+</th:block>
+
+<th:block layout:fragment="js">
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script th:src="@{/js/user/find-id.js}" defer></script>
+</th:block>
+
+
+<main layout:fragment="content">
+    <section class="find-id-section">
+        <h1>FIND PASSWORD</h1>
+        <form class="find-id-container" th:action="@{/user/find-id}" method="post">
+            <div class="find-id-box">
+                <ul class="find-id-case">
+                    <li class="find-id-tel-li">
+                        <span>휴대폰 번호</span>
+                        <label class="find-id-tel-box">
+                            <select name="tel-prev" class="find-id-tel-prev">
+                                <option value="010" selected>010</option>
+                                <option value="016">016</option>
+                                <option value="017">017</option>
+                                <option value="018">018</option>
+                                <option value="019">019</option>
+                            </select>
+                            -
+                            <input type="tel" name="find-id-tel-body" class="find-id-tel-body" maxlength="4">
+                            -
+                            <input type="tel" name="find-id-tel-tail" class="find-id-tel-tail" maxlength="4">
+                        </label>
+                    </li>
+                </ul>
+                <div class="find-id-authentication-button-box">
+                    <input type="hidden" class="phone" name="tel">
+                    <input type="hidden" class="authentication-key" name="authentication-key">
+                    <button class="authentication-btn" type="button">간편 인증</button>
+                    <div class="find-id-authentication-check-div">간편 인증을 해주세요</div>
+                </div>
+            </div>
+            <button class="find-id-submit-btn" type="submit">CHECK</button>
+        </form>
+        <div class="user-id-div">
+            <h1>사용자 아이디</h1>
+            <div class="user-id-content">
+                해당 핸드폰 사용자 아이디가 적힐 곳
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

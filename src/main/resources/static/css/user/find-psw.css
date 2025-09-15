@@ -1,0 +1,112 @@
+.find-psw-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 420px;
+    height: 300px;
+    margin: 80px auto;
+}
+
+.find-psw-section > h1 {
+    margin-bottom: 50px;
+}
+
+.find-psw-section > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+/*form 안의 모든 input, select, button*/
+.find-psw-section > form input{
+    padding: 0 5px;
+}
+.find-psw-section > form input,
+.find-psw-section > form select,
+.find-psw-section > form button {
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    margin: 0 5px;
+    outline: none;
+}
+
+/*모든 글자크기*/
+.find-psw-section > form input,
+.find-psw-section > form select,
+.find-psw-section > form button,
+.find-psw-section > form span,
+.find-psw-section > form div{
+    font-size: var(--font-small);
+}
+
+.find-psw-section > form select,
+.find-psw-section > form input {
+    height: 25px;
+}
+
+.find-psw-section > form.find-psw-container > .find-psw-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.find-psw-section > form.find-psw-container > .find-psw-box > ul.find-psw-case {
+    width: 100%;
+}
+
+.find-psw-section > form.find-psw-container > .find-psw-box > ul.find-psw-case > li {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+/*각 input 앞의 글자*/
+.find-psw-section > form.find-psw-container > .find-psw-box > ul.find-psw-case > li > span {
+    display: flex;
+    width: 80px;
+}
+
+/*아이디 input*/
+.find-psw-section > form.find-psw-container > .find-psw-box > ul.find-psw-case > li:first-child input {
+    width: 200px;
+}
+
+/*번호입력 input*/
+.find-psw-section > form.find-psw-container > .find-psw-box > ul.find-psw-case > li.find-psw-tel-li input {
+    width: 50px;
+}
+
+.find-psw-section > form.find-psw-container > .find-psw-box > .find-psw-cert-button-box {
+
+}
+
+.find-psw-section > form.find-psw-container > .find-psw-box > .find-psw-cert-button-box > button {
+    width: 100px;
+    margin: 0;
+    padding: 7px;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+}
+.find-psw-section > form.find-psw-container > .find-psw-box > .find-psw-cert-button-box > .find-psw-authentication-check-div{
+    font-size: var(--font-x-small);
+    text-align: center;
+    color: var(--basic-red);
+}
+.find-psw-section > form.find-psw-container > button {
+    margin: 0 0;
+    padding: 10px;
+
+    &:hover {
+        color: var(--basic-white);
+        background-color: var(--basic-red);
+    }
+}

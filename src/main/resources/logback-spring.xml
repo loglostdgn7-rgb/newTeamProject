@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <property name="CONSOLE_LOG_PATTERN" value="%white(%d{yyyy-MM-dd HH:mm:ss}) %highlight([%p]) [%C] %white([%M]): %coloredLevel(%msg%n)"/>
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%p] [%C %M]: %msg%n"/>
+    <!-- 로그 파일 저장 경로 및 기본 파일명 설정 -->
+    <property name="LOG_FILE_PATH" value="logs" />
+    <property name="LOG_FILE_NAME" value="app" />
+    <conversionRule conversionWord="coloredLevel" converterClass="team.project.converter.LogBackCustomColorConverter"/>
+    <!-- 콘솔 Appender: 콘솔에 로그를 출력 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="PORTONE_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE_PATH}/portone.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/portone-%d{yyyy-MM-dd}(%i).log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 현재 로그 파일명 -->
+        <file>${LOG_FILE_PATH}/${LOG_FILE_NAME}.log</file>
+        <!-- 롤링 정책: 시간(일)과 파일 크기에 따라 로그 파일을 아카이빙 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="PORTONE_LOGGER" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/> <!-- 콘솔 Appender 사용 -->
+        <appender-ref ref="PORTONE_LOG_FILE"/>    <!-- 파일 Appender 사용 -->
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/> <!-- 콘솔 Appender 사용 -->
+        <appender-ref ref="FILE"/>    <!-- 파일 Appender 사용 -->
+    </root>
+
+</configuration>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/intro/about.css}">
+</th:block>
+
+
+<main layout:fragment="content">
+    <section class="about-section">
+        <div>
+            <h1>ABOUT</h1>
+        </div>
+        <div>
+            <h1>STAND FOR YOUR DAILY LIFE FULL OF INSPIRATION</h1>
+            <p>스탠드오일(STAND OIL)은 유화가 시간을 견디며 빛을 잃지 않도록 돕는 보조제에서 영감을 받았습니다. 우리는 시간이 흘러도 빛나는 가치를 만들겠다는 철학을 갖고 있습니다. 당신의 일상
+                속 순간들을 새롭게 바라보고, 그 속에 숨겨진 가치를 오랫동안 간직할 수 있는 형태로 만들어냅니다. 스탠드오일은 단순한 디자인을 넘어, 당신의 일상을 특별하게 완성하는 미학입니다.</p>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

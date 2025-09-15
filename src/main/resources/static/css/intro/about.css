@@ -1,0 +1,24 @@
+.about-section {
+    display: flex;
+    align-items: flex-start;
+    margin: 50px 360px 0 0;
+
+}
+
+.about-section > div:first-child {
+    flex: 1;
+}
+
+.about-section > div:last-child {
+    flex: 3;
+    margin-bottom: 500px;
+}
+
+.about-section > div:last-child > h1 {
+    margin-bottom: 15px;
+    font-size: var(--font-small);
+}
+
+.about-section > div:last-child > p {
+    font-size: var(--font-small);
+}

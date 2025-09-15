@@ -1,0 +1,167 @@
+.basket-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.basket-section > .basket-title-container {
+    display: flex;
+    align-items: center;
+}
+
+.basket-section .product-sort {
+    font-size: var(--font-regular);
+    padding-left: 5px;
+}
+
+.basket-section > .basket-title-container > h1 {
+    margin: 50px 0;
+    font-size: var(--font-regular);
+}
+
+.basket-section .no-product {
+    display: none;
+    flex-direction: column;
+    justify-self: center;
+    align-items: center;
+}
+
+.no-product > a {
+    padding: 10px;
+    text-decoration: underline;
+}
+
+.basket-section > .no-product > span {
+    font-size: var(--font-small);
+    margin-bottom: 50px;
+}
+
+.basket-section > .no-product > a {
+    border: 1px solid var(--gray);
+    padding: 10px;
+    border-radius: 3px;
+    font-size: var(--font-small);
+
+    &:hover {
+        color: var(--basic-red);
+    }
+}
+
+.basket-section > .basket-layout-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+}
+
+.product {
+    display: flex;
+    height: 130px;
+    align-items: center;
+}
+
+.product > .product-img-box {
+    display: flex;
+    height: 100%;
+}
+
+.product > .product-img-box > img {
+    height: 100%;
+}
+
+.product > .product-text-box {
+    display: flex;
+    height: 100%;
+    flex: 1;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product > .product-text-box > .name-color-price {
+    display: flex;
+    flex-direction: column;
+}
+
+.product > .product-text-box > .name-color-price > span {
+    font-size: var(--font-x-small);
+}
+
+.product > .product-text-box > .plus-minus-case {
+    display: flex;
+    align-items: center;
+}
+
+.product > .product-text-box > .plus-minus-case > i {
+    padding: 10px;
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+        font-weight: bold;
+    }
+}
+
+.product > .product-text-box > .plus-minus-case > .product-amount {
+    margin: 0 10px;
+    font-size: var(--font-x-small);
+}
+
+.product > .product-remove-box {
+    display: flex;
+    margin-left: auto;
+    height: 100%;
+    padding: 20px 0;
+}
+
+.product > .product-remove-box > a {
+    padding: 10px;
+    font-size: var(--font-small);
+    align-self: end;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--basic-red);
+    }
+}
+
+.basket-section > .basket-layout-container > .basket-total-container {
+    position: fixed;
+    top: 140px;
+    right: 30px;
+    margin: 0 50px;
+}
+
+.basket-section > .basket-layout-container > .basket-total-container > h1 {
+    margin-bottom: 10px;
+    font-size: var(--font-small);
+}
+
+.basket-section > .basket-layout-container > .basket-total-container > .txt-box {
+    width: 200px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.basket-section > .basket-layout-container > .basket-total-container > .txt-box > .txt {
+    margin-right: auto;
+}
+
+.basket-section > .basket-layout-container > .basket-total-container > .txt-box > span {
+    font-size: 12px
+}
+
+.basket-section > .basket-layout-container > .basket-total-container > button {
+    width: 100%;
+    padding: 5px 10px;
+    border: 1px solid var(--gray);
+    border-radius: 3px;
+    font-size: var(--font-small);
+    margin-top: 10px;
+
+    &:hover {
+        background-color: var(--basic-red);
+        color: var(--basic-white);
+        cursor: pointer;
+    }
+}

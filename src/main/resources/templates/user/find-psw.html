@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/user/find-psw.css}">
+</th:block>
+
+<th:block layout:fragment="js">
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+    <script th:src="@{/js/user/find-psw.js}" defer></script>
+</th:block>
+
+
+<main layout:fragment="content">
+    <section class="find-psw-section">
+        <h1>FIND PASSWORD</h1>
+        <form class="find-psw-container" th:action="@{/user/find-psw}" method="post">
+            <div class="find-psw-box">
+                <ul class="find-psw-case">
+                    <li>
+                        <span>아이디</span>
+                        <label>
+                            <input type="text" class="find-psw-id-input">
+                        </label>
+                    </li>
+                    <li class="find-psw-tel-li">
+                        <span>휴대폰 번호</span>
+                        <label class="find-psw-tel-box">
+                            <select name="tel-head" class="find-psw-tel-prev">
+                                <option value="010" selected>010</option>
+                                <option value="016">016</option>
+                                <option value="017">017</option>
+                                <option value="018">018</option>
+                                <option value="019">019</option>
+                            </select>
+                            -
+                            <input type="tel" class="find-psw-tel-body" minlength="3" maxlength="4">
+                            -
+                            <input type="tel" class="find-psw-tel-tail" minlength="4" maxlength="4">
+                        </label>
+                    </li>
+                </ul>
+                <div class="find-psw-cert-button-box">
+                    <input type="hidden" class="phone" name="tel">
+                    <input type="hidden" class="authentication-key" name="authentication-key">
+                    <button class="authentication-btn" type="button">간편 인증</button>
+                    <div class="find-psw-authentication-check-div">간편 인증을 해주세요</div>
+                </div>
+            </div>
+            <button class="find-psw-submit-btn" type="submit">CHECK</button>
+        </form>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

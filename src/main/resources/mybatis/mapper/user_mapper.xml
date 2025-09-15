@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="team.project.mapper.UserMapper">
+    <!--    유저선택-->
+    <resultMap id="selectUserWithSnsMap" type="UserDTO" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="snsUsers" ofType="SnsUserDTO" javaType="list" autoMapping="true">
+            <id property="snsId" column="sns_id"/>
+            <id property="clientName" column="client_name"/>
+        </collection>
+    </resultMap>
+
+
+    <select id="selectUserById" resultType="UserDTO" resultMap="selectUserWithSnsMap">
+        SELECT *
+        FROM user
+                 LEFT OUTER JOIN sns_user
+                                 ON user.id = sns_user.user_id
+        WHERE id = #{id}
+    </select>
+
+
+    <select id="selectUserBySnsId" resultMap="selectUserWithSnsMap">
+        SELECT *
+        FROM (SELECT user_id FROM sns_user WHERE sns_id = #{snsId} AND client_name = #{clientName}) `User_id`
+                 INNER JOIN `user`
+                            ON `user`.id = `User_id`.user_id
+                 INNER JOIN `sns_user`
+                            ON `sns_user`.user_id = `User_id`.user_id
+
+    </select>
+
+    <select id="selectUserByTel" resultType="String">
+        SELECT id
+        FROM user
+        WHERE tel = #{tel}
+    </select>
+
+<!--    장바구니 / 상품 정보-->
+    <select id="selectProductById" resultType="ProductDTO">
+        SELECT *
+        FROM product
+        WHERE id = #{id}
+    </select>
+
+
+    <!--   /////// 유저 삽입 //////////////////////  -->
+    <insert id="insertUser">
+        INSERT INTO user (id, password, name, postcode, road_address, detail_address, tel, email, nickname)
+        VALUES (#{id}, #{password}, #{name}, #{postcode}, #{roadAddress}, #{detailAddress}, #{tel}, #{email},
+                #{nickname})
+    </insert>
+
+    <insert id="insertSnsUser">
+        INSERT INTO sns_user(user_id, sns_id, client_name)
+        VALUES (#{userId}, #{snsId}, #{clientName})
+    </insert>
+
+    <!--//////////유저 업데이트 ////////////////////-->
+    <update id="updatePassword">
+        UPDATE user
+        SET password = #{encodedPassword}
+        WHERE id = #{userId}
+    </update>
+
+    <update id="updateProfile">
+        UPDATE user
+        SET name           = #{realName},
+            postcode       = #{postcode},
+            road_address   = #{roadAddress},
+            detail_address = #{detailAddress},
+            email          = #{email},
+            nickname       = #{nickname}
+        WHERE id = #{id}
+### 비밀번호 업데이트는 별도로 해주고 있다
+    </update>
+
+    <!-- ///////////// 유저 삭제 /////////////-->
+    <delete id="deleteUserById">
+        DELETE
+        FROM user
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,56 @@
+
+footer {
+    position: relative;
+    bottom: 0;
+}
+
+footer > .footer-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+footer > .footer-section > div{
+    flex-shrink: 0;
+}
+
+footer > .footer-section > div > ul {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+footer > .footer-section > div > ul > li {
+    font-size: 9px;
+}
+
+footer > .footer-section > div > h2 {
+    margin-bottom: 7px;
+}
+
+footer > .footer-section > div > h2,
+footer > .footer-section > div > ul span,
+footer > .footer-section > div > ul a,
+footer > .footer-section > div > ul em {
+    font-size: var(--font-x-small);
+
+
+}
+
+footer > .footer-section > div > ul > li,
+footer > .footer-section > div > ul > li > span,
+footer > .footer-section > div > ul > li > a,
+footer > .footer-section > div > ul > li > a > em {
+    color: var(--gray);
+}
+
+footer > .footer-section > div > ul > li > span > em,
+footer > .footer-section > div > ul > li > a > em {
+    font-weight: 600;
+}
+
+footer > p {
+    font-size: 9px;
+    padding: 20px 0;
+    color: var(--gray-bright);
+    white-space: nowrap;
+}

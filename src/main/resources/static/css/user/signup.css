@@ -1,0 +1,192 @@
+.signup-section {
+    margin: 130px auto;
+    width: 400px;
+}
+
+.signup-section > form > h1 {
+    margin-bottom: 70px;
+}
+
+.signup-section > form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+
+.signup-section > form > .id-input-container > label > button {
+    width: 100px;
+    border: none;
+    background-color: unset;
+    font-size: var(--font-small);
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+}
+
+.signup-section > form > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.signup-section > form > div > span {
+    font-size: var(--font-small);
+}
+
+.signup-section > form > div > label {
+    display: flex;
+    height: 30px;
+    margin-right: 5px;
+    border-bottom: 1px solid var(--gray);
+
+}
+
+.signup-section > form > div > label > input {
+    width: 300px;
+    border: none;
+    padding: 0 10px;
+}
+
+.signup-section > form > div.tel {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.signup-section > form > div.tel > label:last-child {
+    width: 100%;
+}
+
+.signup-section > form > div.tel > label > select,
+.signup-section > form > div.tel > label > select > option {
+    border: none;
+}
+
+.signup-section > form > div.tel > label > input {
+    width: 240px;
+    border: none;
+}
+
+.signup-section > form > .authentication-container {
+    display: flex;
+    width: 200px;
+    border: none;
+}
+
+.signup-section > form > .authentication-container > button {
+    width: 200px;
+    padding: 15px 30px;
+    border-radius: 3px;
+    border: 1px solid var(--gray);
+    font-size: var(--font-small);
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+}
+
+.signup-section > form > .authentication-container > span {
+    text-align: center;
+    color: var(--basic-red);
+}
+
+.signup-section > form > label {
+    height: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--gray);
+}
+
+.signup-section > form > label > input {
+    height: 100%;
+    border: none;
+}
+
+.signup-section > form > label.terms-and-policy {
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    margin-top: 40px;
+}
+
+.signup-section > form > label.terms-and-policy > span:first-child {
+    margin-bottom: 10px;
+}
+
+
+.signup-section > form > .terms-and-policy > textarea {
+    width: 100%;
+    height: 100%;
+    font-size: var(--font-small);
+    margin-bottom: 5px;
+    resize: none;
+    outline: none;
+}
+
+.signup-section > form > .terms-and-policy > .checkbox-container {
+    display: flex;
+}
+
+.signup-section > form > .terms-and-policy > .checkbox-container > span {
+    margin-right: 15px;
+}
+
+.signup-section > form > .terms-and-policy > .checkbox-container label {
+    display: flex;
+    align-items: flex-end;
+}
+
+.signup-section > form > .terms-and-policy > .checkbox-container > span,
+.signup-section > form > .terms-and-policy > .checkbox-container > label span {
+    font-size: var(--font-small);
+}
+
+.signup-section > form > .terms-and-policy > .checkbox-container > label > input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.signup-section > form > .terms-and-policy > .checkbox-container > label > span {
+    user-select: none;
+}
+
+.signup-section > form > label > input::placeholder {
+    font-size: var(--font-small);
+}
+
+.signup-section > form > label > span {
+    font-size: var(--font-small);
+}
+
+.signup-section > form > .signup-btn-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: none;
+}
+
+.signup-section > form > .signup-btn-container > button,
+.signup-section > form > .signup-btn-container > button > a {
+    font-size: var(--font-small);
+    border: 0;
+
+    &:hover {
+        cursor: pointer;
+        color: var(--basic-red);
+    }
+}
+
+.signup-section > form > .signup-btn-container > button:first-child {
+    padding: 10px 10px 10px 0;
+    background-color: unset;
+}
+
+.signup-section > form > .signup-btn-container > button:last-child {
+    padding: 10px 0 10px 10px;
+    background-color: unset;
+}

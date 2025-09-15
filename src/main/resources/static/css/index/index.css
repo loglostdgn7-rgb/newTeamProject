@@ -1,0 +1,122 @@
+
+section {
+
+}
+
+section > .visual-view-section > img {
+    width: 100%;
+}
+
+section > .view-more-section {
+    padding: 0 40px;
+}
+
+section > .view-more-section > h2 {
+    display: flex;
+    align-items: flex-end;
+    gap: 50px;
+    font-size: var(--font-small);
+    margin-bottom: 20px;
+
+}
+
+section > .view-more-section > h2 > .view-more-href {
+    font-size: var(--font-x-small);
+    text-decoration: underline;
+}
+
+
+.product-slide-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* ************* 버튼 스타일 **************/
+/* Swiper 버튼의 기본 아이콘 색상 및 크기 지정 */
+.swiper-button-prev,
+.swiper-button-next {
+    color: var(--basic-black); /* 아이콘 색상을 검은색으로 지정 */
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+    font-size: 1.5rem; /* 아이콘 크기를 키웁니다. */
+    font-weight: bold;
+}
+
+/*************** 페이지네이션(점)************/
+.swiper-pagination {
+    position: relative; /* 슬라이더 아래에 위치하도록 기본값으로 변경 */
+    bottom: 0;
+    margin-top: 20px; /* 슬라이더와의 간격 */
+}
+
+/* 기본 점 스타일 */
+.swiper-pagination-bullet {
+    background-color: #ccc; /* 기본 점 색상: 회색 */
+    opacity: 1;
+    width: 10px;
+    height: 10px;
+}
+
+/* 활성화된 점 스타일 */
+.swiper-pagination-bullet-active {
+    background-color: #000; /* 활성화된 점 색상: 검은색 */
+}
+/*******************************************/
+
+.slide-prev-btn,
+.slide-next-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    background: unset;
+    border: none;
+    color: var(--gray);
+    z-index: 100;
+    outline: none;
+
+    &:hover {
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+}
+
+.slide-prev-btn {
+    left: 0;
+    padding: 10px;
+}
+
+.slide-next-btn {
+    right: 0;
+    padding: 10px;
+}
+
+.promotion,
+.name-color > span {
+    font-size: var(--font-x-small);
+}
+
+.product {
+    /* 슬라이드 너비는 Swiper JS가 제어하므로 CSS에서 지정하지 않습니다. */
+}
+
+.product > a > .price {
+    display: flex;
+}
+
+.product > a > .price > li:first-child {
+    margin-right: 5px;
+}
+
+.product > a > .price span {
+    font-size: var(--font-x-small);
+}
+
+.product > a > .price span.line-through {
+    text-decoration: line-through;
+}
+
+.product > a > .product-img-box > img {
+    width: 100%;
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/user/my-page/profile.css}">
+</th:block>
+<th:block layout:fragment="js">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
+    <script th:src="@{/js/user/my-page/profile.js}" defer></script>
+</th:block>
+
+
+<main layout:fragment="content">
+    <div class="aside-container">
+        <aside th:replace="~{layout/aside :: aside}"></aside>
+        <section class="profile-section" th:data-message="${message}">
+            <form class="profile-container" th:action="@{/user/my-page/profile}" method="post">
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+                <div class="profile-box">
+                    <ul class="profile-case">
+<!--                        <li>-->
+<!--                            <span>아이디</span>-->
+<!--                            <label>-->
+<!--                                <input type="text" class="profile-id-input" th:value="${user.id}" disabled>-->
+<!--                            </label>-->
+<!--                        </li>-->
+                        <li class="profile-psw">
+                            <span>비밀번호</span>
+                            <label>
+                                <input type="password" class="password" name="password" placeholder="빈 공간일시 이전과 동일">
+                            </label>
+                        </li>
+                        <li class="profile-psw-re">
+                            <span>비밀번호 확인</span>
+                            <label>
+                                <input type="password" class="password-re">
+                            </label>
+                        </li>
+                        <li class="profile-name">
+                            <span>이름</span>
+                            <label>
+                                <input type="text" class="user-name" name="name" th:value="${user.realName}">
+                            </label>
+                        </li>
+                        <li class="profile-address">
+                            <span>주소</span>
+                            <label>
+                                <label class="addresses">
+                                    <input type="text" id="sample4_postcode" name="postcode" th:value="${user.postcode}"
+                                           placeholder="우편번호" readonly>
+                                    <input type="text" id="sample4_roadAddress" name="roadAddress"
+                                           th:value="${user.roadAddress}" placeholder="주소" readonly>
+                                    <input type="text" id="sample4_detailAddress" name="detailAddress"
+                                           th:value="${user.detailAddress}" placeholder="상세주소">
+                                </label>
+                                <label class="address-button">
+                                    <button type="button" onclick="searchAddress()">우편번호찾기</button>
+                                </label>
+                            </label>
+                        </li>
+                        <li class="profile-tel-li">
+                            <span>휴대폰 번호</span>
+                            <label class="profile-tel-box">
+                                <select name="tel-prev" class="profile-tel-prev" disabled>
+                                    <option value="010" th:selected="${telPrev == '010'}">010</option>
+                                    <option value="011" th:selected="${telPrev == '011'}">011</option>
+                                    <option value="016" th:selected="${telPrev == '016'}">016</option>
+                                    <option value="017" th:selected="${telPrev == '017'}">017</option>
+                                    <option value="018" th:selected="${telPrev == '018'}">018</option>
+                                    <option value="019" th:selected="${telPrev == '019'}">019</option>
+                                </select>
+                                -
+                                <input type="tel" name="profile-tel-body" class="profile-tel-body" th:value="${telBody}"
+                                       maxlength="4" disabled>
+                                -
+                                <input type="tel" name="profile-tel-tail" class="profile-tel-tail" th:value="${telTail}"
+                                       maxlength="4" disabled>
+                            </label>
+                        </li>
+                        <li class="profile-email">
+                            <span>이메일</span>
+                            <label>
+                                <input type="email" name="email" th:value="${user.email}">
+                            </label>
+                        </li>
+                        <li class="profile-nickname">
+                            <span>닉네임</span>
+                            <label>
+                                <input type="text" name="nickname" th:value="${user.nickname}">
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                <div class="profile-buttons">
+                    <button class="profile-submit-btn" type="submit">수정하기</button>
+                    <button class="profile-cancel-btn" type="button">취소</button>
+                </div>
+            </form>
+
+            <div class="sns-connect-container">
+                <h1>SNS 계정 연동</h1>
+                <div>
+                    <button id="kakao" class="sns-link-button" th:disabled="${snsUsers.containsKey('kakao')}">
+                        <img src="/images/logos/kakao_login.png" alt="kakao_login">
+                        <span th:text="${snsUsers.containsKey('kakao') ? snsUsers.get('kakao').linkedAt + '에 연동 됨' : '미등록'}">0000/00/00 00:00:00</span>
+                    </button>
+                    <button id="naver" class="sns-link-button" th:disabled="${snsUsers.containsKey('naver')}">
+                        <img src="/images/logos/naver_login.png" alt="naver_login">
+                        <span th:text="${snsUsers.containsKey('naver') ? snsUsers.get('naver').linkedAt + '에 연동 됨' : '미등록'}">0000/00/00 00:00:00</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="cancel-membership">
+                <form th:action="@{/user/delete}" method="post"
+                      onsubmit="return confirm('정말로 탈퇴 하시겠습니까? 이 작업은 되돌릴 수 없습니다')">
+                    <h1>회원탈퇴</h1>
+                    <button type="submit">탈퇴하기</button>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+</html>

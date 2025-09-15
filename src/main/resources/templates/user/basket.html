@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/user/basket.css}">
+</th:block>
+<th:block layout:fragment="js">
+    <script th:src="@{/js/user/basket.js}" defer></script>
+</th:block>
+
+
+<main layout:fragment="content">
+    <section class="basket-section ">
+        <div class="basket-title-container">
+            <h1>Basket</h1>
+            <span class="product-sort">(5)</span>
+        </div>
+
+        <div class="basket-layout-container">
+            <div class="basket-container">
+                <ul class="product-list-container">
+                    <li class="no-product">
+                        <span>장바구니가 비어 있습니다.</span>
+                        <a href="/shop/product/list">전 상품 보러가기</a>
+                    </li>
+                    <li th:each="item : ${list}" class="product"  th:data-product-id="${item.product.getId()}">
+                        <a class="product-img-box" href="#">
+                            <img src="https://standoil.cafe24.com/web/product/tiny/202406/8f0c8d46ff44a36493fd240c1f06deba.jpg"
+                                 alt="">
+                        </a>
+                        <div class="product-text-box">
+                            <a class="name-color-price" href="#">
+                                <span th:text="${item.product.name}">Hippo Bag · 히포백 / 실버</span>
+                                <span th:text="|￦${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')}|">￦71,000</span>
+                            </a>
+                            <span class="plus-minus-case">
+                                <i class="bi bi-dash"></i>
+                                <span class="product-amount">1</span>
+                                <i class="bi bi-plus"></i>
+                            </span>
+                        </div>
+                        <div class="product-remove-box">
+                            <a th:href="@{/user/basket/delete/{productId}(productId=${item.product.id})}">remove</a>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="basket-total-container">
+                <h1>SHOPPING SUMMARY</h1>
+                <div class="txt-box">
+                    <span class="txt">SUBTOTAL</span>
+                    <span>￦</span>
+                    <span class="product-total-price" th:text="${productTotalPrice}">171000</span>
+                </div>
+                <div class="txt-box">
+                    <span class="txt">SHIPPING</span>
+                    <span>￦</span>
+                    <span class="shipping-price" th:text="${shippingPrice}">0</span>
+                </div>
+                <div class="txt-box">
+                    <span class="txt">ORDER TOTAL</span>
+                    <span>￦</span>
+                    <span class="order-total" th:text="${orderTotalPrice}">171000</span>
+                </div>
+                <button>CHECK OUT</button>
+            </div>
+        </div>
+    </section>
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

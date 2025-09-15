@@ -1,0 +1,231 @@
+
+
+/* ====== 제품 상세 레이아웃 ====== */
+.productData {
+    display: flex;
+    margin: 0 auto;
+    max-width: 1200px;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+/* 이미지 영역 */
+.product-image {
+    flex: 7;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.product-image ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.product-image li {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* 제품 정보 영역 */
+.product-wrap {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+/* 제품명 / 가격 */
+.product-area {
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.product-area .product-title,
+.product-area .product-price {
+    padding: 20px;
+    text-align: left;
+    font-size: 18px;
+    border-bottom: 1px solid #eee;
+}
+
+.product-area .product-price {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+/* 구매 영역 */
+.product-buy {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.price-info .price {
+    display: inline-block;
+    margin: 10px 0;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.price-info .Allprice {
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/* 수량 입력 영역 */
+.quantity {
+    margin-top: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.quantity input[type=number] {
+    width: 50px;
+    height: 30px;
+    text-align: center;
+    font-size: 16px;
+    margin: 0 5px;
+}
+
+/* 스핀 버튼 제거 (Chrome, Safari, Edge) */
+.quantity input::-webkit-outer-spin-button,
+.quantity input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.quantity input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* + / - 버튼 */
+.quantity button {
+    width: 30px;
+    height: 30px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.quantity button:hover {
+    background-color: #e0e0e0;
+}
+
+/* 구매하기 버튼 */
+.buyBtn {
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    font-weight: bold;
+    border: none;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+}
+
+.buyBtn:hover {
+    background-color: #45a049;
+}
+
+/* ====== 제품 상세 하단 영역 ====== */
+.product-warp2 {
+    margin: 20px auto 0;
+    max-width: 1200px;
+    padding: 20px;
+    min-height: 300px;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.product-warp2 .product-poster-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.review-container {
+    display: grid;
+    gap: 30px;
+}
+
+.review-container > p {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.all-review-item {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+    gap: 30px;
+}
+
+.review-item {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+    display: flex;
+    flex-direction: row;
+    height: auto; /* 내용에 맞춰 자동 높이 */
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-item:hover {
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    transform: translateY(-5px);
+}
+
+.review-image img {
+    width: 150px;      /* 카드 안에서 적당히 줄임 */
+    height: 150px;
+    object-fit: cover; /* 비율 유지하면서 잘림 최소화 */
+    border-radius: 16px 0 0 16px; /* 왼쪽만 둥글게 */
+    display: block;
+}
+
+.review-comment {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.review-star span {
+    color: #f1c40f;
+    font-size: 20px; /* 조금 줄임 */
+}
+
+.review-text {
+    color: #333;
+    font-size: 14px;  /* 내용 읽기 좋게 조정 */
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 최대 3줄로 보이도록 */
+    -webkit-box-orient: vertical;
+    line-height: 1.4;
+}
+
+.review-date {
+    font-size: 12px;
+    color: #999;
+    text-align: right;
+}
+
+
+

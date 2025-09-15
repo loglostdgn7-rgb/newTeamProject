@@ -1,0 +1,40 @@
+
+/*aside-container*/
+.aside-container {
+    display: flex;
+    position: relative;
+    margin: 90px 0;
+}
+
+/*aside*/
+aside {
+    /*position: relative;*/
+    padding-right: 30px;
+}
+
+aside h1,
+aside > ul > li > a {
+    font-size: var(--font-small);
+    white-space: nowrap;
+}
+
+aside > ul > li.selected > a {
+    color: var(--basic-red);
+}
+
+aside > h1 {
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+aside > ul > li {
+    margin: 10px 0;
+}
+
+aside > ul > li > a {
+}
+
+/*aside-container > content*/
+.aside-content-section {
+    margin: 90px 22%;
+}
