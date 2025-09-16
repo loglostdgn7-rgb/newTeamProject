@@ -15,7 +15,10 @@ const update_basket_summary = () => {
     fetch("/user/basket/summary")
         .then(response => {
             if (response.ok) return response.json();
-            throw Error("가격 정보 로딩 실패");
+            else {
+                alert("가경 정보 로딩 실패. 다시 시도해 주세요");
+                throw Error("가격 정보 로딩 실패");
+            }
         })
         .then(prices => {
             //가격을 한국 포맷으로 바꾸고

@@ -20,8 +20,6 @@ import java.util.Map;
 @Controller
 public class UserBasketController {
     @Autowired
-    UserService userService;
-    @Autowired
     private UserBasketService userBasketService;
 
     //장바구니 /서머리

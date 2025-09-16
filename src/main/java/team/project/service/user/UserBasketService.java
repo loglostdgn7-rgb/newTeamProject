@@ -53,6 +53,7 @@ public class UserBasketService {
 
         //배송 가격
         int shippingPrice = 3000;
+        if (productTotalPrice == 0) shippingPrice = 0;
         //주문 가격 총합
         int orderTotalPrice = productTotalPrice + shippingPrice;
         //가격들 담아서
