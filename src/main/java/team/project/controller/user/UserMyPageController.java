@@ -22,11 +22,14 @@ public class UserMyPageController {
     @Autowired
     UserMyPageService userMyPageService;
 
+    //주문
     @GetMapping("/my-page/order")
     public void get_order() {
 
     }
 
+
+/************************************************/
     // 프로필
     @GetMapping("/my-page/profile")
     public String get_profile(
@@ -113,8 +116,9 @@ public class UserMyPageController {
         return "redirect:/index";
     }
 
-    /********************************************/
+    /************************************************/
 
+    //리뷰
     @GetMapping("/my-page/review")
     public void get_review() {
 

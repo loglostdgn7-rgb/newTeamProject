@@ -28,7 +28,7 @@
                         <span>장바구니가 비어 있습니다.</span>
                         <a href="/shop/product/list">전 상품 보러가기</a>
                     </li>
-                    <li th:each="item : ${list}" class="product"  th:data-product-id="${item.product.getId()}">
+                    <li th:each="item : ${list}" class="product" th:data-product-id="${item.product.getId()}">
                         <a class="product-img-box" href="#">
                             <img src="https://standoil.cafe24.com/web/product/tiny/202406/8f0c8d46ff44a36493fd240c1f06deba.jpg"
                                  alt="">
@@ -71,6 +71,11 @@
                 <button>CHECK OUT</button>
             </div>
         </div>
+    </section>
+    <section class="payment-container">
+        <h1>주문서</h1>
+        <div>결제 창 대체 화면</div>
+        <button>결제하기</button>
     </section>
 </main>
 <footer th:replace="~{layout/fragments/footer :: footer}"></footer>

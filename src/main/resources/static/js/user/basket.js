@@ -1,14 +1,15 @@
-//상품 종류 갯수 표시
+
+// 토큰
+const token = document.querySelector("meta[name='_csrf']").content;
+const header = document.querySelector("meta[name='_csrf_header']").content;
+
+//상품 종류 갯수
 const basketProductSortSpan = document.querySelector(".product-sort");
 
 const basket_product_sort_count = () => {
     const lis = document.querySelectorAll(".product");
     basketProductSortSpan.textContent = `(${lis.length})`;
 }
-
-// 토큰
-const token = document.querySelector("meta[name='_csrf']").content;
-const header = document.querySelector("meta[name='_csrf_header']").content;
 
 //장바구니 서머리
 const update_basket_summary = () => {
@@ -127,11 +128,20 @@ check_basket_isEmpty();
 basket_product_sort_count();
 
 /********************************************/
+// 체크 아웃
+const checkoutBtn = document.querySelector(".basket-total-container button");
 
-// const checkoutBtn = document.querySelector(".basket-total-container button");
-//
-// checkoutBtn.onclick = () => {
-//     //체크아웃을 누르면 주문(order), 결제하는 곳으로 가도록 하기
-//
-//
-// }
+//체크아웃을 누르면 주문(order), 결제하는 곳으로 가도록 하기
+checkoutBtn.onclick = () => {
+    //결제창을 띄우기(어차피 결제 유료라서 못쓰니...가상으로 결제 했다 친고)
+
+
+    fetch(`/my-page/order`, {
+        method: "post",
+        headers:{
+            [header] : token
+        }
+    })
+        .then()
+
+}

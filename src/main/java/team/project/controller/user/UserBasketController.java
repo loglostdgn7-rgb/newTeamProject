@@ -50,12 +50,12 @@ public class UserBasketController {
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
         //세션이 없으면,
         if (basket == null || basket.isEmpty()) {
-            //임시 basket 리스트 가져오기 or,
-//            basket = userService.create_test_list();
-//            session.setAttribute("basket", basket);
+//            임시 basket 리스트 가져오기 or,
+            basket = userBasketService.create_test_list();
+            session.setAttribute("basket", basket);
 
-            //빈 리스트를 하나 만들어준다
-            basket = new ArrayList<>();
+            //빈 리스트를 하나 만들어준다 //위 임시 리스트를 사용할시에는 주석처리 해줘야 함
+//            basket = new ArrayList<>();
         }
 
         //서비스 가격 가져오고
