@@ -63,30 +63,31 @@ plus_minus_Btns.forEach(iTag => {
 
         //수량이 변경 되었으면
         if (newQuantity !== currentQuantity) {
-                //통신하기
-                fetch(`/user/basket/update`, {
-                    method: "post",
-                    headers: {
-                        "Content-Type": "application/json",
-                        [header]: token
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        quantity: newQuantity
-                    })
+            //통신하기
+            fetch(`/user/basket/update`, {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    [header]: token
+                },
+                body: JSON.stringify({
+                    productId: productId,
+                    quantity: newQuantity
                 })
-                    .then(response => {
-                        if (response.ok) {
-                            amountSpan.textContent = newQuantity;
-                            update_basket_summary();
-                        }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        amountSpan.textContent = newQuantity;
+                        update_basket_summary();
+                    } else {
                         alert("장바구니 담기에 실패하였습니다. 다시 시도해 주세요");
                         throw Error("서버 응답 실패");
-                    })
-                    .catch(error => {
-                        console.error("수량 업데이트 중 실패: " + error);
-                        alert("수량 업데이트에 에러가 발생했습니다. 다시 시도해 주세요");
-                    });
+                    }
+                })
+                .catch(error => {
+                    console.error("수량 업데이트 중 실패: " + error);
+                    alert("수량 업데이트에 에러가 발생했습니다. 다시 시도해 주세요");
+                });
         }
     }
 });
@@ -108,13 +109,13 @@ removeBtns.forEach(aTag => {
             }
         })
             .then(response => {
-            if (response.ok) {
-                closestProductLi.remove();
-                update_basket_summary();
-                check_basket_isEmpty();
-                basket_product_sort_count();
-            } else throw Error("서버 응답 실패");
-        })
+                if (response.ok) {
+                    closestProductLi.remove();
+                    update_basket_summary();
+                    check_basket_isEmpty();
+                    basket_product_sort_count();
+                } else throw Error("서버 응답 실패");
+            })
             .catch(error => console.error("삭제 중 에러" + error));
     }
 });

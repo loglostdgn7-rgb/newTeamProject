@@ -38,9 +38,10 @@ checkIdDuplicated.onclick = () => {
         .then(response => {
             if (response.ok && response.status === 200) {
                 return response.json();
+            } else {
+                alert("아이디 중복 찾기에 실패 하였습니다. 다시 시도해 주세요");
+                throw Error("서버 응답 에러");
             }
-            alert("아이디 중복 찾기에 실패 하였습니다. 다시 시도해 주세요");
-            throw Error("서버 응답 에러");
         })
         .then(value => {
             if (value) {

@@ -1,11 +1,10 @@
-package team.project.controller;
+package team.project.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,11 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import team.project.dto.*;
 import team.project.mapper.UserMapper;
 import team.project.service.PortoneService;
-import team.project.service.UserService;
+import team.project.service.user.UserService;
 
-import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequestMapping("/user")
 @Controller
@@ -204,191 +201,5 @@ public class UserController {
         return "redirect:/user/login";
     }
 
-    /*****************************************************/
-    //장바구니 /서머리
-    @ResponseBody
-    @GetMapping("/basket/summary")
-    public ResponseEntity<Map<String, Integer>> get_basket_summary(HttpSession session) {
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-
-        if (basket == null || basket.isEmpty()) {
-            Map<String, Integer> noPrices = new HashMap<>();
-            noPrices.put("productTotalPrice", 0);
-            noPrices.put("shippingPrice", 0);
-            noPrices.put("orderTotalPrice", 0);
-            return ResponseEntity.ok(noPrices);
-        }
-
-        Map<String, Integer> prices = userService.calculate_basket_product_price(basket);
-        return ResponseEntity.ok(prices);
-    }
-
-    //장바구니 get
-    @GetMapping("/basket")
-    public String get_basket(
-            HttpSession session,
-            Model model
-    ) {
-        //세션을 리스트로 가져오고
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-        //세션이 없으면,
-        if (basket == null || basket.isEmpty()) {
-            //임시 basket 리스트 가져오기 or,
-//            basket = userService.create_test_list();
-//            session.setAttribute("basket", basket);
-
-            //빈 리스트를 하나 만들어준다
-            basket = new ArrayList<>();
-        }
-
-        //서비스 가격 가져오고
-        Map<String, Integer> prices = userService.calculate_basket_product_price(basket);
-
-        //상품 리스트 모델 걸기
-        model.addAttribute("list", basket);
-        //주문 가격들 모델에 걸기
-        model.addAttribute("productTotalPrice", prices.get("productTotalPrice"));
-        model.addAttribute("shippingPrice", prices.get("shippingPrice"));
-        model.addAttribute("orderTotalPrice", prices.get("orderTotalPrice"));
-
-        return "user/basket";
-    }
-
-    //장바구니 / 상품 수량 업데이트
-    @ResponseBody
-    @PostMapping("/basket/update")
-    public ResponseEntity<String> get_basket_update(
-            @RequestBody BasketUpdateDTO basketUpdate,
-            HttpSession session
-    ) {
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-        if (basket != null) {
-            userService.update_basket_product(
-                    basket,
-                    basketUpdate.getProductId(),
-                    basketUpdate.getQuantity()
-            );
-            session.setAttribute("basket", basket);
-        }
-        return ResponseEntity.ok("basket updated");
-    }
-
-    //장바구니 / 상품 삭제
-    @ResponseBody
-    @DeleteMapping("/basket/delete/{productId}")
-    public ResponseEntity<String> delete_basket_product(
-            @PathVariable int productId,
-            HttpSession session
-    ) {
-
-
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-        if (basket != null) {
-            basket.removeIf(item -> item.getProduct().getId() == productId);
-            session.setAttribute("basket", basket);
-        }
-
-        return ResponseEntity.ok("basket product deleted");
-    }
-
-    /*************************************************/
-    @GetMapping("/my-page/order")
-    public void get_order() {
-
-    }
-
-    //    Profile
-    @GetMapping("/my-page/profile")
-    public String get_profile(
-            @AuthenticationPrincipal UserDTO principal,
-            Model model
-    ) {
-        if (principal == null) {
-            return "redirect:/user/login";
-        }
-
-        UserDTO userForView = userService.get_user_by_Id(principal.getId());
-        model.addAttribute("user", userForView);
-
-        // 전화번호 짤라서 넣기
-        String userTel = userForView.getTel();
-        if (userTel != null && (userTel.length() == 10 || userTel.length() == 11)) {
-            String telPrev = userTel.substring(0, 3);
-            String telBody = userTel.substring(3, userTel.length() - 4);
-            String telTail = userTel.substring(userTel.length() - 4);
-
-            model.addAttribute("telPrev", telPrev);
-            model.addAttribute("telBody", telBody);
-            model.addAttribute("telTail", telTail);
-        }
-
-        //SNS 연동 가능한 제공자 목록
-        var snsUsers = userForView.getSnsUsers().stream()
-                .collect(Collectors.toMap(u -> u.getClientName().toLowerCase(), u -> u));
-
-        model.addAttribute("snsUsers", snsUsers);
-
-        return "user/my-page/profile";
-    }
-
-    /****************************************/
-    @PostMapping("/my-page/profile")
-    public String post_profile(
-            @AuthenticationPrincipal UserDTO loginUser,
-            UserDTO updateUser,
-            RedirectAttributes redirectAttributes
-    ) {
-        userService.update_profile(loginUser, updateUser);
-
-        redirectAttributes.addFlashAttribute("message", "프로필 정보가 수정되었습니다");
-        return "redirect:/user/my-page/profile";
-    }
-
-    // SNS 연동[로그인 한 계정을 sns 계정과 연동]
-    @GetMapping("my-page/oauth2/{clientName}")
-    public String get_oauth2(
-            @AuthenticationPrincipal UserDTO user,
-            @PathVariable String clientName,
-            @RequestParam("code") String code
-    ) {
-        if (user.getSnsUsers().parallelStream().noneMatch(u -> u.getClientName().equalsIgnoreCase(clientName))) {
-            userService.link_sns(user, clientName, code);
-        }
-        return "redirect:/user/my-page/profile";
-    }
-
-    //sns 연동 해제
-    @PostMapping("/my-page/unlink-sns/{clientName}")
-    public String unlink_sns(
-            @AuthenticationPrincipal UserDTO user,
-            @PathVariable String clientName
-    ) {
-
-        userService.unlink_sns(user.getId(), clientName);
-
-        if (user.getSnsUsers() != null)
-            user.getSnsUsers().removeIf(snsUser -> snsUser.getClientName().equalsIgnoreCase(clientName));
-
-        return "redirect:/user/my-page/profile";
-    }
-
-    /********************************************/
-
-    @GetMapping("/my-page/review")
-    public void get_review() {
-
-    }
-
-    //회원 탈퇴
-    @PostMapping("/delete")
-    public String post_delete(
-            Principal principal,
-            HttpServletRequest request
-    ) {
-        String userId = principal.getName();
-        userService.delete_user_by_id(userId);
-        request.getSession().invalidate();
-        return "redirect:/index";
-    }
 
 }
