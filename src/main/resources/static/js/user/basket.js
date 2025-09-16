@@ -1,4 +1,3 @@
-
 // 토큰
 const token = document.querySelector("meta[name='_csrf']").content;
 const header = document.querySelector("meta[name='_csrf_header']").content;
@@ -15,19 +14,17 @@ const basket_product_sort_count = () => {
 const update_basket_summary = () => {
     fetch("/user/basket/summary")
         .then(response => {
-            if (response.ok) return response.json();
-            else {
+            if (response.ok) {
+                return response.json();
+            } else {
                 alert("가경 정보 로딩 실패. 다시 시도해 주세요");
                 throw Error("가격 정보 로딩 실패");
             }
         })
-        .then(prices => {
-            //가격을 한국 포맷으로 바꾸고
-            const format = num => num.toLocaleString("ko-KR");
-
-            document.querySelector(".product-total-price").textContent = format(prices.productTotalPrice);
-            document.querySelector(".shipping-price").textContent = format(prices.shippingPrice);
-            document.querySelector(".order-total").textContent = format(prices.orderTotalPrice);
+        .then(price => {
+            document.querySelector(".product-total-price").textContent = price.productTotalPrice;
+            document.querySelector(".shipping-price").textContent = price.shippingPrice;
+            document.querySelector(".order-total").textContent = price.orderTotalPrice;
         })
         .catch(error => {
             console.error("가격 업데이트 중 에러: " + error);
@@ -43,8 +40,12 @@ function check_basket_isEmpty() {
     const productLis = document.querySelectorAll(".product");
     if (productLis.length === 0) {
         noProductLi.style.display = "flex";
-        document.querySelector(".shipping-price").textContent = "0";
-    } else if (productLis.length > 0) noProductLi.style.display = "none";
+        document.querySelector(".product-total-price").textContent = "₩0";
+        document.querySelector(".shipping-price").textContent = "₩0";
+        document.querySelector(".order-total").textContent = "₩0";
+    } else if (productLis.length > 0) {
+        noProductLi.style.display = "none";
+    }
 }
 
 
@@ -104,7 +105,7 @@ removeBtns.forEach(aTag => {
         event.preventDefault();
         //event에 가장 가까운 부모 li 찾기
         const closestProductLi = event.currentTarget.closest("li.product");
-        const deleteUrl = aTag.href;
+        const deleteUrl = aTag.href; //이미 html에 url 입력 했었네
         //그리고 삭제
         fetch(deleteUrl, {
             method: "DELETE",
@@ -115,8 +116,11 @@ removeBtns.forEach(aTag => {
             .then(response => {
                 if (response.ok) {
                     closestProductLi.remove();
-                    update_basket_summary();
                     check_basket_isEmpty();
+                    //시간 여유 주기
+                    setTimeout(() => {
+                        update_basket_summary();
+                    }, 300)
                     basket_product_sort_count();
                 } else throw Error("서버 응답 실패");
             })
@@ -128,20 +132,39 @@ check_basket_isEmpty();
 basket_product_sort_count();
 
 /********************************************/
-// 체크 아웃
-const checkoutBtn = document.querySelector(".basket-total-container button");
+// 결제 modal 창
+const checkoutBtn = document.querySelector(".basket-total-container .check-out");
+const paymentBackground = document.querySelector(".payment-background");
+const paymentContainer = paymentBackground.querySelector(".payment-container");
+let openModalBackground = null;
+const paymentBtn = paymentContainer.querySelector(".payment-button");
 
-//체크아웃을 누르면 주문(order), 결제하는 곳으로 가도록 하기
+//체크아웃을 누르면 주문(order), 결제창 뜨기
 checkoutBtn.onclick = () => {
-    //결제창을 띄우기(어차피 결제 유료라서 못쓰니...가상으로 결제 했다 친고)
-
-
-    fetch(`/my-page/order`, {
-        method: "post",
-        headers:{
-            [header] : token
-        }
-    })
-        .then()
-
+    paymentBackground.style.display = "block";
+    openModalBackground = paymentBackground; //지금 나타난 것은 paymentBackground
 }
+
+const closeModal = () => {
+    if (openModalBackground) {
+        openModalBackground.style.display = "none";
+        openModalBackground = null;
+    }
+};
+
+//배경 클릭 시 모달창 닫기
+window.addEventListener("click", event => {
+    const isModal = event.target.closest("div.payment-container");
+
+    if (event.target === paymentBackground && !isModal)
+        if (confirm("결제가 중지 됩니다. 정말 닫으시겠습니까?")) closeModal();
+})
+
+// paymentBackground.addEventListener("click", () => {
+//     if (!paymentContainer) closeModal();
+//
+// });
+
+
+
+

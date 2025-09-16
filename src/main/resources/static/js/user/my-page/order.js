@@ -34,7 +34,7 @@ selectButtons.forEach(button => {
 });
 
 // 외부 클릭 시 드롭다운 닫기
-window.addEventListener("click", (event) => {
+window.addEventListener("click", event => {
     const isButton = event.target.closest("label.select-box[data-target]");
     const isOptionBox = event.target.closest("ul.option-box");
     if (!isButton && !isOptionBox) {

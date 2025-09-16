@@ -3,11 +3,13 @@ package team.project.controller.user;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import team.project.dto.BasketDTO;
 import team.project.dto.BasketUpdateDTO;
+import team.project.dto.UserDTO;
 import team.project.service.user.UserBasketService;
 import team.project.service.user.UserService;
 
@@ -21,52 +23,63 @@ import java.util.Map;
 public class UserBasketController {
     @Autowired
     private UserBasketService userBasketService;
+    @Autowired
+    private UserService userService;
 
     //장바구니 /서머리
     @ResponseBody
     @GetMapping("/basket/summary")
-    public ResponseEntity<Map<String, Integer>> get_basket_summary(HttpSession session) {
+    public ResponseEntity<Map<String, String >> get_basket_summary(HttpSession session) {
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
 
+        Map<String, String> currencyFormattedPrices = userBasketService.calculate_basket_product_price(basket);
+
         if (basket == null || basket.isEmpty()) {
-            Map<String, Integer> noPrices = new HashMap<>();
-            noPrices.put("productTotalPrice", 0);
-            noPrices.put("shippingPrice", 0);
-            noPrices.put("orderTotalPrice", 0);
+            Map<String, String> noPrices = new HashMap<>();
+            noPrices.put("productTotalPrice", currencyFormattedPrices.get("productTotalPrice"));
+            noPrices.put("shippingPrice",currencyFormattedPrices.get("shippingPrice"));
+            noPrices.put("orderTotalPrice", currencyFormattedPrices.get("orderTotalPrice"));
             return ResponseEntity.ok(noPrices);
         }
 
-        Map<String, Integer> prices = userBasketService.calculate_basket_product_price(basket);
-        return ResponseEntity.ok(prices);
+        return ResponseEntity.ok(currencyFormattedPrices);
     }
 
     //장바구니 get
     @GetMapping("/basket")
     public String get_basket(
+            @AuthenticationPrincipal UserDTO principal,
             HttpSession session,
             Model model
     ) {
+        //로그인한 유저가 있으면
+        if (principal != null) {
+            UserDTO userForBasket = userService.get_user_by_Id(principal.getId());
+
+            model.addAttribute("user", userForBasket);
+        }
+
         //세션을 리스트로 가져오고
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
         //세션이 없으면,
         if (basket == null || basket.isEmpty()) {
-//            임시 basket 리스트 가져오기 or,
-            basket = userBasketService.create_test_list();
-            session.setAttribute("basket", basket);
+            // 임시 basket 리스트 가져오기 or,
+//            basket = userBasketService.create_test_list();
+//            session.setAttribute("basket", basket);
 
             //빈 리스트를 하나 만들어준다 //위 임시 리스트를 사용할시에는 주석처리 해줘야 함
-//            basket = new ArrayList<>();
+            basket = new ArrayList<>();
         }
 
         //서비스 가격 가져오고
-        Map<String, Integer> prices = userBasketService.calculate_basket_product_price(basket);
+        Map<String, String> currencyFormattedPrices = userBasketService.calculate_basket_product_price(basket);
 
         //상품 리스트 모델 걸기
         model.addAttribute("list", basket);
         //주문 가격들 모델에 걸기
-        model.addAttribute("productTotalPrice", prices.get("productTotalPrice"));
-        model.addAttribute("shippingPrice", prices.get("shippingPrice"));
-        model.addAttribute("orderTotalPrice", prices.get("orderTotalPrice"));
+        model.addAttribute("productTotalPrice", currencyFormattedPrices.get("productTotalPrice"));
+        model.addAttribute("shippingPrice", currencyFormattedPrices.get("shippingPrice"));
+        model.addAttribute("orderTotalPrice", currencyFormattedPrices.get("orderTotalPrice"));
 
         return "user/basket";
     }
@@ -97,9 +110,8 @@ public class UserBasketController {
             @PathVariable int productId,
             HttpSession session
     ) {
-
-
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
+
         if (basket != null) {
             basket.removeIf(item -> item.getProduct().getId() == productId);
             session.setAttribute("basket", basket);

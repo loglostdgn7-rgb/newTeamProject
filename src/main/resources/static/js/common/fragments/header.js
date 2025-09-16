@@ -33,7 +33,7 @@ const logoutForm = document.querySelector(".logout-form");
 
 if (logoutForm) {
     logoutForm.onsubmit = event => {
-        if(!confirm("정말 로그아웃 하시겠습니까?"))
+        if(!confirm("정말 로그아웃 하시겠습니까?")) //취소하면 preventDefault();
         event.preventDefault();
     }
 }

@@ -168,35 +168,133 @@
 
 /************ 결제 modal *********************/
 
-.payment-modal {
+.payment-background {
+    display: none;
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 999;
-    background: var(--gray);
+    z-index: 990;
+    background: rgba(104, 104, 104, 0.3);
 }
 
 .payment-container {
     display: flex;
     flex-direction: column;
+    width: 600px;
+    margin: 25px auto 0;
+    /*position: relative;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%,-50%);*/
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
+    background: var(--basic-white);
+    border-radius: 5px;
+}
 
+.payment-alert {
+    width: 320px;
+    color: var(--basic-red);
+    margin-bottom: 30px;
+    font-size: var(--font-small);
+    align-self: center;
+}
+
+.payment-container form {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
 }
 
 .payment-container h1 {
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
-.payment-container div {
-    margin-bottom: 20px;
+.payment-container label {
+    margin-bottom: 15px;
+    display: flex;
 }
 
-.payment-container button {
+.payment-container span {
+    margin-right: 20px;
+    width: 130px;
+    font-size: var(--font-small);
+}
+
+.payment-container input {
+    margin-bottom: 5px;
+}
+
+.payment-address-box {
+    display: flex;
+}
+
+.payment-address-box > label {
+    display: flex;
+    flex-direction: column;
+}
+
+/*번호 라벨*/
+label.payment-tel-box > label {
+    margin-bottom: 0;
+}
+
+.payment-tel-box select,
+.payment-tel-box input {
+    width: 50px;
+    height: 20px;
+}
+
+/*결제방식*/
+.payment-container form section {
+    display: flex;
+}
+
+.payment-container form .price {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.payment-container form div span:first-child {
+    width: 130px;
+}
+
+.payment-container form div.price span:last-child {
+    font-weight: bold;
+}
+
+.payment-container .pay-box {
+    display: flex;
+}
+
+.payment-container .pay-box label {
+    display: flex;
+    margin-bottom: 0;
+}
+
+.payment-container .pay-box label input {
+    margin: 0 5px 0 0;
+}
+
+.payment-container .pay-box span {
+    width: unset;
+}
+
+.payment-container .payment-button {
     padding: 10px;
     border: 1px solid var(--gray);
+    border-radius: 5px;
+    align-self: center;
+    margin-top: 20px;
+
+    &:hover {
+        background: var(--basic-red);
+        color: var(--basic-white);
+    }
 }
