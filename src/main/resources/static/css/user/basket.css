@@ -171,24 +171,21 @@
 .payment-modal {
     width: 100vw;
     height: 100vh;
-    top: 0;
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
     position: absolute;
+    top: 0;
+    left: 0;
     z-index: 999;
     background: var(--gray);
 }
-
-.payment-modal::-webkit-scrollbar {
-
-};
 
 .payment-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin: 0 auto;
+
 }
 
 .payment-container h1 {
