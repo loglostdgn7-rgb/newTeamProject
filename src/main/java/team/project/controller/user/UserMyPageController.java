@@ -1,6 +1,7 @@
 package team.project.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,8 +25,20 @@ public class UserMyPageController {
 
     //주문
     @GetMapping("/my-page/order")
-    public void get_order() {
+    public void get_order(
+            HttpSession session,
+            Model model
+    ) {
+        session.getAttribute("basket");
+        //여긴 상품 주문 리스트(1개가 장바구니에 담겼던 통합 주문의 리스트) 보여주기
 
+    }
+
+    @PostMapping("/my-page/order")
+    public void post_order(
+            
+    ) {
+        //여긴 결제 폼 내용(이름,주소등등 개인정보)
     }
 
 

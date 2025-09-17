@@ -122,7 +122,10 @@ removeBtns.forEach(aTag => {
                         update_basket_summary();
                     }, 300)
                     basket_product_sort_count();
-                } else throw Error("서버 응답 실패");
+                } else {
+                    alert("서버 응담실패. 다시 시도해 주세요");
+                    throw Error("서버 응답 실패");
+                }
             })
             .catch(error => console.error("삭제 중 에러" + error));
     }
@@ -158,12 +161,15 @@ window.addEventListener("click", event => {
 
     if (event.target === paymentBackground && !isModal)
         if (confirm("결제가 중지 됩니다. 정말 닫으시겠습니까?")) closeModal();
-})
+});
 
-// paymentBackground.addEventListener("click", () => {
-//     if (!paymentContainer) closeModal();
-//
-// });
+//결제창 버튼 //order 페이지로 장바구니 세션 넘기기
+paymentBtn.onclick = event => {
+    if (!confirm("결제 하시겠습니까?")) event.preventDefault(); //취소하면 preventDefault();
+}
+
+
+
 
 
 

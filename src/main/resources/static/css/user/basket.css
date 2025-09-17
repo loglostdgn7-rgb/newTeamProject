@@ -251,6 +251,11 @@ label.payment-tel-box > label {
     height: 20px;
 }
 
+/*결제 금액 input*/
+label.price > input {
+    border: none;
+}
+
 /*결제방식*/
 .payment-container form section {
     display: flex;

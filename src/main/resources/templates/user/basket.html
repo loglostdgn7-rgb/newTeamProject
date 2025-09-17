@@ -73,14 +73,17 @@
 <!-- ********************** 결제 모달창 ***********************-->
     <section class="payment-background">
         <div class="payment-container" >
-            <form >
+            <form action="/user/my-page/order" method="post">
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
                 <h1>주문서 배송지 정보</h1>
                 <div class="payment-alert">
                     이 창은 보여주기 위한 것으로 실제 결제가 되지 않으며,<br>결제 버튼을 누를 시 결제 완료를 전제로 실행됩니다
                 </div>
                 <label>
                     <span>받으시는 분</span>
-                    <input type="text" th:value="${user} ? ${user.realName} : ''">
+                    <input type="text" name="real-name" th:value="${user} ? ${user.realName} : ''">
                 </label>
                 <label class="payment-address-box">
                     <span>주소</span>
@@ -102,10 +105,10 @@
                             <option value="019" th:selected="${user != null && user.telPrev == '019'}">019</option>
                         </select>
                         -
-                        <input type="tel" name="payment-tel-body" class="payment-tel-body" th:value="${user} ? ${user.telBody} : ''"
+                        <input type="tel" name="tel-body" class="payment-tel-body" th:value="${user} ? ${user.telBody} : ''"
                                maxlength="4">
                         -
-                        <input type="tel" name="payment-tel-tail" class="payment-tel-tail" th:value="${user} ? ${user.telTail} : ''"
+                        <input type="tel" name="tel-tail" class="payment-tel-tail" th:value="${user} ? ${user.telTail} : ''"
                                maxlength="4">
                     </label>
                 </label>
@@ -119,46 +122,46 @@
                 </label>
 
                 <h1>결제 방식</h1>
-                <div class="price">
+                <label class="price">
                     <span>결제 금액</span>
-                    <span th:text="${orderTotalPrice}">10000원</span>
-                </div>
+                    <input name="price" th:value="${orderTotalPrice}" readonly>
+                </label>
                 <section>
                     <span>결제</span>
                     <div class="pay-box-container">
                         <label class="pay-box">
                             <label>
-                                <input type="radio" name="payment-method">
+                                <input type="radio" name="payment-method" value="mobile">
                                 <span>휴대폰 결제</span>
                             </label>
                             <label>
-                                <input type="radio" name="payment-method">
+                                <input type="radio" name="payment-method" value="bank-transfer">
                                 <span>무통장 입금</span>
                             </label>
                         </label>
                         <label class="pay-box">
                             <label>
-                                <input type="radio" name="payment-method">
+                                <input type="radio" name="payment-method" value="kakao-pay">
                                 <span>카카오페이(간편결제)</span>
                             </label>
                             <label>
-                                <input type="radio" name="payment-method">
+                                <input type="radio" name="payment-method" value="card">
                                 <span>카드 결제</span>
                             </label>
                         </label>
                         <label class="pay-box">
                             <label>
-                                <input type="radio" name="payment-method">
+                                <input type="radio" name="payment-method" value="realtime-bank-transfer">
                                 <span>실시간 계좌이체</span>
                             </label>
                             <label>
-                                <input type="radio" name="payment-method">
+                                <input type="radio" name="payment-method" value="virtual-account">
                                 <span>가상 계좌</span>
                             </label>
                         </label>
                     </div>
                 </section>
-                <button class="payment-button" type="button">결제하기</button>
+                <button class="payment-button" type="submit">결제하기</button>
             </form>
         </div>
     </section>
