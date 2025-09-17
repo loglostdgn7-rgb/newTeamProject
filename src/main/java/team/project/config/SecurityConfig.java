@@ -47,7 +47,7 @@ public class SecurityConfig {
             configure.loginPage("/user/login"); // 우리가 사용하는 로그인창은 /user/login으로 GET요청을 하는 곳이다
             configure.loginProcessingUrl("/user/login"); // 로그인창에서 로그인을 시도할때는 /user/login 으로 POST 요청을 하도록 설정
             configure.usernameParameter("id"); // 로그인시 id 적는 input에 name을 id로 할게요
-            configure.defaultSuccessUrl("/");
+            configure.defaultSuccessUrl("/",true);
         });
 
         http.logout(configure -> {

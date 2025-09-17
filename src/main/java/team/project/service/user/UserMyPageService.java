@@ -32,16 +32,16 @@ public class UserService {
     private RestTemplate restTemplate;
     private final Random random = new Random();
 
-    @Value("spring.security.oauth2.client.registration.kakao.client-id")
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String KAKAO_CLIENT_ID;
-    @Value("spring.security.oauth2.client.registration.kakao.client-secret")
+    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
     private String KAKAO_CLIENT_SECRET;
     private final String KAKAO_TOKEN_URI = "https://kauth.kakao.com/oauth/token";
     private final String KAKAO_USER_INFO_URI = "https://kapi.kakao.com/v2/user/me";
 
-    @Value("spring.security.oauth2.client.registration.naver.client-id")
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
     private String NAVER_CLIENT_ID;
-    @Value("spring.security.oauth2.client.registration.naver.client-secret")
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
     private String NAVER_CLIENT_SECRET;
     private final String NAVER_TOKEN_URI = "https://nid.naver.com/oauth2.0/token";
     private final String NAVER_USER_INFO_URI = "https://openapi.naver.com/v1/nid/me";

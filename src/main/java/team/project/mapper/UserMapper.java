@@ -40,4 +40,8 @@ public interface UserMapper {
 
     // 유저 삭제
     void deleteUserById(String id);
+    void deleteSnsUser(
+            @Param("userId") String userId,
+            @Param("clientName") String clientName
+    );
 }

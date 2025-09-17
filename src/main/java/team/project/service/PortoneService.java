@@ -29,9 +29,9 @@ public class PortoneService {
     private final String ACCESS_TOKEN_URL = "https://api.iamport.kr/users/getToken";
     private final String SIMPLE_AUTH_URL = "https://api.iamport.kr/certifications/{imp_uid}";
 
-    @Value("portone.api.key")
+    @Value("${portone.api.key}")
     private String API_KEY;
-    @Value("portone.api.secret")
+    @Value("${portone.api.secret}")
     private String API_SECRET;
 
     /// /////// 포트원 엑세스 토큰 //////////////

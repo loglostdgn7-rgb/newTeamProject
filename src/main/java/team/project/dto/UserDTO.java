@@ -41,10 +41,29 @@ public class UserDTO implements OAuth2User, UserDetails {
 
 
     @JsonIgnore
-    public String getRealName(){
+    public String getRealName() {
         return this.name;
     }
 
+
+    private boolean isTelValid() {
+        return this.tel != null && (this.tel.length() == 10 || this.tel.length() == 11);
+    }
+
+    @JsonIgnore
+    public String getTelPrev(){
+        return isTelValid() ? this.tel.substring(0, 3) : "";
+    }
+
+    @JsonIgnore
+    public String getTelBody(){
+        return isTelValid() ? this.tel.substring(3, this.tel.length() - 4) : "";
+    }
+
+    @JsonIgnore
+    public String getTelTail(){
+        return isTelValid() ? this.tel.substring(this.tel.length() - 4) : "";
+    }
 
     //OAuth2/////////////////////////////////////////////
     @Override
@@ -83,5 +102,7 @@ public class UserDTO implements OAuth2User, UserDetails {
     public String getPassword() {
         return password;
     }
+
+
 }
 
