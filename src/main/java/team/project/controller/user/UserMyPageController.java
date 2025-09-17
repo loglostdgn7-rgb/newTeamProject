@@ -38,7 +38,13 @@ public class UserMyPageController {
     public void post_order(
             
     ) {
-        //여긴 결제 폼 내용(이름,주소등등 개인정보)
+        //여긴 결제 폼 내용(이름,주소등등 개인정보)받아와서 주문 "상세"에 들어가면 보이도록하고싶음
+    }
+    @PostMapping("/my-page/order/{orderId}")
+    public void post_order_number(
+
+    ) {
+        //여긴 결제 폼 내용(이름,주소등등 개인정보)받아와서 주문 "상세"에 들어가면 보이도록하고싶음
     }
 
 
