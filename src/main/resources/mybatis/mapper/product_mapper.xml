@@ -17,7 +17,14 @@
             LIMIT #{size} OFFSET #{offset}
     </select>
 
-<!--    상품 리스트 들고오는 select    -->
+    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">
+        SELECT id, name, price
+        FROM product
+        WHERE id = #{productId}
+    </select>
+
+
+    <!--    상품 리스트 들고오는 select    -->
     <select id="selectAllProduct" resultType="ProductDTO" resultMap="productMap">
         SELECT * FROM product
     </select>

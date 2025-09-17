@@ -221,6 +221,36 @@ public class UserController {
         Map<String, Integer> prices = userService.calculate_basket_product_price(basket);
         return ResponseEntity.ok(prices);
     }
+    // 장바구니 담기
+    @PostMapping("/basket/add")
+    @ResponseBody
+    public ResponseEntity<String> add_to_basket(
+            @RequestBody Map<String, Object> payload,
+            HttpSession session
+    ) {
+        int productId = (int) payload.get("productId");
+        int quantity = (int) payload.get("quantity");
+
+        // 세션에서 장바구니 가져오기
+        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
+        if (basket == null) basket = new ArrayList<>();
+
+        // 이미 담긴 상품인지 확인
+        Optional<BasketDTO> existing = basket.stream()
+                .filter(item -> item.getProduct().getId() == productId)
+                .findFirst();
+
+        if (existing.isPresent()) {
+            existing.get().setQuantity(existing.get().getQuantity() + quantity);
+        } else {
+            userService.addBasket(basket, productId, quantity); // 새 상품 추가
+        }
+
+        session.setAttribute("basket", basket);
+        return ResponseEntity.ok("상품이 장바구니에 담겼습니다.");
+    }
+
+
 
     //장바구니 get
     @GetMapping("/basket")

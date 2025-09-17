@@ -34,4 +34,46 @@ document.addEventListener('DOMContentLoaded', () => {
             updateTotalPrice();
         }
     });
+    const CartBtn = document.getElementById("addToCartBtn");
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return null;
+    }
+
+    function addToCart(title, quantity) {
+        let cart = getCookie('cart');
+        if (cart) cart = JSON.parse(cart);
+        else cart = [];
+
+        let exists = false;
+        cart.forEach((item) => {
+            if (item.title === title) {
+                item.quantity += parseInt(quantity);
+                exists = true;
+            }
+        });
+
+        if (!exists) {
+            cart.push({ title, quantity: parseInt(quantity) });
+        }
+
+        document.cookie = `cart=${JSON.stringify(cart)}; path=/; max-age=${60*60*24}`;
+    }
+
+    CartBtn.onclick = () => {
+        const product_title = document.getElementsByClassName("product-title")[0].innerText;
+        const product_quantity = document.getElementsByClassName("quantity")[0].querySelector("input").value;
+
+        addToCart(product_title, product_quantity);
+        console.log(document.cookie);
+
+        alert("장바구니에 추가되었습니다");
+        if(confirm("장바구니로 이동하시겠습니까?")){
+            location.href = "/user/basket";
+        }
+    };
+
 });

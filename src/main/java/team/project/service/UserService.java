@@ -71,8 +71,34 @@ public class UserService {
 //        basket.add(Map.of("shoes", 15000));
 //        return basket;
 //    }
+    public ProductDTO getProductById(int productId) {
+        // 실제 DB 없으니까 테스트용 더미 데이터
+        ProductDTO product = new ProductDTO();
+        product.setId(productId);
+        product.setName("테스트 상품 " + productId);
+        product.setPrice(1000 * productId); // 가격 예시
+        product.setPromotion("할인 없음");
+        return product;
+    }
 
-//2.
+    public void addBasket(List<BasketDTO> basket, int productId, int quantity) {
+        // 이미 장바구니에 존재하는지 확인
+        for (BasketDTO item : basket) {
+            if (item.getProduct().getId() == productId) {
+                // 기존 수량에 더하기
+                item.setQuantity(item.getQuantity() + quantity);
+                return;
+            }
+        }
+
+        // 새 상품이면 DB에서 Product 조회 후 추가
+        ProductDTO product = getProductById(productId); // 이 메서드는 Product 조회
+        if (product != null) {
+            basket.add(new BasketDTO(product, quantity));
+        }
+    }
+
+    //2.
     public List<BasketDTO> create_test_list() {
         List<BasketDTO> list = new ArrayList<>();
 

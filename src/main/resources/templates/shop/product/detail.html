@@ -70,21 +70,26 @@
 
                         <!-- 구매 영역 -->
                         <div class="product-buy">
-                            <form class="price-info" action="" method="post">
-                                <input type="hidden" name="productId" th:value="${productDetail.id}">
-                                <div  class="quantity">
+                            <form class="price-info" id="productForm">
+                                <!-- 상품 ID -->
+                                <input type="hidden" name="productId" id="productId" th:value="${productDetail.id}">
+
+                                <!-- 수량 -->
+                                <div class="quantity">
                                     <span id="price" class="price">수량 :</span>
-                                    <input type="number" id="quantity" name="quantity" min="1" value="3">
-                                        <button type="button" id="quantityPlus"> + </button>
-                                        <button type="button" id="quantityMinus"> - </button>
+                                    <input type="number" id="quantity" name="quantity" min="1" value="1">
+                                    <button type="button" id="quantityPlus"> + </button>
+                                    <button type="button" id="quantityMinus"> - </button>
                                 </div>
 
-                                <!-- 총 금액 표시 (JS로만 보여줌) -->
+                                <!-- 총 금액 -->
                                 <div class="Allprice">
                                     <span class="price" id="totalPrice"></span>
                                 </div>
 
-                                <button type="submit" class="buyBtn">구매하기</button>
+                                <!-- 버튼 영역 -->
+                                <button type="button" id="buyBtn">구매하기</button>
+                                <button type="button" id="addToCartBtn">장바구니 담기</button>
                             </form>
                         </div>
                     </div>
