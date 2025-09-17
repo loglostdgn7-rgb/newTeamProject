@@ -163,6 +163,12 @@ public class UserMyPageService {
         userMapper.insertSnsUser(user.getId(), snsId, clientName);
     }
 
+    //sns 연동 해제
+    public void unlink_sns(String userId, String clientName){
+        userMapper.deleteSnsUser(userId, clientName);
+        logger.info("{} 사용자의 {} 연동을 해제 함", userId, clientName);
+    }
+
     //회원 탈퇴
     public void delete_user_by_id(String userId) {
         userMapper.deleteUserById(userId);
