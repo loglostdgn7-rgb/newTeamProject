@@ -56,7 +56,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             principle.setRole(user.getRole());
             principle.setSnsUsers(user.getSnsUsers());
 
-            logger.info("principle: " + principle.toString()); //확인용
+            // 확인용 toString 을 하면 getName을 하기 때문에 실제로는 realName이 들어가서 문제가 없다. 로그때문에 헷갈린것...
+//            logger.info("principle: " + principle.toString());
 
             response.sendRedirect("/"); // 홈페이지로 이동
         }

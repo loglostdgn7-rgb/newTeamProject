@@ -15,23 +15,19 @@ public class UserBasketService {
     @Autowired
     UserMapper userMapper;
 
+
+    //이건 장바구니 가져오기를 하면 실상 필요가 없기때문에 일단 장바구니 가져오기부터 해결하자
     //임시 장바구니 상품 리스트
-    @ModelAttribute("basketList") //여기가 아니라 파라미터에 적으셨던 것 같은데...아닌가..
-    public List<BasketDTO> create_test_list(
-            HttpSession session
-    ) {
-        List<BasketDTO> list = (List<BasketDTO>) session.getAttribute("basket"); //이게 아니었던 거 같은데..
-        if (list == null) {
+//    @ModelAttribute("basketList") //여기가 아니라 파라미터에 적으셨던 것 같은데...아닌가..
+//    public List<BasketDTO> create_test_list(
+//            HttpSession session
+//    ) {
+//        List<BasketDTO> list = (List<BasketDTO>) session.getAttribute("basket"); //이게 아니었던 거 같은데..
+//        if (list == null) {
 //            new List<BasketDTO>;
-
-        }
-
-        //todo :아...가르쳐주신게 기억지 나질 않는다... 파라미터에 @모델어트리뷰트를 쓰셨던가?,
-        // new List<BasketDTO>이런거 쓰셨던거 같은데 ㅠ
-        // 바보같이 메모도 안해놨습니다. 죄송해요 다시 가르쳐 주시면 안될까요
-
-        return list;
-    }
+//        }
+//        return list;
+//    }
 
     //장바구니 /가격 계산
     public Map<String, String> calculate_basket_product_price(List<BasketDTO> basket) {
