@@ -25,15 +25,17 @@ public class UserBasketController {
 
     /*****************************************************/
 
-    // 장바구니 담기
-    @PostMapping("/basket/add")
+    //이걸 쓸거면 내껄 버려야한다. js, controller, service 잘보기
+    //이걸 서비스로 옮기자
+    // 장바구니 담기 + 업데이트 
+    @PostMapping("/basket/update")
     @ResponseBody
     public ResponseEntity<String> add_to_basket(
-            @RequestBody Map<String, Object> payload,
+            @RequestBody BasketDTO newBasket,
             HttpSession session
     ) {
-        int productId = (int) payload.get("productId");
-        int quantity = (int) payload.get("quantity");
+        int productId = (int) newBasket.getProduct().getId();
+        int quantity = (int) newBasket.getQuantity();
 
         // 세션에서 장바구니 가져오기
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
@@ -41,19 +43,37 @@ public class UserBasketController {
 
         // 이미 담긴 상품인지 확인
         Optional<BasketDTO> existing = basket.stream()
-                .filter(item -> item.getProduct().getId() == productId)
+                .filter(item -> item.getProduct().getId() == newBasket.getProduct().getId())
                 .findFirst();
 
         if (existing.isPresent()) {
             existing.get().setQuantity(existing.get().getQuantity() + quantity);
         } else {
-//            userBasketService.addBasket(basket, productId, quantity); // 새 상품 추가
+            basket.add(newBasket);
         }
 
         session.setAttribute("basket", basket);
         return ResponseEntity.ok("상품이 장바구니에 담겼습니다.");
     }
-
+    /*************************************************/
+//    //장바구니 업데이트 
+//    @ResponseBody
+//    @PostMapping("/basket/update")
+//    public ResponseEntity<String> get_basket_update(
+//            @RequestBody BasketDTO basketUpdate,
+//            HttpSession session
+//    ) {
+//        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
+//        if (basket != null) {
+//            userBasketService.update_basket_quantity_product(
+//                    basket,
+//                    basketUpdate.getProduct().getId(),
+//                    basketUpdate.getQuantity()
+//            );
+//            session.setAttribute("basket", basket);
+//        }
+//        return ResponseEntity.ok("basket updated");
+//    }
 
 
 
@@ -117,24 +137,6 @@ public class UserBasketController {
         return "user/basket";
     }
 
-    //장바구니 / 상품 수량 업데이트
-    @ResponseBody
-    @PostMapping("/basket/update")
-    public ResponseEntity<String> get_basket_update(
-            @RequestBody BasketDTO basketUpdate,
-            HttpSession session
-    ) {
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-        if (basket != null) {
-            userBasketService.update_basket_quantity_product(
-                    basket,
-                    basketUpdate.getProduct().getId(),
-                    basketUpdate.getQuantity()
-            );
-            session.setAttribute("basket", basket);
-        }
-        return ResponseEntity.ok("basket updated");
-    }
 
     //장바구니 / 상품 삭제
     @ResponseBody

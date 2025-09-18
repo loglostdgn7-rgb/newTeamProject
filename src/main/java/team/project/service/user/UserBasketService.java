@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import team.project.dto.BasketDTO;
+import team.project.dto.ProductDTO;
 import team.project.mapper.UserMapper;
 
 import java.text.NumberFormat;
@@ -29,7 +30,7 @@ public class UserBasketService {
 //        return list;
 //    }
 
-    //3
+//    //3 윤호님이 만든 임시 상품 리스트 같음
 //    public ProductDTO getProductById(int productId) {
 //        ProductDTO product = new ProductDTO();
 //        product.setId(productId);
@@ -38,7 +39,7 @@ public class UserBasketService {
 //        product.setPromotion("할인 없음");
 //        return product;
 //    }
-
+//   //윤호님이 만든 것
 //    public void addBasket(List<BasketDTO> basket, int productId, int quantity) {
 //        // 이미 장바구니에 존재하는지 확인
 //        for (BasketDTO item : basket) {
