@@ -44,9 +44,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             // 회원가입 창으로 파라미에 입력시켜서 이동시킴
             response.sendRedirect("/user/login?error=unlinked");
         } else {
-            logger.info("[로그인 성공] DB에서 조회된 유저 정보 {}로 principle 업데이트 합니다", user.getId());
+            logger.info("[sns 로그인 성공] DB에서 조회된 유저 정보 {}로 principle 업데이트 합니다", user.getId());
             principle.setId(user.getId());
-            principle.setId(user.getName());
+            principle.setName(user.getRealName());
             principle.setPostcode(user.getPostcode());
             principle.setRoadAddress(user.getRoadAddress());
             principle.setDetailAddress(user.getDetailAddress());
@@ -55,6 +55,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             principle.setNickname(user.getNickname());
             principle.setRole(user.getRole());
             principle.setSnsUsers(user.getSnsUsers());
+
+            logger.info("principle: " + principle.toString()); //확인용
+
             response.sendRedirect("/"); // 홈페이지로 이동
         }
     }

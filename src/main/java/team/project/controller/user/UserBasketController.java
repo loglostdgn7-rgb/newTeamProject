@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import team.project.dto.BasketDTO;
-import team.project.dto.BasketUpdateDTO;
 import team.project.dto.UserDTO;
 import team.project.service.user.UserBasketService;
 import team.project.service.user.UserService;
@@ -88,14 +87,14 @@ public class UserBasketController {
     @ResponseBody
     @PostMapping("/basket/update")
     public ResponseEntity<String> get_basket_update(
-            @RequestBody BasketUpdateDTO basketUpdate,
+            @RequestBody BasketDTO basketUpdate,
             HttpSession session
     ) {
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
         if (basket != null) {
-            userBasketService.update_basket_product(
+            userBasketService.update_basket_quantity_product(
                     basket,
-                    basketUpdate.getProductId(),
+                    basketUpdate.getProduct().getId(),
                     basketUpdate.getQuantity()
             );
             session.setAttribute("basket", basket);

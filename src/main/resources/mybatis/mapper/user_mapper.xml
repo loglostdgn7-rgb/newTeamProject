@@ -19,7 +19,7 @@
         SELECT *
         FROM user
                  LEFT OUTER JOIN sns_user
-                                 ON user.id = sns_user.user_id
+                 ON user.id = sns_user.user_id
         WHERE id = #{id}
     </select>
 
