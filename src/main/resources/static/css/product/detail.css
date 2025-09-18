@@ -136,6 +136,21 @@
 .buyBtn:hover {
     background-color: #45a049;
 }
+/* 장바구니 버튼 */
+.addToCartBtn {
+    margin-top: 20px;
+    width: 100%;
+    height: 40px;
+    font-weight: bold;
+    border: none;
+    background-color: #4CAF50;
+    color: #fff;
+    cursor: pointer;
+}
+
+.addToCartBtn:hover {
+    background-color: #45a049;
+}
 
 /* ====== 제품 상세 하단 영역 ====== */
 .product-warp2 {
