@@ -47,7 +47,7 @@ public class UserBasketController {
                 .findFirst();
 
         if (existing.isPresent()) {
-            existing.get().setQuantity(existing.get().getQuantity() + quantity);
+            existing.get().setQuantity(existing.get().getQuantity() + newBasket.getQuantity());
         } else {
             basket.add(newBasket);
         }
