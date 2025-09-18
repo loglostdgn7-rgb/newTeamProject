@@ -30,31 +30,31 @@ public class UserBasketService {
 //    }
 
     //3
-    public ProductDTO getProductById(int productId) {
-        ProductDTO product = new ProductDTO();
-        product.setId(productId);
-        product.setName("테스트 상품 " + productId);
-        product.setPrice(1000 * productId); // 가격 예시
-        product.setPromotion("할인 없음");
-        return product;
-    }
+//    public ProductDTO getProductById(int productId) {
+//        ProductDTO product = new ProductDTO();
+//        product.setId(productId);
+//        product.setName("테스트 상품 " + productId.);
+//        product.setPrice(1000 * productId); // 가격 예시
+//        product.setPromotion("할인 없음");
+//        return product;
+//    }
 
-    public void addBasket(List<BasketDTO> basket, int productId, int quantity) {
-        // 이미 장바구니에 존재하는지 확인
-        for (BasketDTO item : basket) {
-            if (item.getProduct().getId() == productId) {
-                // 기존 수량에 더하기
-                item.setQuantity(item.getQuantity() + quantity);
-                return;
-            }
-        }
-
-        // 새 상품이면 DB에서 Product 조회 후 추가
-        ProductDTO product = getProductById(productId); // 이 메서드는 Product 조회
-        if (product != null) {
-            basket.add(new BasketDTO(product, quantity));
-        }
-    }
+//    public void addBasket(List<BasketDTO> basket, int productId, int quantity) {
+//        // 이미 장바구니에 존재하는지 확인
+//        for (BasketDTO item : basket) {
+//            if (item.getProduct().getId() == productId) {
+//                // 기존 수량에 더하기
+//                item.setQuantity(item.getQuantity() + quantity);
+//                return;
+//            }
+//        }
+//
+//        // 새 상품이면 DB에서 Product 조회 후 추가
+//        ProductDTO product = getProductById(productId); // 이 메서드는 Product 조회
+//        if (product != null) {
+//            basket.add(new BasketDTO(product, quantity));
+//        }
+//    }
 
     //장바구니 /가격 계산
     public Map<String, String> calculate_basket_product_price(List<BasketDTO> basket) {

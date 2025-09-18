@@ -47,7 +47,7 @@ public class UserBasketController {
         if (existing.isPresent()) {
             existing.get().setQuantity(existing.get().getQuantity() + quantity);
         } else {
-            userBasketService.addBasket(basket, productId, quantity); // 새 상품 추가
+//            userBasketService.addBasket(basket, productId, quantity); // 새 상품 추가
         }
 
         session.setAttribute("basket", basket);
