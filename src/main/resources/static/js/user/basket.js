@@ -76,8 +76,11 @@ plus_minus_Btns.forEach(iTag => {
                     [header]: token
                 },
                 body: JSON.stringify({
-                    productId: productId,
-                    quantity: newQuantity
+                    product: {
+                        id: productId,
+                    },
+                    quantity: newQuantity,
+                    updateType: "overwrite"
                 })
             })
                 .then(response => {

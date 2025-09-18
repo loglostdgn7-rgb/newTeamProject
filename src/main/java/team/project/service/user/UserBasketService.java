@@ -1,6 +1,7 @@
 package team.project.service.user;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,6 +12,7 @@ import team.project.mapper.UserMapper;
 import java.text.NumberFormat;
 import java.util.*;
 
+@Slf4j
 @Service
 public class UserBasketService {
     @Autowired
@@ -57,6 +59,51 @@ public class UserBasketService {
 //        }
 //    }
 
+
+//    // 장바구니 담기 + 이미 담긴 상품인지 확인 및 업데이트
+//    public List<BasketDTO> update_basket(List<BasketDTO> basket, BasketDTO newBasket) {
+//        List<BasketDTO> newBasketList = (basket == null) ? new ArrayList<>() : new ArrayList<>(basket);
+//
+//        Optional<BasketDTO> existing = newBasketList.stream()
+//                .filter(item -> item.getProduct().getId() == newBasket.getProduct().getId())
+//                .findFirst();
+//
+//        if (existing.isPresent()) {
+//            if ("add".equals(newBasket.getUpdateType())) {
+//                existing.get().setQuantity(existing.get().getQuantity() + newBasket.getQuantity());
+//            } else {
+//                existing.get().setQuantity(newBasket.getQuantity());
+//            }
+//        } else {
+//            newBasketList.add(newBasket);
+//        }
+//        return newBasketList;
+//    }
+
+    public List<BasketDTO> update_basket(List<BasketDTO> basket, BasketDTO newBasket) {
+        log.info("##### 3. Service가 받은 newBasket 데이터: " + newBasket);
+
+        List<BasketDTO> newBasketList = (basket == null) ? new ArrayList<>() : new ArrayList<>(basket);
+
+        Optional<BasketDTO> existing = newBasketList.stream()
+                .filter(item -> item.getProduct().getId() == newBasket.getProduct().getId())
+                .findFirst();
+
+        if (existing.isPresent()) {
+            BasketDTO existingItem = existing.get();
+            log.info("기존 상품 발견. 기존 수량: " + existingItem.getQuantity() + ", 추가 요청 수량: " + newBasket.getQuantity());
+            if ("add".equals(newBasket.getUpdateType())) {
+                existingItem.setQuantity(existingItem.getQuantity() + newBasket.getQuantity());
+            } else {
+                existingItem.setQuantity(newBasket.getQuantity());
+            }
+            log.info("최종 계산된 수량: " + existingItem.getQuantity());
+        } else {
+            log.info("새로운 상품. 장바구니에 추가.");
+            newBasketList.add(newBasket);
+        }
+        return newBasketList;
+    }
     //장바구니 /가격 계산
     public Map<String, String> calculate_basket_product_price(List<BasketDTO> basket) {
         int productTotalPrice = 0;

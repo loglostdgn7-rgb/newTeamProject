@@ -10,5 +10,6 @@ import lombok.*;
 public class BasketDTO {
     private ProductDTO product;
     private int quantity;
+    private String updateType;
 
 }

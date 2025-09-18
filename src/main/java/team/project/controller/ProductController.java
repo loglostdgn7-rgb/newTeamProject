@@ -32,7 +32,8 @@ public class ProductController {
     @GetMapping("/product/detail/{id}")
     public String get_detail(
             Model model,
-            @PathVariable("id") Integer id
+            //////// Integer -> int로 [김영수]님이 수정(9/19) ///////////
+            @PathVariable("id") int id
     ){
         var productDetail = productService.get_id_product_detail(id);
         model.addAttribute("productDetail", productDetail);

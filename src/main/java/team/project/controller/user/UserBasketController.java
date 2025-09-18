@@ -1,19 +1,24 @@
 package team.project.controller.user;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import team.project.dto.BasketDTO;
+import team.project.dto.ProductDTO;
 import team.project.dto.UserDTO;
+import team.project.mapper.ProductMapper;
 import team.project.service.user.UserBasketService;
 import team.project.service.user.UserService;
 
 import java.util.*;
 
+@Slf4j
 @RequestMapping("/user")
 @Controller
 public class UserBasketController {
@@ -21,36 +26,58 @@ public class UserBasketController {
     private UserBasketService userBasketService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProductMapper productMapper;
 
 
     /*****************************************************/
 
     //이걸 쓸거면 내껄 버려야한다. js, controller, service 잘보기
-    //이걸 서비스로 옮기자
-    // 장바구니 담기 + 업데이트 
+    // 장바구니 담기 + 업데이트
+//    @PostMapping("/basket/update")
+//    @ResponseBody
+//    public ResponseEntity<String> add_to_basket(
+//            @SessionAttribute(name = "basket", required = false) List<BasketDTO> basket,
+//            @RequestBody BasketDTO newBasket,
+//            HttpSession session
+//    ) {
+//        if (basket == null) basket = new ArrayList<>();
+//
+//        int productId = newBasket.getProduct().getId();
+//        ProductDTO product = productMapper.selectProductIdDetail(productId);
+//
+//        if (product == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다");
+//
+//        BasketDTO completedBasket = new BasketDTO(product, newBasket.getQuantity(), newBasket.getUpdateType());
+//
+//        basket = userBasketService.update_basket(basket, completedBasket);
+//
+//        session.setAttribute("basket", basket);
+//        return ResponseEntity.ok("상품이 장바구니에 담겼습니다.");
+//    }
+
     @PostMapping("/basket/update")
     @ResponseBody
     public ResponseEntity<String> add_to_basket(
+            @SessionAttribute(name = "basket", required = false) List<BasketDTO> basket,
             @RequestBody BasketDTO newBasket,
             HttpSession session
     ) {
-        int productId = (int) newBasket.getProduct().getId();
-        int quantity = (int) newBasket.getQuantity();
+        log.info("##### 1. Controller가 받은 newBasket 데이터: " + newBasket);
 
-        // 세션에서 장바구니 가져오기
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
         if (basket == null) basket = new ArrayList<>();
 
-        // 이미 담긴 상품인지 확인
-        Optional<BasketDTO> existing = basket.stream()
-                .filter(item -> item.getProduct().getId() == newBasket.getProduct().getId())
-                .findFirst();
+        int productId = newBasket.getProduct().getId();
+        ProductDTO product = productMapper.selectProductIdDetail(productId);
 
-        if (existing.isPresent()) {
-            existing.get().setQuantity(existing.get().getQuantity() + newBasket.getQuantity());
-        } else {
-            basket.add(newBasket);
-        }
+        if (product == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다");
+
+        BasketDTO completedBasket = new BasketDTO(product, newBasket.getQuantity(), newBasket.getUpdateType());
+        log.info("##### 2. Service로 보내기 직전 completedBasket 데이터: " + completedBasket);
+
+        basket = userBasketService.update_basket(basket, completedBasket);
+
+        log.info("##### 4. Service가 처리하고 반환한 최종 basket 내용: " + basket);
 
         session.setAttribute("basket", basket);
         return ResponseEntity.ok("상품이 장바구니에 담겼습니다.");
@@ -76,13 +103,12 @@ public class UserBasketController {
 //    }
 
 
-
     /*************************************************/
 
     //장바구니 /서머리
     @ResponseBody
     @GetMapping("/basket/summary")
-    public ResponseEntity<Map<String, String >> get_basket_summary(HttpSession session) {
+    public ResponseEntity<Map<String, String>> get_basket_summary(HttpSession session) {
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
 
         Map<String, String> currencyFormattedPrices = userBasketService.calculate_basket_product_price(basket);
@@ -90,7 +116,7 @@ public class UserBasketController {
         if (basket == null || basket.isEmpty()) {
             Map<String, String> noPrices = new HashMap<>();
             noPrices.put("productTotalPrice", currencyFormattedPrices.get("productTotalPrice"));
-            noPrices.put("shippingPrice",currencyFormattedPrices.get("shippingPrice"));
+            noPrices.put("shippingPrice", currencyFormattedPrices.get("shippingPrice"));
             noPrices.put("orderTotalPrice", currencyFormattedPrices.get("orderTotalPrice"));
             return ResponseEntity.ok(noPrices);
         }
