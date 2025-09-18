@@ -2,6 +2,9 @@ package team.project.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.flogger.Flogger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 @Controller
 public class UserMyPageController {
+    Logger logger = LoggerFactory.getLogger(UserMyPageController.class);
+
     @Autowired
     UserService userService;
     @Autowired
@@ -36,10 +41,11 @@ public class UserMyPageController {
 
     @PostMapping("/my-page/order")
     public void post_order(
-            
+
     ) {
         //여긴 결제 폼 내용(이름,주소등등 개인정보)받아와서 주문 "상세"에 들어가면 보이도록하고싶음
     }
+
     @PostMapping("/my-page/order/{orderId}")
     public void post_order_number(
 
@@ -48,7 +54,7 @@ public class UserMyPageController {
     }
 
 
-/************************************************/
+    /************************************************/
     // 프로필
     @GetMapping("/my-page/profile")
     public String get_profile(
@@ -59,7 +65,10 @@ public class UserMyPageController {
             return "redirect:/user/login";
         }
 
-        UserDTO userForView = userService.get_user_by_Id(principal.getId());
+        UserDTO userForView = userService.get_user_by_Id(principal.getId()); // todo : sns로 로그인하면 이게 왜 널이지..?
+
+        logger.info("userForView={}", userForView);
+
         model.addAttribute("user", userForView);
 
         // 전화번호 짤라서 넣기
