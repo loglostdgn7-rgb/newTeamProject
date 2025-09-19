@@ -6,15 +6,22 @@
     <resultMap id="productMap" type="ProductDTO" autoMapping="true">
         <id property="id" column="id"/>
     </resultMap>
+<!--페이지네이션-->
+<!--리스트 나열-->
+
+    <select id="list" parameterType="map" resultType="ProductDTO">
+        SELECT * FROM product LIMIT #{size} OFFSET #{offset}
+    </select>
+<!--  개수  -->
+    <select id="countProducts" resultType="int">
+        SELECT COUNT(*) AS product_count FROM product
+    </select>
 
     <select id="selectProducts" resultMap="productMap">
         SELECT
-            p.id AS id,
-            p.name AS name,
-            p.price AS price,
-            p.promotion AS promotion
+            *
         FROM product p
-            LIMIT #{size} OFFSET #{offset}
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">
@@ -29,12 +36,19 @@
         SELECT * FROM product
     </select>
 
-    <select id="selectProductIdDetail" resultMap="productMap">
-        SELECT name, price FROM product WHERE product.id = #{id};
-    </select>
+<!--    <select id="selectProductIdDetail" resultMap="productMap">-->
+<!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
+<!--    </select>-->
+
+<!--    김영수 님이 위에꺼 주석하고 아래 복사(9/20)-->
+<select id="selectProductIdDetail" resultMap="productMap">
+    SELECT *
+    FROM product
+    WHERE product.product_id = #{id};
+</select>
 
     <insert id="insertProduct">
-        INSERT INTO product (id, name, price, promotion)
+        INSERT INTO product (product_id, name, price, promotion)
         VALUES (#{id}, #{name}, #{price}, #{promotion})
     </insert>
 

@@ -41,7 +41,7 @@ public class UserBasketController {
     ) {
         if (basket == null) basket = new ArrayList<>();
 
-        int productId = newBasket.getProduct().getId();
+        int productId = newBasket.getProduct().getProductId();
 
         ProductDTO product = productMapper.selectProductIdDetail(productId);
 
@@ -110,7 +110,7 @@ public class UserBasketController {
             HttpSession session
     ) {
         if (basket != null) {
-            basket.removeIf(item -> item.getProduct().getId() == productId);
+            basket.removeIf(item -> item.getProduct().getProductId() == productId);
             session.setAttribute("basket", basket);
         }
 

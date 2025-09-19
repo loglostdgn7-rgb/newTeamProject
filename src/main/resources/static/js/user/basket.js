@@ -144,9 +144,13 @@ const paymentBackground = document.querySelector(".payment-background");
 const paymentContainer = paymentBackground.querySelector(".payment-container");
 let openModalBackground = null;
 const paymentBtn = paymentContainer.querySelector(".payment-button");
+const productList = document.querySelectorAll(".product"); //select All
 
 //체크아웃을 누르면 주문(order), 결제창 뜨기
 checkoutBtn.onclick = () => {
+    //상품 없으면 체크아웃 방지
+    if (productList.length === 0) return alert("장바구니에 상품이 없습니다");
+
     paymentBackground.style.display = "block";
     openModalBackground = paymentBackground; //지금 나타난 것은 paymentBackground
 }
@@ -168,20 +172,14 @@ window.addEventListener("click", event => {
 });
 
 //결제창 버튼
-//이게 다 끝나고 나면 form의 내용들을 order로 보내기...
+//이게 다 끝나고 나면 form의 내용들을 order로 보내기...하려고했는데 fetch가 나으려나 ㅠ
 paymentBtn.onclick = () => {
     //imp 초기화 하고
     IMP.init("imp76108135");
 
-
     const merchantUid = "ORD_" + crypto.randomUUID();
     console.log("merchantUid: " + merchantUid);
     const paymentForm = document.querySelector(".payment-container > form");
-    const productList = document.querySelectorAll(".product"); //select All
-
-    //상품 없으면 결제 방지
-    if (productList.length === 0) return alert("장바구니에 상품이 없습니다");
-
     const firstProductName = productList[0].querySelector(".product-name").textContent;
     const orderName = productList > 1 ? `${firstProductName} 외 ${productList - 1}건` : firstProductName;
     const buyerName = paymentForm.querySelector(".real-name").value;

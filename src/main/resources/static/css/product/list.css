@@ -197,3 +197,32 @@
     font-weight: bold;
     font-size: 30px;
 }
+
+.nav > ul{
+    display: flex;
+    margin: 20px 0;
+    justify-content: center;
+    list-style: none;
+}
+.nav a{
+    display: inline-flex;
+    width: 25px;
+    height: 25px;
+    margin: 0 2px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 10%;
+    font-size: var(--font-regular);
+    cursor: pointer;
+
+    &:hover{
+        background-color: black;
+        color: white;
+    }
+}
+.nav a[active=true]{
+    background-color: black;
+    color: white;
+}
+

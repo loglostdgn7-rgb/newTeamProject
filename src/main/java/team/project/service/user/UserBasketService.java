@@ -13,12 +13,15 @@ public class UserBasketService {
     Logger logger = LoggerFactory.getLogger(UserBasketService.class);
 
     // 장바구니 담기 + 이미 담긴 상품인지 확인 및 업데이트
-    public List<BasketDTO> update_basket(List<BasketDTO> basket, BasketDTO newBasket) {
+    public List<BasketDTO> update_basket(
+            List<BasketDTO> basket,
+            BasketDTO newBasket
+    ) {
         logger.info("장바구니 담기/업데이트 하는 중...");
         List<BasketDTO> newBasketList = (basket == null) ? new ArrayList<>() : new ArrayList<>(basket);
 
         Optional<BasketDTO> existing = newBasketList.stream()
-                .filter(item -> item.getProduct().getId() == newBasket.getProduct().getId())
+                .filter(item -> item.getProduct().getProductId() == newBasket.getProduct().getProductId())
                 .findFirst();
 
         if (existing.isPresent()) {
