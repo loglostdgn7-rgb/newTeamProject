@@ -29,9 +29,8 @@
         SELECT * FROM product
     </select>
 
-<!--******** name, price -> * 로 [김영수]님이 수정(9/19) ******-->
     <select id="selectProductIdDetail" resultMap="productMap">
-        SELECT * FROM product WHERE product.id = #{id};
+        SELECT name, price FROM product WHERE product.id = #{id};
     </select>
 
     <insert id="insertProduct">
