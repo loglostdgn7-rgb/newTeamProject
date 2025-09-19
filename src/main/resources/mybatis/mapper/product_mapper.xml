@@ -40,6 +40,7 @@
 <!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
 <!--    </select>-->
 
+<!--    김영수 님이 위에꺼 주석하고 아래 복사(9/20)-->
 <select id="selectProductIdDetail" resultMap="productMap">
     SELECT *
     FROM product
