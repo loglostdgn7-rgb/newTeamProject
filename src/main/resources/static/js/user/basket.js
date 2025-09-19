@@ -174,12 +174,12 @@ paymentBtn.onclick = () => {
     IMP.init("imp76108135");
 
     //PG 사를 위해 적는 것들..
-    const merchantUid = "ORD_" + UUID.randomUUID().toString();
+    const merchantUid = "ORD_" + crypto.randomUUID();
     console.log("merchantUid: " + merchantUid);
     const paymentForm = document.querySelector(".payment-container > form");
-    const productListLength = document.querySelector(".product").length;
-    const firstProductName = document.querySelector(".product-name").textContent;
-    const orderName = productListLength > 1 ? `${firstProductName} 외 ${productListLength - 1}건` : firstProductName;
+    const productList = document.querySelector(".product");
+    const firstProductName = productList[0].querySelector(".product-name").textContent;
+    const orderName = productList > 1 ? `${firstProductName} 외 ${productList - 1}건` : firstProductName;
     const buyerName = paymentForm.querySelector(".real-name").value;
     const buyerPostcode = paymentForm.querySelector(".postcode").value;
     const roadAddress = paymentForm.querySelector(".road-address").value;
@@ -188,7 +188,7 @@ paymentBtn.onclick = () => {
     const telPrev = paymentForm.querySelector(".payment-tel-prev").value;
     const telBody = paymentForm.querySelector(".payment-tel-body").value;
     const telTail = paymentForm.querySelector(".payment-tel-tail").value;
-    const buyerTel = telPrev.value + telBody.value + telTail.value;
+    const buyerTel = telPrev + telBody + telTail;
     const buyerEmail = paymentForm.querySelector(".email").value;
     // const buyerRequest = paymentForm.querySelector(".request").value;
     const price = parseInt(paymentForm.querySelector(".price").textContent);
@@ -226,7 +226,6 @@ paymentBtn.onclick = () => {
                     buyer_tel: response.buyer_tel,
                     buyer_addr: response.buyer_addr,
                     buyer_postcode: response.buyer_postcode,
-                    // 주문 정보...
                 }),
             });
         },
