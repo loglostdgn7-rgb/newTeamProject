@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import team.project.dto.PagenationDTO;
 import team.project.service.ProductService;
 
+import java.util.Base64;
+
 @Slf4j
 @Controller
 @RequestMapping("/shop")
@@ -35,9 +37,19 @@ public class ProductController {
             @PathVariable("id") Integer id
     ){
         var productDetail = productService.get_id_product_detail(id);
+
+        // BLOB → Base64 변환
+        if (productDetail.getImageData() != null && productDetail.getImageData().length > 0) {
+            String base64Image = Base64.getEncoder().encodeToString(productDetail.getImageData());
+            model.addAttribute("base64Image", base64Image);
+        }
+
         model.addAttribute("productDetail", productDetail);
         return "shop/product/detail";
     }
+
+
+
 
 
 

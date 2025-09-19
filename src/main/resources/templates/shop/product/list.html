@@ -79,10 +79,17 @@
         <ul class="product-list-1">
             <li th:each="product : ${pagenation.elements}">
                 <div class="product-image">
-                    <a th:href="@{/shop/product/detail/{id}(id=${product.productId})}">
-                        <img src="https://tse3.mm.bing.net/th/id/OIP.-Ex0t2-_3Zajz9EDlZtOGAHaEo?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
-                    </a>
+                    <!-- DB 이미지 있으면 출력 -->
+                    <img th:if="${base64Image != null}"
+                         th:src="'data:image/jpeg;base64,' + ${base64Image}"
+                         alt="Product Image"/>
+
+                    <!-- DB 이미지 없으면 기본 이미지 -->
+                    <img th:if="${base64Image == null}"
+                         src="/images/no-image.png"
+                         alt="No Image"/>
                 </div>
+
                 <div class="product-box">
                     <div class="product-promotion">
                         <p th:text="${product.promotion}">프로모션(선택사항)</p>
@@ -98,19 +105,32 @@
         </ul>
     </section>
 
-    <nav>
-        <ul>
-            <!--                    <li><a href="#"><</a></li>-->
-            <li th:each="index: ${#numbers.sequence(pagenation.page - pagenation.totalPageViewCount)}">
-                <a th:href="@{/shop/product/list(page=${index}, size=${pagenation.size})}" th:text="${index}" th:active="${pagenation.page == index}">1</a>
+    <nav class="nav">
+        <ul th:if="${pagenation.totalElementsCount != 0}">
+            <li th:if="${pagenation.startPageIndex != 1}">
+                <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.startPageIndex-1}, size=${pagenation.size})}"><</a>
             </li>
+
+            <th:block th:if="${pagenation.page != 1}">
+                <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.page - 1)}">
+                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}" th:text="${index}">1</a>
+                </li>
+            </th:block>
+
             <li>
-                <a th:href="@{/shop/product/list(page=${pagenation.page}, size=${pagenation.size})}" th:text="${pagenation.page}" th:active="true">1</a>
+                <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.page}, size=${pagenation.size})}" th:text="${pagenation.page}" th:active="true">1</a>
             </li>
-            <li th:each="index: ${#numbers.sequence(1, pagenation.totalPageViewCount)}">
-                <a th:href="@{/shop/product/list(page=${index}, size=${pagenation.size})}" th:text="${index}" th:active="${pagenation.page == index}">1</a>
+
+
+            <th:block th:if="${pagenation.page != pagenation.totalPageCount}">
+                <li th:each="index: ${#numbers.sequence(pagenation.page + 1, pagenation.endPageIndex)}">
+                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}" th:text="${index}">1</a>
+                </li>
+            </th:block>
+
+            <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
+                <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.endPageIndex+1}, size=${pagenation.size})}">></a>
             </li>
-            <!--                    <li><a href="#">></a></li>-->
         </ul>
     </nav>
 
