@@ -168,16 +168,20 @@ window.addEventListener("click", event => {
 });
 
 //결제창 버튼
+//이게 다 끝나고 나면 form의 내용들을 order로 보내기...
 paymentBtn.onclick = () => {
-    // 결제 검증
     //imp 초기화 하고
     IMP.init("imp76108135");
 
-    //PG 사를 위해 적는 것들..
+
     const merchantUid = "ORD_" + crypto.randomUUID();
     console.log("merchantUid: " + merchantUid);
     const paymentForm = document.querySelector(".payment-container > form");
-    const productList = document.querySelector(".product");
+    const productList = document.querySelectorAll(".product"); //select All
+
+    //상품 없으면 결제 방지
+    if (productList.length === 0) return alert("장바구니에 상품이 없습니다");
+
     const firstProductName = productList[0].querySelector(".product-name").textContent;
     const orderName = productList > 1 ? `${firstProductName} 외 ${productList - 1}건` : firstProductName;
     const buyerName = paymentForm.querySelector(".real-name").value;
@@ -191,8 +195,15 @@ paymentBtn.onclick = () => {
     const buyerTel = telPrev + telBody + telTail;
     const buyerEmail = paymentForm.querySelector(".email").value;
     // const buyerRequest = paymentForm.querySelector(".request").value;
-    const price = parseInt(paymentForm.querySelector(".price").textContent);
-    const paymentMethod = paymentForm.querySelector("input[type=radio][name=payment]:checked").value;
+    const priceString = paymentForm.querySelector(".order-total-price").value;
+    console.log("price:",priceString)
+    //체크된 결제 방식이 있느냐?
+    const isCheckedPaymentMethod = paymentForm.querySelector("input[type=radio][name=payment-method]:checked");
+    
+    //결제 방식을 선택 안해도 결제 방지
+    if (isCheckedPaymentMethod == null) return alert("결제 방식을 선택하세요");
+
+    const paymentMethod = isCheckedPaymentMethod.value;
 
     IMP.request_pay(
         {
@@ -200,7 +211,7 @@ paymentBtn.onclick = () => {
             pay_method: paymentMethod,
             merchant_uid: merchantUid,
             name: orderName, //상품리스트 이름("첫번째상품이름...")
-            amount: price,
+            amount: priceString,
             buyer_email: buyerEmail,
             buyer_name: buyerName,
             buyer_tel: buyerTel,
@@ -208,10 +219,10 @@ paymentBtn.onclick = () => {
             buyer_postcode: buyerPostcode,
         },
         async (response) => {
-            if (response.error_code != null) return alert(`결제에 실패했습니다. 에러: ${response.error_msg}`);
+            //이것도 다시 확인해봐야 되고
+            // if (response.error_code == null) return alert(`결제에 실패했습니다. 에러: ${response.error_msg}`);
 
-            const SERVER_BASE_URL = "http://localhost:8080"
-            const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+            const notified = await fetch(`/payment/complete`, {
                 method: "post",
                 headers: {"Content-Type": "application/json"},
                 // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
@@ -230,6 +241,7 @@ paymentBtn.onclick = () => {
             });
         },
     ); //request_pay 끝
+    //검증은 패스...
 }
 
 
