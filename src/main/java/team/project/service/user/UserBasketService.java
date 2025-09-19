@@ -1,23 +1,20 @@
 package team.project.service.user;
 
-import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import team.project.dto.BasketDTO;
-import team.project.dto.ProductDTO;
-import team.project.mapper.UserMapper;
 
 import java.text.NumberFormat;
 import java.util.*;
 
 @Service
 public class UserBasketService {
-    @Autowired
-    UserMapper userMapper;
+    Logger logger = LoggerFactory.getLogger(UserBasketService.class);
 
     // 장바구니 담기 + 이미 담긴 상품인지 확인 및 업데이트
     public List<BasketDTO> update_basket(List<BasketDTO> basket, BasketDTO newBasket) {
+        logger.info("장바구니 담기/업데이트 하는 중...");
         List<BasketDTO> newBasketList = (basket == null) ? new ArrayList<>() : new ArrayList<>(basket);
 
         Optional<BasketDTO> existing = newBasketList.stream()
@@ -34,11 +31,13 @@ public class UserBasketService {
             newBasketList.add(newBasket);
         }
 
+        logger.info("장바구니 담기/업데이트 완료!");
         return newBasketList;
     }
 
     //장바구니 /가격 계산
     public Map<String, String> calculate_basket_product_price(List<BasketDTO> basket) {
+        logger.info("장바구니 가격 계산 중...");
         int productTotalPrice = 0;
 
         if (basket !=null) {
@@ -61,6 +60,7 @@ public class UserBasketService {
         prices.put("shippingPrice", currency.format(shippingPrice));
         prices.put("orderTotalPrice", currency.format(orderTotalPrice));
 
+        logger.info("장바구니 가격 계산 완료!");
         return prices;
     }
 
