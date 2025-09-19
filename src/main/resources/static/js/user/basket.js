@@ -178,7 +178,6 @@ paymentBtn.onclick = () => {
     IMP.init("imp76108135");
 
     const merchantUid = "ORD_" + crypto.randomUUID();
-    console.log("merchantUid: " + merchantUid);
     const paymentForm = document.querySelector(".payment-container > form");
     const firstProductName = productList[0].querySelector(".product-name").textContent;
     const orderName = productList > 1 ? `${firstProductName} 외 ${productList - 1}건` : firstProductName;
@@ -186,18 +185,18 @@ paymentBtn.onclick = () => {
     const buyerPostcode = paymentForm.querySelector(".postcode").value;
     const roadAddress = paymentForm.querySelector(".road-address").value;
     const detailAddress = paymentForm.querySelector(".detail-address").value;
-    const buyerAddress = roadAddress.value + detailAddress.value;
+    const buyerAddress = roadAddress + detailAddress;
     const telPrev = paymentForm.querySelector(".payment-tel-prev").value;
     const telBody = paymentForm.querySelector(".payment-tel-body").value;
     const telTail = paymentForm.querySelector(".payment-tel-tail").value;
     const buyerTel = telPrev + telBody + telTail;
     const buyerEmail = paymentForm.querySelector(".email").value;
-    // const buyerRequest = paymentForm.querySelector(".request").value;
+    const buyerRequest = paymentForm.querySelector(".request").value;
     const priceString = paymentForm.querySelector(".order-total-price").value;
-    console.log("price:",priceString)
+    console.log("price:", priceString)
     //체크된 결제 방식이 있느냐?
     const isCheckedPaymentMethod = paymentForm.querySelector("input[type=radio][name=payment-method]:checked");
-    
+
     //결제 방식을 선택 안해도 결제 방지
     if (isCheckedPaymentMethod == null) return alert("결제 방식을 선택하세요");
 
@@ -205,7 +204,7 @@ paymentBtn.onclick = () => {
 
     IMP.request_pay(
         {
-            channelKey: "channel-key-99dbb0dc-a2a3-4159-ad15-f7095f2fd7d4",
+            channelKey: "channel-key-95a34a9c-f92d-40ec-8f63-66d1bb78bcb0",
             pay_method: paymentMethod,
             merchant_uid: merchantUid,
             name: orderName, //상품리스트 이름("첫번째상품이름...")
@@ -214,29 +213,33 @@ paymentBtn.onclick = () => {
             buyer_name: buyerName,
             buyer_tel: buyerTel,
             buyer_addr: buyerAddress,
-            buyer_postcode: buyerPostcode,
+            buyer_postcode: buyerPostcode
         },
         async (response) => {
-            //이것도 다시 확인해봐야 되고
-            // if (response.error_code == null) return alert(`결제에 실패했습니다. 에러: ${response.error_msg}`);
+            if (response.success) {
+                await fetch(`/user/payment/complete`, {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                        [header]: token
+                    },
+                    // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
+                    body: JSON.stringify({
+                        imp_uid: response.imp_uid,
+                        merchant_uid: response.merchant_uid,
+                        pay_method: response.pay_method,
+                        name: response.name, //상품리스트 이름("첫번째상품이름...")
+                        amount: response.amount,
+                        buyer_email: response.buyer_email,
+                        buyer_name: response.buyer_name,
+                        buyer_tel: response.buyer_tel,
+                        buyer_addr: response.buyer_addr,
+                        buyer_postcode: response.buyer_postcode,
+                        buyer_request: response.buyer_request
+                    }),
+                });
 
-            const notified = await fetch(`/payment/complete`, {
-                method: "post",
-                headers: {"Content-Type": "application/json"},
-                // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
-                body: JSON.stringify({
-                    imp_uid: response.imp_uid,
-                    merchant_uid: response.merchant_uid,
-                    pay_method: response.pay_method,
-                    name: response.name, //상품리스트 이름("첫번째상품이름...")
-                    amount: response.amount,
-                    buyer_email: response.buyer_email,
-                    buyer_name: response.buyer_name,
-                    buyer_tel: response.buyer_tel,
-                    buyer_addr: response.buyer_addr,
-                    buyer_postcode: response.buyer_postcode,
-                }),
-            });
+            } //if문 끝
         },
     ); //request_pay 끝
     //검증은 패스...

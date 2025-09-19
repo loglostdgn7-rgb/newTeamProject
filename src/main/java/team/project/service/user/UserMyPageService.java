@@ -7,16 +7,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import team.project.dto.BasketDTO;
-import team.project.dto.ProductDTO;
-import team.project.dto.SnsUserDTO;
-import team.project.dto.UserDTO;
+import team.project.dto.*;
 import team.project.mapper.UserMapper;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -45,6 +44,40 @@ public class UserMyPageService {
     private String NAVER_CLIENT_SECRET;
     private final String NAVER_TOKEN_URI = "https://nid.naver.com/oauth2.0/token";
     private final String NAVER_USER_INFO_URI = "https://openapi.naver.com/v1/nid/me";
+
+
+    //post 주문 내역
+    public void record_order(
+            OrderDTO order,
+            @AuthenticationPrincipal UserDTO principal
+    ) {
+        order.setCreatedAt(LocalDateTime.now());
+        order.setUserId(principal.getId());
+
+        userMapper.insertOrder(order);
+
+        for (OrderDetailDTO product : order.getProductList()){
+            product.setOrderId(order.getOrderId());
+            userMapper.insertOrderProduct(product);
+        }
+    }
+
+    //주문내역 리스트
+    public List<OrderDTO> get_order_list_by_user_id(
+            @AuthenticationPrincipal UserDTO principal
+    ) {
+        return userMapper.findOrderListByUserId(principal.getId());
+    }
+
+    //개별 주문 내역
+    public OrderDTO get_order_by_order_id_and_user_id(
+            OrderDTO order,
+            @AuthenticationPrincipal UserDTO principal
+    ) {
+
+    }
+
+
 
 
     /*********************************************/
@@ -164,7 +197,7 @@ public class UserMyPageService {
     }
 
     //sns 연동 해제
-    public void unlink_sns(String userId, String clientName){
+    public void unlink_sns(String userId, String clientName) {
         userMapper.deleteSnsUser(userId, clientName);
         logger.info("{} 사용자의 {} 연동을 해제 함", userId, clientName);
     }

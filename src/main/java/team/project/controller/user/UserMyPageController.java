@@ -2,20 +2,22 @@ package team.project.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import lombok.extern.flogger.Flogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import team.project.dto.OrderDTO;
 import team.project.dto.UserDTO;
 import team.project.service.user.UserMyPageService;
 import team.project.service.user.UserService;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RequestMapping("/user")
@@ -28,26 +30,33 @@ public class UserMyPageController {
     @Autowired
     UserMyPageService userMyPageService;
 
-    //주문
-    @GetMapping("/my-page/order")
-    public void get_order(
-            HttpSession session,
-            Model model
+    //주문 내역
+    @ResponseBody
+    @PostMapping("/payment/complete")
+    public ResponseEntity<String> post_order(
+            @RequestBody OrderDTO order,
+            @AuthenticationPrincipal UserDTO principal
     ) {
-        session.getAttribute("basket");
-        //여긴 상품 주문 리스트(1개가 장바구니에 담겼던 통합 주문의 리스트) 보여주기
+        userMyPageService.record_order(order, principal);
 
+        return ResponseEntity.ok("주문이 성공적으로 완료 되었습니다.");
     }
 
-    @PostMapping("/my-page/order")
-    public void post_order(
-
+    //주문 내역 보기
+    @GetMapping("/my-page/order")
+    public String get_order(
+            @AuthenticationPrincipal UserDTO principal,
+            Model model
     ) {
-        //여긴 결제 폼 내용(이름,주소등등 개인정보)받아와서 주문 "상세"에 들어가면 보이도록하고싶음
+        List<OrderDTO> orderList = userMyPageService.find_orders_by_id(principal.getId());
+
+        model.addAttribute("orderList", orderList);
+
+        return "user/my-page/order";
     }
 
     @PostMapping("/my-page/order/{orderId}")
-    public void post_order_number(
+    public void post_order_id(
 
     ) {
         //여긴 결제 폼 내용(이름,주소등등 개인정보)받아와서 주문 "상세"에 들어가면 보이도록하고싶음
@@ -123,7 +132,6 @@ public class UserMyPageController {
             @AuthenticationPrincipal UserDTO user,
             @PathVariable String clientName
     ) {
-
         userMyPageService.unlink_sns(user.getId(), clientName);
 
         if (user.getSnsUsers() != null)

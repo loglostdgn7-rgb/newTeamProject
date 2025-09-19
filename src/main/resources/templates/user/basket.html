@@ -29,7 +29,7 @@
                         <span>장바구니가 비어 있습니다.</span>
                         <a href="/shop/product/list">전 상품 보러가기</a>
                     </li>
-                    <li th:each="item : ${list}" class="product" th:data-product-id="${item.product.getId()}">
+                    <li th:each="item : ${list}" class="product" th:data-product-id="${item.product.getProductId()}">
                         <a class="product-img-box" href="#">
                             <img src="https://standoil.cafe24.com/web/product/tiny/202406/8f0c8d46ff44a36493fd240c1f06deba.jpg"
                                  alt="">
@@ -46,7 +46,7 @@
                             </span>
                         </div>
                         <div class="product-remove-box">
-                            <a th:href="@{/user/basket/delete/{productId}(productId=${item.product.id})}">remove</a>
+                            <a th:href="@{/user/basket/delete/{productId}(productId=${item.product.productId})}">remove</a>
                         </div>
                     </li>
 
@@ -76,8 +76,7 @@
 <!-- ********************** 결제 모달창 ***********************-->
     <section class="payment-background">
         <div class="payment-container" >
-            <form action="/user/my-page/order" method="post">
-
+            <form>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
                 <h1>주문서 배송지 정보</h1>

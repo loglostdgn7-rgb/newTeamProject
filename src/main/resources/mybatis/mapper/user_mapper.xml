@@ -60,6 +60,7 @@
         VALUES (#{userId}, #{snsId}, #{clientName})
     </insert>
 
+
     <!--//////////유저 업데이트 ////////////////////-->
     <update id="updatePassword">
         UPDATE user
@@ -67,6 +68,16 @@
         WHERE id = #{userId}
     </update>
 
+    <!--/////// 주문 내역 삽입 ///////-->
+    <insert id="insertOrder">
+
+    </insert>
+
+    <insert id="insertProduct">
+
+    </insert>
+
+    <!--////// 프로필 업데이트 //////-->
     <update id="updateProfile">
         UPDATE user
         SET name           = #{realName},

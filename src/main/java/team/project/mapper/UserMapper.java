@@ -2,9 +2,7 @@ package team.project.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import team.project.dto.ProductDTO;
-import team.project.dto.SnsUserDTO;
-import team.project.dto.UserDTO;
+import team.project.dto.*;
 
 @Mapper
 public interface UserMapper {
@@ -17,6 +15,8 @@ public interface UserMapper {
             @Param("snsId") String snsId,
             @Param("clientName") String clientName
     );
+
+    //주문내역
 
     // 장바구니 / 상품 정보
     ProductDTO selectProductById(Integer productId);
@@ -35,6 +35,10 @@ public interface UserMapper {
             @Param("userId") String userId,
             @Param("encodedPassword") String encodedPassword
     );
+
+    void insertOrder(OrderDTO order);
+    void insertProduct(OrderDetailDTO product);
+
 
     void updateProfile(UserDTO user);
 
