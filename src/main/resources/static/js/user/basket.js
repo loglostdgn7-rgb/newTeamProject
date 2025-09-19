@@ -58,9 +58,9 @@ plus_minus_Btns.forEach(iTag => {
         const li = event.currentTarget.closest("li.product");
         //그의 자식인 element를 찾는다.
         const productId = li.dataset.productId;
-        const amountSpan = li.querySelector(".product-amount");
+        const quantitySpan = li.querySelector(".product-quantity");
         //실제 수량
-        let currentQuantity = parseInt(amountSpan.textContent);
+        let currentQuantity = parseInt(quantitySpan.textContent);
         let newQuantity = currentQuantity;
 
         if (event.currentTarget.classList.contains("bi-plus")) newQuantity++;
@@ -85,7 +85,7 @@ plus_minus_Btns.forEach(iTag => {
             })
                 .then(response => {
                     if (response.ok) {
-                        amountSpan.textContent = newQuantity;
+                        quantitySpan.textContent = newQuantity;
                         update_basket_summary();
                     } else {
                         alert("장바구니 담기에 실패하였습니다. 다시 시도해 주세요");
@@ -151,6 +151,7 @@ checkoutBtn.onclick = () => {
     openModalBackground = paymentBackground; //지금 나타난 것은 paymentBackground
 }
 
+//모달창 기능
 const closeModal = () => {
     if (openModalBackground) {
         openModalBackground.style.display = "none";
@@ -158,7 +159,7 @@ const closeModal = () => {
     }
 };
 
-//배경 클릭 시 모달창 닫기
+//배경 클릭 시 모달창 [닫기]
 window.addEventListener("click", event => {
     const isModal = event.target.closest("div.payment-container");
 
@@ -166,9 +167,70 @@ window.addEventListener("click", event => {
         if (confirm("결제가 중지 됩니다. 정말 닫으시겠습니까?")) closeModal();
 });
 
-//결제창 버튼 //order 페이지로 장바구니 세션 넘기기
-paymentBtn.onclick = event => {
-    if (!confirm("결제 하시겠습니까?")) event.preventDefault(); //취소하면 preventDefault();
+//결제창 버튼
+paymentBtn.onclick = () => {
+    // 결제 검증
+    //imp 초기화 하고
+    IMP.init("imp76108135");
+
+    //PG 사를 위해 적는 것들..
+    const merchantUid = "ORD_" + UUID.randomUUID().toString();
+    console.log("merchantUid: " + merchantUid);
+    const paymentForm = document.querySelector(".payment-container > form");
+    const productListLength = document.querySelector(".product").length;
+    const firstProductName = document.querySelector(".product-name").textContent;
+    const orderName = productListLength > 1 ? `${firstProductName} 외 ${productListLength - 1}건` : firstProductName;
+    const buyerName = paymentForm.querySelector(".real-name").value;
+    const buyerPostcode = paymentForm.querySelector(".postcode").value;
+    const roadAddress = paymentForm.querySelector(".road-address").value;
+    const detailAddress = paymentForm.querySelector(".detail-address").value;
+    const buyerAddress = roadAddress.value + detailAddress.value;
+    const telPrev = paymentForm.querySelector(".payment-tel-prev").value;
+    const telBody = paymentForm.querySelector(".payment-tel-body").value;
+    const telTail = paymentForm.querySelector(".payment-tel-tail").value;
+    const buyerTel = telPrev.value + telBody.value + telTail.value;
+    const buyerEmail = paymentForm.querySelector(".email").value;
+    // const buyerRequest = paymentForm.querySelector(".request").value;
+    const price = parseInt(paymentForm.querySelector(".price").textContent);
+    const paymentMethod = paymentForm.querySelector("input[type=radio][name=payment]:checked").value;
+
+    IMP.request_pay(
+        {
+            channelKey: "channel-key-99dbb0dc-a2a3-4159-ad15-f7095f2fd7d4",
+            pay_method: paymentMethod,
+            merchant_uid: merchantUid,
+            name: orderName, //상품리스트 이름("첫번째상품이름...")
+            amount: price,
+            buyer_email: buyerEmail,
+            buyer_name: buyerName,
+            buyer_tel: buyerTel,
+            buyer_addr: buyerAddress,
+            buyer_postcode: buyerPostcode,
+        },
+        async (response) => {
+            if (response.error_code != null) return alert(`결제에 실패했습니다. 에러: ${response.error_msg}`);
+
+            const SERVER_BASE_URL = "http://localhost:8080"
+            const notified = await fetch(`${SERVER_BASE_URL}/payment/complete`, {
+                method: "post",
+                headers: {"Content-Type": "application/json"},
+                // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
+                body: JSON.stringify({
+                    imp_uid: response.imp_uid,
+                    merchant_uid: response.merchant_uid,
+                    pay_method: response.pay_method,
+                    name: response.name, //상품리스트 이름("첫번째상품이름...")
+                    amount: response.amount,
+                    buyer_email: response.buyer_email,
+                    buyer_name: response.buyer_name,
+                    buyer_tel: response.buyer_tel,
+                    buyer_addr: response.buyer_addr,
+                    buyer_postcode: response.buyer_postcode,
+                    // 주문 정보...
+                }),
+            });
+        },
+    ); //request_pay 끝
 }
 
 

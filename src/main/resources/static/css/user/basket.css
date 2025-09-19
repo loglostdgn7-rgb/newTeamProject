@@ -101,7 +101,7 @@
     }
 }
 
-.product > .product-text-box > .plus-minus-case > .product-amount {
+.product > .product-text-box > .plus-minus-case > .product-quantity {
     margin: 0 10px;
     font-size: var(--font-x-small);
 }

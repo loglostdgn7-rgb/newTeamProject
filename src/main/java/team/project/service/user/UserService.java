@@ -17,7 +17,7 @@ import java.util.*;
 @Service
 @PropertySource("file:../application.properties")
 public class UserService {
-    private Logger logger = LoggerFactory.getLogger(UserService.class);
+    Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserMapper userMapper;

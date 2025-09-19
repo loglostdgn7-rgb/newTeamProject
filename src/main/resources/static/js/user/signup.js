@@ -71,12 +71,12 @@ authenticationBtn.onclick = () => {
         {
             channelKey: "channel-key-bb87913f-7fa3-4f4d-a293-49776bfb989f"
         },
-        function (rsp) {
-            console.log("response: ", rsp);
-            if (rsp.success) {
+        function (response) {
+            console.log("response: ", response);
+            if (response.success) {
                 telPrev.disabled = true;
                 telBody.disabled = true;
-                authenticationKeyInput.value = rsp["imp_uid"];
+                authenticationKeyInput.value = response["imp_uid"];
                 authenticationBtn.textContent = "인증성공";
                 authenticationBtn.disabled = true;
                 authenticationCheckSpan.style.display = "none";

@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/user/basket.css}">
 </th:block>
 <th:block layout:fragment="js">
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <script th:src="@{/js/user/basket.js}" defer></script>
 </th:block>
 
@@ -35,12 +36,12 @@
                         </a>
                         <div class="product-text-box">
                             <a class="name-color-price" href="#">
-                                <span th:text="${item.product.name}">Hippo Bag · 히포백 / 실버</span>
+                                <span th:text="${item.product.name}" class="product-name">Hippo Bag · 히포백 / 실버</span>
                                 <span th:text="|￦${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')}|">￦71,000</span>
                             </a>
                             <span class="plus-minus-case">
                                 <i class="bi bi-dash"></i>
-                                <span class="product-amount" th:text="${item.getQuantity}">1</span>
+                                <span class="product-quantity" th:text="${item.getQuantity}">1</span>
                                 <i class="bi bi-plus"></i>
                             </span>
                         </div>
@@ -70,6 +71,8 @@
         </div>
     </section>
 
+
+
 <!-- ********************** 결제 모달창 ***********************-->
     <section class="payment-background">
         <div class="payment-container" >
@@ -83,14 +86,14 @@
                 </div>
                 <label>
                     <span>받으시는 분</span>
-                    <input type="text" name="real-name" th:value="${user} ? ${user.realName} : ''">
+                    <input type="text" class="real-name" name="real-name" th:value="${user} ? ${user.realName} : ''">
                 </label>
                 <label class="payment-address-box">
                     <span>주소</span>
                     <label>
                         <input type="text" class="postcode" name="postcode" th:value="${user} ? ${user.postcode} : ''" placeholder="우편번호">
-                        <input type="text" class="address" name="roadAddress" th:value="${user} ? ${user.roadAddress} : ''" placeholder="주소">
-                        <input type="text" class="detail-address" name="detailAddress" th:value="${user} ? ${user.detailAddress} : ''" placeholder="상세주소">
+                        <input type="text" class="road-address" name="road-address" th:value="${user} ? ${user.roadAddress} : ''" placeholder="주소">
+                        <input type="text" class="detail-address" name="detail-address" th:value="${user} ? ${user.detailAddress} : ''" placeholder="상세주소">
                     </label>
                 </label>
                 <label class="payment-tel-box">
@@ -114,34 +117,35 @@
                 </label>
                 <label>
                     <span>이메일</span>
-                    <input type="text" name="email" th:value="${user} ? ${user.email} : ''">
+                    <input type="text" class="email" name="email" th:value="${user} ? ${user.email} : ''">
                 </label>
                 <label>
                     <span>배송시 요청사항</span>
-                    <input type="text" name="request" placeholder="">
+                    <input type="text" class="request" name="request" placeholder="">
                 </label>
 
                 <h1>결제 방식</h1>
                 <label class="price">
                     <span>결제 금액</span>
-                    <input name="price" th:value="${orderTotalPrice}" readonly>
+                    <input name="price" class="price" th:value="${orderTotalPrice}" readonly>
                 </label>
                 <section>
                     <span>결제</span>
                     <div class="pay-box-container">
                         <label class="pay-box">
                             <label>
-                                <input type="radio" name="payment-method" value="mobile">
+<!--                                인풋의 value는 포트원 kg 이니시스에 맞춰야해서 이상해도 어쩔 수 없음-->
+                                <input type="radio" name="payment-method" value="phone">
                                 <span>휴대폰 결제</span>
                             </label>
                             <label>
-                                <input type="radio" name="payment-method" value="bank-transfer">
+                                <input type="radio" name="payment-method" value="" disabled>
                                 <span>무통장 입금</span>
                             </label>
                         </label>
                         <label class="pay-box">
                             <label>
-                                <input type="radio" name="payment-method" value="kakao-pay">
+                                <input type="radio" name="payment-method" value="kakaopay">
                                 <span>카카오페이(간편결제)</span>
                             </label>
                             <label>
@@ -151,17 +155,17 @@
                         </label>
                         <label class="pay-box">
                             <label>
-                                <input type="radio" name="payment-method" value="realtime-bank-transfer">
+                                <input type="radio" name="payment-method" value="trans">
                                 <span>실시간 계좌이체</span>
                             </label>
                             <label>
-                                <input type="radio" name="payment-method" value="virtual-account">
+                                <input type="radio" name="payment-method" value="vbank">
                                 <span>가상 계좌</span>
                             </label>
                         </label>
                     </div>
                 </section>
-                <button class="payment-button" type="submit">결제하기</button>
+                <button class="payment-button" type="button">결제하기</button>
             </form>
         </div>
     </section>

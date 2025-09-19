@@ -22,7 +22,7 @@ import java.util.*;
 @Service
 @PropertySource("file:../application.properties")
 public class UserMyPageService {
-    private Logger logger = LoggerFactory.getLogger(UserMyPageService.class);
+    Logger logger = LoggerFactory.getLogger(UserMyPageService.class);
 
     @Autowired
     private UserMapper userMapper;
