@@ -79,7 +79,7 @@
         <ul class="product-list-1">
             <li th:each="product : ${pagenation.elements}">
                 <div class="product-image">
-                    <a th:href="@{/shop/product/detail/{id}(id=${product.id})}">
+                    <a th:href="@{/shop/product/detail/{id}(id=${product.productId})}">
                         <img src="https://tse3.mm.bing.net/th/id/OIP.-Ex0t2-_3Zajz9EDlZtOGAHaEo?rs=1&pid=ImgDetMain&o=7&rm=3" alt="">
                     </a>
                 </div>
@@ -98,25 +98,19 @@
         </ul>
     </section>
 
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
+    <nav>
+        <ul>
+            <!--                    <li><a href="#"><</a></li>-->
+            <li th:each="index: ${#numbers.sequence(pagenation.page - pagenation.totalPageViewCount)}">
+                <a th:href="@{/shop/product/list(page=${index}, size=${pagenation.size})}" th:text="${index}" th:active="${pagenation.page == index}">1</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item"><a class="page-link" href="#">6</a></li>
-            <li class="page-item"><a class="page-link" href="#">7</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
+            <li>
+                <a th:href="@{/shop/product/list(page=${pagenation.page}, size=${pagenation.size})}" th:text="${pagenation.page}" th:active="true">1</a>
             </li>
+            <li th:each="index: ${#numbers.sequence(1, pagenation.totalPageViewCount)}">
+                <a th:href="@{/shop/product/list(page=${index}, size=${pagenation.size})}" th:text="${index}" th:active="${pagenation.page == index}">1</a>
+            </li>
+            <!--                    <li><a href="#">></a></li>-->
         </ul>
     </nav>
 

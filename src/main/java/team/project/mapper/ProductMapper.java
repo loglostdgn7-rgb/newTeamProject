@@ -6,6 +6,7 @@ import team.project.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Mapper
@@ -17,5 +18,6 @@ public interface ProductMapper {
     void insertProduct(ProductDTO product);
     ProductDTO selectProductIdDetail(Integer id);
 
-
+    List<Map<String, Object>> list (Map<String, Object> paramMap);
+    int countProducts();
 }

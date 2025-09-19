@@ -74,7 +74,7 @@ public class UserService {
     public ProductDTO getProductById(int productId) {
         // 실제 DB 없으니까 테스트용 더미 데이터
         ProductDTO product = new ProductDTO();
-        product.setId(productId);
+        product.setProductId(productId);
         product.setName("테스트 상품 " + productId);
         product.setPrice(1000 * productId); // 가격 예시
         product.setPromotion("할인 없음");
@@ -84,7 +84,7 @@ public class UserService {
     public void addBasket(List<BasketDTO> basket, int productId, int quantity) {
         // 이미 장바구니에 존재하는지 확인
         for (BasketDTO item : basket) {
-            if (item.getProduct().getId() == productId) {
+            if (item.getProduct().getProductId() == productId) {
                 // 기존 수량에 더하기
                 item.setQuantity(item.getQuantity() + quantity);
                 return;
@@ -105,13 +105,13 @@ public class UserService {
         ProductDTO product1 = new ProductDTO();
         product1.setName("Half Gold / premium Earring");
         product1.setPrice(20000);
-        product1.setId(1);
+        product1.setProductId(1);
         list.add(new BasketDTO(product1, 1));
 
         ProductDTO product2 = new ProductDTO();
         product2.setName("Mc.shoes / Special.E.");
         product2.setPrice(30000);
-        product2.setId(2);
+        product2.setProductId(2);
         list.add(new BasketDTO(product2, 1));
 
         return list;
@@ -147,7 +147,7 @@ public class UserService {
         if (quantity < 1) return;
 
         for (BasketDTO item : basket) {
-            if (item.getProduct().getId() == productId) {
+            if (item.getProduct().getProductId() == productId) {
                 item.setQuantity(quantity);
                 break;
             }

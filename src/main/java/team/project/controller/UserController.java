@@ -237,7 +237,7 @@ public class UserController {
 
         // 이미 담긴 상품인지 확인
         Optional<BasketDTO> existing = basket.stream()
-                .filter(item -> item.getProduct().getId() == productId)
+                .filter(item -> item.getProduct().getProductId() == productId)
                 .findFirst();
 
         if (existing.isPresent()) {
@@ -313,7 +313,7 @@ public class UserController {
 
         List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
         if (basket != null) {
-            basket.removeIf(item -> item.getProduct().getId() == productId);
+            basket.removeIf(item -> item.getProduct().getProductId() == productId);
             session.setAttribute("basket", basket);
         }
 

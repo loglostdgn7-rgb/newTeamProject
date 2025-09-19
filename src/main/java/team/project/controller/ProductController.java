@@ -18,7 +18,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/product/list")
-    public String get_list(
+    public void get_list(
             Model model,
             PagenationDTO pagenation
     ) {
@@ -26,8 +26,8 @@ public class ProductController {
         model.addAttribute("pagenation", pagenation);
 
         System.out.println("pagenation: " + pagenation);
-        return "shop/product/list";
     }
+
 
     @GetMapping("/product/detail/{id}")
     public String get_detail(
