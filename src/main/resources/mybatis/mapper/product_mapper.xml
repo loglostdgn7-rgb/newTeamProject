@@ -36,12 +36,18 @@
         SELECT * FROM product
     </select>
 
-    <select id="selectProductIdDetail" resultMap="productMap">
-        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};
-    </select>
+<!--    <select id="selectProductIdDetail" resultMap="productMap">-->
+<!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
+<!--    </select>-->
+
+<select id="selectProductIdDetail" resultMap="productMap">
+    SELECT *
+    FROM product
+    WHERE product.product_id = #{id};
+</select>
 
     <insert id="insertProduct">
-        INSERT INTO product (id, name, price, promotion)
+        INSERT INTO product (product_id, name, price, promotion)
         VALUES (#{id}, #{name}, #{price}, #{promotion})
     </insert>
 
