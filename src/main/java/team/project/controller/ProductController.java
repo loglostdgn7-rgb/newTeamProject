@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import team.project.dto.PagenationDTO;
 import team.project.service.ProductService;
 
+import java.util.Base64;
+
 @Slf4j
 @Controller
 @RequestMapping("/shop")
@@ -18,7 +20,7 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/product/list")
-    public String get_list(
+    public void get_list(
             Model model,
             PagenationDTO pagenation
     ) {
@@ -26,8 +28,8 @@ public class ProductController {
         model.addAttribute("pagenation", pagenation);
 
         System.out.println("pagenation: " + pagenation);
-        return "shop/product/list";
     }
+
 
     @GetMapping("/product/detail/{id}")
     public String get_detail(
@@ -36,9 +38,19 @@ public class ProductController {
             @PathVariable("id") int id
     ){
         var productDetail = productService.get_id_product_detail(id);
+
+        // BLOB → Base64 변환
+        if (productDetail.getImageData() != null && productDetail.getImageData().length > 0) {
+            String base64Image = Base64.getEncoder().encodeToString(productDetail.getImageData());
+            model.addAttribute("base64Image", base64Image);
+        }
+
         model.addAttribute("productDetail", productDetail);
         return "shop/product/detail";
     }
+
+
+
 
 
 
