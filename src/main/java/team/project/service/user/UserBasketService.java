@@ -33,17 +33,20 @@ public class UserBasketService {
         } else {
             newBasketList.add(newBasket);
         }
+
         return newBasketList;
     }
 
     //장바구니 /가격 계산
     public Map<String, String> calculate_basket_product_price(List<BasketDTO> basket) {
         int productTotalPrice = 0;
-        //상품 가격 총합
-        for (BasketDTO item : basket) {
-            productTotalPrice += item.getProduct().getPrice() * item.getQuantity();
-        }
 
+        if (basket !=null) {
+            for (BasketDTO item : basket) {
+                //상품 가격 총합
+                productTotalPrice += item.getProduct().getPrice() * item.getQuantity();
+            }
+        }
         //배송 가격
         int shippingPrice = 3000;
         if (productTotalPrice == 0) shippingPrice = 0;
@@ -57,24 +60,10 @@ public class UserBasketService {
         prices.put("productTotalPrice", currency.format(productTotalPrice));
         prices.put("shippingPrice", currency.format(shippingPrice));
         prices.put("orderTotalPrice", currency.format(orderTotalPrice));
-        //리턴하기
+
         return prices;
     }
 
-    //장바구니 / 상품 업데이트
-    public void update_basket_quantity_product(
-            List<BasketDTO> basket,
-            int productId,
-            int quantity
-    ) {
-        if (quantity < 1) return;
 
-        for (BasketDTO item : basket) {
-            if (item.getProduct().getId() == productId) {
-                item.setQuantity(quantity);
-                break;
-            }
-        }
-    }
 
 }

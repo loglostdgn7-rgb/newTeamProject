@@ -1,5 +1,7 @@
 package team.project.controller.user;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,8 @@ public class UserBasketController {
     private UserService userService;
     @Autowired
     private ProductMapper productMapper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     // 장바구니 담기 + 업데이트
     @PostMapping("/basket/update")
@@ -38,73 +42,60 @@ public class UserBasketController {
         if (basket == null) basket = new ArrayList<>();
 
         int productId = newBasket.getProduct().getId();
+
         ProductDTO product = productMapper.selectProductIdDetail(productId);
 
         if (product == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("상품을 찾을 수 없습니다");
 
         BasketDTO completedBasket = new BasketDTO(product, newBasket.getQuantity(), newBasket.getUpdateType());
-
         basket = userBasketService.update_basket(basket, completedBasket);
 
         session.setAttribute("basket", basket);
+
         return ResponseEntity.ok("상품이 장바구니에 담겼습니다.");
     }
 
 
-    //장바구니 /서머리
+    //장바구니 가격 서머리
     @ResponseBody
     @GetMapping("/basket/summary")
-    public ResponseEntity<Map<String, String>> get_basket_summary(HttpSession session) {
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
+    public ResponseEntity<String> get_basket_summary(
+            @SessionAttribute(value = "basket", required = false) List<BasketDTO> basket
+    ) throws JsonProcessingException {
 
-        Map<String, String> currencyFormattedPrices = userBasketService.calculate_basket_product_price(basket);
+        Map<String, String> priceMap = userBasketService.calculate_basket_product_price(basket);
+        String jsonPrice = objectMapper.writeValueAsString(priceMap);
 
-        if (basket == null || basket.isEmpty()) {
-            Map<String, String> noPrices = new HashMap<>();
-            noPrices.put("productTotalPrice", currencyFormattedPrices.get("productTotalPrice"));
-            noPrices.put("shippingPrice", currencyFormattedPrices.get("shippingPrice"));
-            noPrices.put("orderTotalPrice", currencyFormattedPrices.get("orderTotalPrice"));
-            return ResponseEntity.ok(noPrices);
-        }
-
-        return ResponseEntity.ok(currencyFormattedPrices);
+        return ResponseEntity.ok(jsonPrice);
     }
 
     //장바구니 get
     @GetMapping("/basket")
     public String get_basket(
+            @SessionAttribute(name = "basket", required = false) List<BasketDTO> basket,
             @AuthenticationPrincipal UserDTO principal,
-            HttpSession session,
             Model model
     ) {
         //로그인한 유저가 있으면
         if (principal != null) {
-            UserDTO userForBasket = userService.get_user_by_Id(principal.getId());
+            UserDTO user = userService.get_user_by_Id(principal.getId());
 
-            model.addAttribute("user", userForBasket);
+            model.addAttribute("user", user);
         }
 
-        //세션을 리스트로 가져오고
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-        //세션이 없으면,
         if (basket == null || basket.isEmpty()) {
-            // 임시 basket 리스트 가져오기 or,
-//            basket = userBasketService.create_test_list();
-//            session.setAttribute("basket", basket);
-
-            //빈 리스트를 하나 만들어준다 //위 임시 리스트를 사용할시에는 주석처리 해줘야 함
             basket = new ArrayList<>();
         }
 
         //서비스 가격 가져오고
-        Map<String, String> currencyFormattedPrices = userBasketService.calculate_basket_product_price(basket);
+        Map<String, String> currencyFormattedPrice = userBasketService.calculate_basket_product_price(basket);
 
         //상품 리스트 모델 걸기
         model.addAttribute("list", basket);
         //주문 가격들 모델에 걸기
-        model.addAttribute("productTotalPrice", currencyFormattedPrices.get("productTotalPrice"));
-        model.addAttribute("shippingPrice", currencyFormattedPrices.get("shippingPrice"));
-        model.addAttribute("orderTotalPrice", currencyFormattedPrices.get("orderTotalPrice"));
+        model.addAttribute("productTotalPrice", currencyFormattedPrice.get("productTotalPrice"));
+        model.addAttribute("shippingPrice", currencyFormattedPrice.get("shippingPrice"));
+        model.addAttribute("orderTotalPrice", currencyFormattedPrice.get("orderTotalPrice"));
 
         return "user/basket";
     }
@@ -114,16 +105,15 @@ public class UserBasketController {
     @ResponseBody
     @DeleteMapping("/basket/delete/{productId}")
     public ResponseEntity<String> delete_basket_product(
+            @SessionAttribute(name = "basket", required = false) List<BasketDTO> basket,
             @PathVariable int productId,
             HttpSession session
     ) {
-        List<BasketDTO> basket = (List<BasketDTO>) session.getAttribute("basket");
-
         if (basket != null) {
             basket.removeIf(item -> item.getProduct().getId() == productId);
             session.setAttribute("basket", basket);
         }
 
-        return ResponseEntity.ok("basket product deleted");
+        return ResponseEntity.ok("장바구니 상품 삭제 완료");
     }
 }
