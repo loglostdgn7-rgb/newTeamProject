@@ -90,12 +90,13 @@
                     <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
                         <div class="product-image">
                             <!-- DB 이미지 있으면 출력 -->
-                            <img th:if="${base64Image != null}"
-                                 th:src="'data:image/jpeg;base64,' + ${base64Image}"
+                            <!-- ✨ 여기를 이렇게 바꿔줘! product.base64ImageData 사용 ✨ -->
+                            <img th:if="${product.base64ImageData != null}"
+                                 th:src="'data:image/jpeg;base64,' + ${product.base64ImageData}"
                                  alt="Product Image"/>
 
                             <!-- DB 이미지 없으면 기본 이미지 -->
-                            <img th:if="${base64Image == null}"
+                            <img th:unless="${product.base64ImageData != null}"
                                  src="/images/no-image.png"
                                  alt="No Image"/>
                         </div>
