@@ -61,6 +61,7 @@ public class UserMyPageService {
             item.setOrderId(generatedOrderId);
             userMapper.insertOrderDetail(item);
         }
+        logger.info("장바구니 추가 완료: {}", order.getOrderId());
     }
 
     //주문내역 리스트

@@ -36,11 +36,6 @@ public class UserMyPageController {
             @RequestBody OrderDTO order,
             @AuthenticationPrincipal UserDTO principal
     ) {
-        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-        // 바로 이 부분입니다! 서버에 도착한 데이터의 상태를 출력해봅니다.
-        // Lombok의 @ToString을 DTO에 붙여두면 내용이 예쁘게 나옵니다.
-        logger.info("서버가 받은 OrderDTO: {}", order.toString());
-        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
         userMyPageService.save_order(order, principal);
 
         return ResponseEntity.ok("주문이 성공적으로 완료 되었습니다.");
