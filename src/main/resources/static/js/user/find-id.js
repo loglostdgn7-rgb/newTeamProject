@@ -76,7 +76,6 @@ findIdForm.onsubmit = event => {
             if (response.ok) {
                 return response.json();
             } else {
-                alert("아이디 찾기에 실패 했습니다. 다시 시도해 주세요");
                 throw Error("서버 응답 에러");
             }
         })

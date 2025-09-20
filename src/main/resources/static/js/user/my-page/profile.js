@@ -162,7 +162,6 @@ unlinkBtns.forEach(btn => {
                         alert("연동이 해제 되었습니다.");
                         location.reload();
                     } else {
-                        alert("연동 해제에 실패하였습니다. 다시 시도해 주세요");
                         throw Error("서버 응담 에러");
                     }
                 })

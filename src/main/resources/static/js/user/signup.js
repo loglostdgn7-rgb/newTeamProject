@@ -45,11 +45,11 @@ checkIdDuplicated.onclick = () => {
         })
         .then(value => {
             if (value) {
-                alert("이미 사용중인 아이디 입니다");
                 isDuplicated = true;// 중복이다
+                alert("이미 사용중인 아이디 입니다");
             } else {
-                alert("사용 가능한 아이디 입니다");
                 isDuplicated = false //중복 아니다
+                alert("사용 가능한 아이디 입니다");
             }
         })
         .catch(error => {

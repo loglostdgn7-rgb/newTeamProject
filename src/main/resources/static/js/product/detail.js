@@ -36,45 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    /********** 아래 [구매하기/장바구니 기능]을 [김영수]님이 수정(9/19) ****************/
-    const CartBtn = document.getElementById("addToCartBtn");
+    /********** 아래 [구매하기/장바구니 기능]을 [김영수]님이 최신 수정(9/20) ****************/
     const buyBtn = document.getElementById("buyBtn");
-    // function getCookie(name) {
-    //     const value = `; ${document.cookie}`;
-    //     const parts = value.split(`; ${name}=`);
-    //     if (parts.length === 2) return parts.pop().split(';').shift();
-    //     return null;
-    // }
-    //
-    // function addToCart(title, quantity) {
-    //     let cart = getCookie('cart');
-    //     if (cart) cart = JSON.parse(cart);
-    //     else cart = [];
-    //
-    //     let exists = false;
-    //     cart.forEach((item) => {
-    //         if (item.title === title) {
-    //             item.quantity += parseInt(quantity);
-    //             exists = true;
-    //         }
-    //     });
-    //
-    //     if (!exists) {
-    //         cart.push({ title, quantity: parseInt(quantity) });
-    //     }
-    //
-    //     document.cookie = `cart=${JSON.stringify(cart)}; path=/; max-age=${60*60*24}`;
-    // }
+    const basketBtn = document.getElementById("addToCartBtn");
 
     //장바구니 추가
     const addBasket = () => {
         const productId = parseInt(document.getElementById("productId").value);
-        // const product_quantity = parseInt(document.getElementsByClassName("quantity")[0].querySelector("input").value);
         const product_quantity = parseInt(quantityInput.value);
-        // const product_title = document.getElementsByClassName("product-title")[0].innerText;
-        // addToCart(product_title, product_quantity);
-        // console.log(document.cookie);
-
         const token = document.querySelector("meta[name='_csrf']").content;
         const header = document.querySelector("meta[name='_csrf_header']").content;
 
@@ -103,16 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => {
                 if (response.ok) return response.text();
                 else {
-                    alert("서버 응답 중 에러가 났습니다. 다시 시도해주세요");
                     throw Error("서버 응답 에러");
                 }
             })
             .then(data => {
                 console.log("장바구니 추가: " + data);
-                alert("장바구니에 추가되었습니다");
-                if (confirm("장바구니로 이동하시겠습니까?")) {
-                    location.href = "/user/basket";
-                }
+
             })
             .catch(error => {
                 console.error("장바구니 추가중 에러 발생: " + error);
@@ -120,11 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     };
 
-    buyBtn.onclick = addBasket;
-    CartBtn.onclick = addBasket;
-
-
-
+    basketBtn.onclick = addBasket;
+    buyBtn.onclick = () => {
+        addBasket();
+        alert("장바구니에 추가되었습니다");
+        if (confirm("장바구니로 이동하시겠습니까?")) {
+            location.href = "/user/basket";
+        }
+    }
 
 
 });

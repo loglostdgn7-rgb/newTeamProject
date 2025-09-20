@@ -1,7 +1,6 @@
 package team.project.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,12 @@ public class UserMyPageController {
             @RequestBody OrderDTO order,
             @AuthenticationPrincipal UserDTO principal
     ) {
-        userMyPageService.record_order(order, principal);
+        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        // 바로 이 부분입니다! 서버에 도착한 데이터의 상태를 출력해봅니다.
+        // Lombok의 @ToString을 DTO에 붙여두면 내용이 예쁘게 나옵니다.
+        logger.info("서버가 받은 OrderDTO: {}", order.toString());
+        // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+        userMyPageService.save_order(order, principal);
 
         return ResponseEntity.ok("주문이 성공적으로 완료 되었습니다.");
     }
@@ -48,18 +52,25 @@ public class UserMyPageController {
             @AuthenticationPrincipal UserDTO principal,
             Model model
     ) {
-        List<OrderDTO> orderList = userMyPageService.find_orders_by_id(principal.getId());
+        List<OrderDTO> orderList = userMyPageService.find_orders_by_user_id(principal.getId());
 
         model.addAttribute("orderList", orderList);
 
         return "user/my-page/order";
     }
 
-    @PostMapping("/my-page/order/{orderId}")
-    public void post_order_id(
-
+    //order detail 개별(row) 주문 내역 보기
+    @GetMapping("/my-page/order/{orderId}")
+    public String get_order_items(
+            @PathVariable("orderId") int orderId,
+            @AuthenticationPrincipal UserDTO principal,
+            Model model
     ) {
-        //여긴 결제 폼 내용(이름,주소등등 개인정보)받아와서 주문 "상세"에 들어가면 보이도록하고싶음
+        OrderDTO order = userMyPageService.find_order_by_id_and_user_id(orderId, principal.getId());
+
+        model.addAttribute("order", order);
+
+        return "user/my-page/order-detail";
     }
 
 
