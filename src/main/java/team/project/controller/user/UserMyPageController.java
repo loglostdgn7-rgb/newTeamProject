@@ -48,9 +48,11 @@ public class UserMyPageController {
             @AuthenticationPrincipal UserDTO principal,
             Model model
     ) {
-        List<OrderDTO> orderList = userMyPageService.find_orders_by_id(principal.getId());
+        //todo:미완성
+//        List<OrderDTO> orderList = userMyPageService.find_orders_by_id(principal.getId());
 
-        model.addAttribute("orderList", orderList);
+        //todo:미완성
+//        model.addAttribute("orderList", orderList);
 
         return "user/my-page/order";
     }
