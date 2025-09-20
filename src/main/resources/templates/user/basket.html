@@ -37,7 +37,7 @@
                         <div class="product-text-box">
                             <a class="name-color-price" href="#">
                                 <span th:text="${item.product.name}" class="product-name">Hippo Bag · 히포백 / 실버</span>
-                                <span th:text="|￦${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')}|">￦71,000</span>
+                                <span th:text="|￦${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')}|" th:data-product-price="${item.product.getPrice()}">￦71,000</span>
                             </a>
                             <span class="plus-minus-case">
                                 <i class="bi bi-dash"></i>
@@ -126,7 +126,7 @@
                 <h1>결제 방식</h1>
                 <label class="price">
                     <span>결제 금액</span>
-                    <input name="price" class="order-total-price" th:value="${orderTotalPrice}" readonly>
+                    <input name="price" class="order-total-price" readonly>
                 </label>
                 <section>
                     <span>결제</span>

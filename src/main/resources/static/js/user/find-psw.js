@@ -87,7 +87,6 @@ findPswForm.addEventListener("submit", function (event) {
             if (response.ok) {
                 return response.json();
             } else {
-                alert("비밀번호 찾기 실패. 다시 시도해 주세요");
                 throw Error("서버 응답 에러");
             }
         })

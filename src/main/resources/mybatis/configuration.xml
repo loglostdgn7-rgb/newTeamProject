@@ -12,7 +12,10 @@
     <typeAliases>
         <typeAlias type="team.project.dto.UserDTO" alias="UserDTO" />
         <typeAlias type="team.project.dto.SnsUserDTO" alias="SnsUserDTO" />
-        <typeAlias type="team.project.dto.ProductDTO" alias="ProductDTO"/>
-        <typeAlias type="team.project.dto.PagenationDTO" alias="PagenationDTO"></typeAlias>
+        <typeAlias type="team.project.dto.ProductDTO" alias="ProductDTO" />
+        <typeAlias type="team.project.dto.PagenationDTO" alias="PagenationDTO" />
+        <typeAlias type="team.project.dto.OrderDTO" alias="OrderDTO" />
+        <typeAlias type="team.project.dto.OrderDetailDTO" alias="OrderDetailDTO" />
+
     </typeAliases>
 </configuration>

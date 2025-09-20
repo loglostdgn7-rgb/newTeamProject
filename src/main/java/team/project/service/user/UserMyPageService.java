@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import team.project.dto.*;
 import team.project.mapper.UserMapper;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -47,42 +47,39 @@ public class UserMyPageService {
 
 
     //post 주문 내역
-    public void record_order(
-            OrderDTO order,
-            @AuthenticationPrincipal UserDTO principal
-    ) {
-        order.setCreatedAt(LocalDateTime.now());
+    @Transactional //복합적인 삽입/수정에 사용
+    public void save_order(OrderDTO order, UserDTO principal) {
         order.setUserId(principal.getId());
 
         userMapper.insertOrder(order);
 
-        for (OrderDetailDTO product : order.getProductList()){
-            product.setOrderId(order.getOrderId());
-            //todo:미완성
-//            userMapper.insertOrderProduct(product);
+        // 방금 생성된 orderId 가져오기 (useGeneratedKeys 덕분에 가능)
+        int generatedOrderId = order.getOrderId();
+
+        // 각 주문 상품(OrderDetail 테이블)에 orderId를 채워서 저장
+        for (OrderDetailDTO item : order.getOrderDetails()) {
+            item.setOrderId(generatedOrderId);
+            userMapper.insertOrderDetail(item);
         }
+        logger.info("장바구니 추가 완료: {}", order.getOrderId());
     }
 
     //주문내역 리스트
-    public List<OrderDTO> get_order_list_by_user_id(
-            @AuthenticationPrincipal UserDTO principal
-    ) {
-        //todo:미완성
-//        return userMapper.findOrderListByUserId(principal.getId());
-        return null;
+    public List<OrderDTO> find_orders_by_user_id(String userId) {
+        return userMapper.selectOrdersByUserId(userId);
     }
 
-    //개별 주문 내역
-    public OrderDTO get_order_by_order_id_and_user_id(
-            OrderDTO order,
-            @AuthenticationPrincipal UserDTO principal
+    //개별(row) 주문 내역
+    public OrderDTO find_order_by_id_and_user_id(
+            int orderId,
+            String userId
     ) {
-        //todo:미완성
-
-        return null;
+        OrderDTO order = userMapper.selectOrderByIdAndUserId(orderId, userId);
+        if (order == null) {
+            throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
+        }
+        return order;
     }
-
-
 
 
     /*********************************************/

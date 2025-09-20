@@ -1,29 +1,39 @@
 package team.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class OrderDTO {
-    private Integer orderId;
-    private String userId;
+    private Integer orderId; //id pk
+    private String userId; //fk
+    @JsonProperty("imp_uid")
     private String impUid;
+    @JsonProperty("merchant_uid")
     private String merchantUid;
-    private String payMethod;
+    @JsonProperty("order_name")
     private String orderName; //상품리스트 이름("첫번째상품이름...")
+    @JsonProperty("order_price")
     private Integer orderPrice;
-    private String buyerEmail;
+    @JsonProperty("buyer_name")
     private String buyerName;
-    private Integer buyerTel;
+    @JsonProperty("buyer_addr")
     private String buyerAddr;
-    private Integer buyerPostcode;
-    private String buyer_request;
-    private LocalDateTime createdAt;
-    private List<OrderDetailDTO> productList;
+    @JsonProperty("buyer_tel")
+    private String buyerTel;
+    @JsonProperty("buyer_request")
+    private String buyerRequest;
+    @JsonProperty("order_details")
+    private List<OrderDetailDTO> orderDetails =  new ArrayList<>();
+    private LocalDateTime orderDate;
 }

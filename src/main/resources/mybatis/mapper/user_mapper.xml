@@ -14,15 +14,13 @@
         </collection>
     </resultMap>
 
-
     <select id="selectUserById" resultType="UserDTO" resultMap="selectUserWithSnsMap">
         SELECT *
         FROM user
                  LEFT OUTER JOIN sns_user
-                 ON user.id = sns_user.user_id
+                                 ON user.id = sns_user.user_id
         WHERE id = #{id}
     </select>
-
 
     <select id="selectUserBySnsId" resultMap="selectUserWithSnsMap">
         SELECT *
@@ -40,42 +38,67 @@
         WHERE tel = #{tel}
     </select>
 
-<!--    장바구니 / 상품 정보-->
-    <select id="selectProductById" resultType="ProductDTO">
+    <!--    주문내역-->
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO orders (order_id, user_id, imp_uid, merchant_uid, order_name, order_price, order_date, buyer_name, buyer_addr, buyer_tel)
+        VALUES (#{orderId}, #{userId}, #{impUid}, #{merchantUid}, #{orderName}, #{orderPrice}, null, #{buyerName},
+                #{buyerAddr}, #{buyerTel})
+    </insert>
+
+    <insert id="insertOrderDetail">
+        INSERT INTO order_detail (order_detail_id, order_id, product_id, quantity, order_price)
+        VALUES (#{orderDetailId}, #{orderId}, #{productId}, #{quantity}, #{orderPrice})
+    </insert>
+
+    <resultMap id="orderWithDetailMap" type="OrderDTO" autoMapping="true">
+        <id property="orderId" column="order_id" />
+        <collection property="orderDetails" ofType="OrderDetailDTO" autoMapping="true">
+            <id property="orderDetailId" column="order_detail_id"/>
+        </collection>
+    </resultMap>
+    
+    <select id="selectOrdersByUserId" >
         SELECT *
-        FROM product
-        WHERE id = #{id}
+        FROM orders
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectOrderByIdAndUserId" >
+        SELECT *
+        FROM orders
+        WHERE user_id = #{userId}
+          AND order_id = #{orderId}
+    </select>
+
+    <select id="selectOrderDetailByOrderId" resultType="OrderDetailDTO">
+        SELECT *, order_detail_id as orderDetailId, product.name
+        FROM order_detail
+                 JOIN product on order_detail.product_id = product.product_id
+        WHERE order_detail.order_id = #{orderId}
     </select>
 
 
-    <!--   /////// 유저 삽입 //////////////////////  -->
+    <!--    장바구니 / 상품 정보-->
+    <select id="selectProductById" resultType="ProductDTO">
+        SELECT *
+        FROM product
+        WHERE product_id = #{productId}
+    </select>
+
+
+    <!--   /////// 유저 삽입 ///////  -->
     <insert id="insertUser">
         INSERT INTO user (id, password, name, postcode, road_address, detail_address, tel, email, nickname)
         VALUES (#{id}, #{password}, #{name}, #{postcode}, #{roadAddress}, #{detailAddress}, #{tel}, #{email},
                 #{nickname})
     </insert>
 
+    <!--   /////// sns 연동 삽입 ///////  -->
     <insert id="insertSnsUser">
         INSERT INTO sns_user(user_id, sns_id, client_name)
         VALUES (#{userId}, #{snsId}, #{clientName})
     </insert>
 
-
-    <!--//////////유저 업데이트 ////////////////////-->
-    <update id="updatePassword">
-        UPDATE user
-        SET password = #{encodedPassword}
-        WHERE id = #{userId}
-    </update>
-
-    <!--/////// 주문 내역 삽입 ///////-->
-    <insert id="insertOrder">
-
-    </insert>
-
-    <insert id="insertProduct">
-
-    </insert>
 
     <!--////// 프로필 업데이트 //////-->
     <update id="updateProfile">
@@ -90,6 +113,13 @@
 ### 비밀번호 업데이트는 별도로 해주고 있다
     </update>
 
+    <!--//////// 유저 비번 업데이트 ///////-->
+    <update id="updatePassword">
+        UPDATE user
+        SET password = #{encodedPassword}
+        WHERE id = #{userId}
+    </update>
+
     <!-- ///////////// 유저 삭제 /////////////-->
     <delete id="deleteUserById">
         DELETE
@@ -97,10 +127,12 @@
         WHERE id = #{id}
     </delete>
 
+    <!-- ///////////// sns 연동 삭제 /////////////-->
     <delete id="deleteSnsUser">
         DELETE
         FROM sns_user
-        WHERE user_id = #{userId} AND client_name = #{clientName}
+        WHERE user_id = #{userId}
+          AND client_name = #{clientName}
     </delete>
 
 </mapper>

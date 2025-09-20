@@ -17,7 +17,6 @@ const update_basket_summary = () => {
             if (response.ok) {
                 return response.json();
             } else {
-                alert("가경 정보 로딩 실패. 다시 시도해 주세요");
                 throw Error("가격 정보 로딩 실패");
             }
         })
@@ -88,13 +87,12 @@ plus_minus_Btns.forEach(iTag => {
                         quantitySpan.textContent = newQuantity;
                         update_basket_summary();
                     } else {
-                        alert("장바구니 담기에 실패하였습니다. 다시 시도해 주세요");
                         throw Error("서버 응답 실패");
                     }
                 })
                 .catch(error => {
-                    console.error("수량 업데이트 중 실패: " + error);
-                    alert("수량 업데이트에 에러가 발생했습니다. 다시 시도해 주세요");
+                    console.error("장바구니 담기/수량 업데이트 중 실패: " + error);
+                    alert("장바구니 담기/수량 업데이트에 에러가 발생했습니다. 다시 시도해 주세요");
                 });
         }
     }
@@ -126,7 +124,6 @@ removeBtns.forEach(aTag => {
                     }, 300)
                     basket_product_sort_count();
                 } else {
-                    alert("서버 응담실패. 다시 시도해 주세요");
                     throw Error("서버 응답 실패");
                 }
             })
@@ -145,11 +142,17 @@ const paymentContainer = paymentBackground.querySelector(".payment-container");
 let openModalBackground = null;
 const paymentBtn = paymentContainer.querySelector(".payment-button");
 const productList = document.querySelectorAll(".product"); //select All
+const paymentForm = document.querySelector(".payment-container > form");
 
 //체크아웃을 누르면 주문(order), 결제창 뜨기
 checkoutBtn.onclick = () => {
+    const refreshProductLi = document.querySelectorAll(".product");
+
     //상품 없으면 체크아웃 방지
-    if (productList.length === 0) return alert("장바구니에 상품이 없습니다");
+    if (refreshProductLi.length === 0) return alert("장바구니에 상품이 없습니다");
+
+    const refreshOrderTotal = document.querySelector(".order-total").textContent;
+    paymentForm.querySelector(".order-total-price").value = refreshOrderTotal;
 
     paymentBackground.style.display = "block";
     openModalBackground = paymentBackground; //지금 나타난 것은 paymentBackground
@@ -166,21 +169,19 @@ const closeModal = () => {
 //배경 클릭 시 모달창 [닫기]
 window.addEventListener("click", event => {
     const isModal = event.target.closest("div.payment-container");
-
-    if (event.target === paymentBackground && !isModal)
-        if (confirm("결제가 중지 됩니다. 정말 닫으시겠습니까?")) closeModal();
+    //그냥 누르면 닫기. 어차피 결제창 따로 있다.
+    if (event.target === paymentBackground && !isModal) closeModal();
 });
 
 //결제창 버튼
-//이게 다 끝나고 나면 form의 내용들을 order로 보내기...하려고했는데 fetch가 나으려나 ㅠ
 paymentBtn.onclick = () => {
+    const refreshProductLi = document.querySelectorAll(".product");
     //imp 초기화 하고
     IMP.init("imp76108135");
 
     const merchantUid = "ORD_" + crypto.randomUUID();
-    const paymentForm = document.querySelector(".payment-container > form");
-    const firstProductName = productList[0].querySelector(".product-name").textContent;
-    const orderName = productList > 1 ? `${firstProductName} 외 ${productList - 1}건` : firstProductName;
+    const firstProductName = refreshProductLi[0].querySelector(".product-name").textContent;
+    const orderName = refreshProductLi.length > 1 ? `${firstProductName} 외 ${refreshProductLi.length - 1}건` : firstProductName;
     const buyerName = paymentForm.querySelector(".real-name").value;
     const buyerPostcode = paymentForm.querySelector(".postcode").value;
     const roadAddress = paymentForm.querySelector(".road-address").value;
@@ -193,7 +194,8 @@ paymentBtn.onclick = () => {
     const buyerEmail = paymentForm.querySelector(".email").value;
     const buyerRequest = paymentForm.querySelector(".request").value;
     const priceString = paymentForm.querySelector(".order-total-price").value;
-    console.log("price:", priceString)
+    const amount = priceString.replace(/[^0-9]/g, ""); //정규식 써서 숫자 외 모두 제거
+    console.log("price:", amount)
     //체크된 결제 방식이 있느냐?
     const isCheckedPaymentMethod = paymentForm.querySelector("input[type=radio][name=payment-method]:checked");
 
@@ -208,7 +210,7 @@ paymentBtn.onclick = () => {
             pay_method: paymentMethod,
             merchant_uid: merchantUid,
             name: orderName, //상품리스트 이름("첫번째상품이름...")
-            amount: priceString,
+            amount: amount,
             buyer_email: buyerEmail,
             buyer_name: buyerName,
             buyer_tel: buyerTel,
@@ -217,6 +219,34 @@ paymentBtn.onclick = () => {
         },
         async (response) => {
             if (response.success) {
+                //각 상품마다 표시해주기 -> 그리고 아래 dataForBody에 넣기..
+                const orderDetail = Array.from(refreshProductLi).map(productLi => {
+                    const priceSpan = productLi.querySelector("span[data-product-price]");
+                    const price = priceSpan.dataset.productPrice;
+                    return {
+                        product_id: productLi.dataset.productId,
+                        order_price: price,
+                        quantity: productLi.querySelector(".product-quantity").textContent,
+                    }
+                })
+
+                const dataForBody = {
+                    imp_uid: response.imp_uid,
+                    merchant_uid: merchantUid,
+                    pay_method: paymentMethod,
+                    order_name: orderName,
+                    order_price: amount, // 숫자만 추출한 amount 변수 사용
+                    buyer_email: buyerEmail,
+                    buyer_name: buyerName,
+                    buyer_tel: buyerTel,
+                    buyer_addr: buyerAddress,
+                    buyer_postcode: buyerPostcode,
+                    buyer_request: buyerRequest,
+                    order_details: orderDetail // orderDTO 필드명(orderDetails)에 맞춰 s 붙이기
+                };
+
+                console.log("서버로 보내는 데이터:", dataForBody); //확인용
+
                 await fetch(`/user/payment/complete`, {
                     method: "post",
                     headers: {
@@ -224,21 +254,8 @@ paymentBtn.onclick = () => {
                         [header]: token
                     },
                     // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
-                    body: JSON.stringify({
-                        imp_uid: response.imp_uid,
-                        merchant_uid: response.merchant_uid,
-                        pay_method: response.pay_method,
-                        name: response.name, //상품리스트 이름("첫번째상품이름...")
-                        amount: response.amount,
-                        buyer_email: response.buyer_email,
-                        buyer_name: response.buyer_name,
-                        buyer_tel: response.buyer_tel,
-                        buyer_addr: response.buyer_addr,
-                        buyer_postcode: response.buyer_postcode,
-                        buyer_request: response.buyer_request
-                    }),
+                    body: JSON.stringify(dataForBody),
                 });
-
             } //if문 끝
         },
     ); //request_pay 끝
