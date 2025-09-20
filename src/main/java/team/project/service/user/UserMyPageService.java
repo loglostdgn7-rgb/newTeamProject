@@ -58,7 +58,8 @@ public class UserMyPageService {
 
         for (OrderDetailDTO product : order.getProductList()){
             product.setOrderId(order.getOrderId());
-            userMapper.insertOrderProduct(product);
+            //todo:미완성
+//            userMapper.insertOrderProduct(product);
         }
     }
 
@@ -66,7 +67,9 @@ public class UserMyPageService {
     public List<OrderDTO> get_order_list_by_user_id(
             @AuthenticationPrincipal UserDTO principal
     ) {
-        return userMapper.findOrderListByUserId(principal.getId());
+        //todo:미완성
+//        return userMapper.findOrderListByUserId(principal.getId());
+        return null;
     }
 
     //개별 주문 내역
@@ -74,7 +77,9 @@ public class UserMyPageService {
             OrderDTO order,
             @AuthenticationPrincipal UserDTO principal
     ) {
+        //todo:미완성
 
+        return null;
     }
 
 
