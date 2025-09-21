@@ -133,7 +133,7 @@
     padding: 0 40px;
 }
 
-/*상품 콜럼*/
+/*주문 내역*/
 .order-section > .order-grid-container {
     display: grid;
     position: relative;
@@ -141,7 +141,16 @@
     /*border-bottom: 1px solid var(--gray-bright);*/
 }
 
+/*주문 내역이 없을 때*/
+.order-section > .order-grid-container .no-product {
+    display: none;
+    grid-column: 1/-1;
+    padding: 100px 0;
+    justify-content: center;
+    border-bottom: 1px solid #D1D1D1ED;
+}
 
+/*주문 내역이 있을 때*/
 .order-section > .order-grid-container > div {
     display: flex;
     align-items: center;
@@ -152,24 +161,22 @@
     border-bottom: 1px solid #D1D1D1ED;
 }
 
-.order-section > .order-grid-container > div a {
-    font-size: var(--font-x-small);
+.order-section > .order-grid-container > a.order-grid-contents {
+    display: contents;
 }
 
-.order-section > .order-grid-container .order-info {
-    justify-content: flex-start;
-}
-
-.order-section > .order-grid-container .order-info > img{
-    width: 50px;
-}
-.order-section > .order-grid-container .no-product {
-    display: none;
-    grid-column: 1/-1;
-    padding: 100px 0;
+.order-section > .order-grid-container > a.order-grid-contents> div{
+    display: flex;
+    align-items: center;
     justify-content: center;
     border-bottom: 1px solid #D1D1D1ED;
 }
+
+.order-section > .order-grid-container .order-info >  img {
+    width: 50px;
+}
+
+
 
 /*페이징*/
 .order-section > .order-paging-container {

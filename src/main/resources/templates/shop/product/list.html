@@ -21,128 +21,134 @@
 </head>
 <div layout:fragment="content">
 
-<main>
-    <div class="br"></div>
+    <main>
+        <div class="br"></div>
 
-    <!-- 정렬 섹션 -->
-    <section class="sort-section">
-        <div class="cat-carousel">
-            <div class="cat-nav" role="region" aria-label="카테고리 캐러셀">
-                <button class="cat-btn cat-prev" aria-label="이전">‹</button>
+        <!-- 정렬 섹션 -->
+        <section class="sort-section">
+            <div class="cat-carousel">
+                <div class="cat-nav" role="region" aria-label="카테고리 캐러셀">
+                    <button class="cat-btn cat-prev" aria-label="이전">‹</button>
 
-                <div class="cat-viewport">
-                    <div class="cat-track" id="catTrack" tabindex="0">
-                        <!-- 항목 하나 -->
-                        <div class="cat-item">
-                            <a id="All" class="cat-link" href="#" data-label="전체상품">
-                                <span class="cat-thumb"><img src="https://standoil.kr/web/upload/category/shop1_653_top_487768.jpg" alt=""></span>
-                                <span class="cat-label">전체상품</span>
-                            </a>
-                        </div>
+                    <div class="cat-viewport">
+                        <div class="cat-track" id="catTrack" tabindex="0">
+                            <!-- 항목 하나 -->
+                            <div class="cat-item">
+                                <a id="All" class="cat-link" href="#" data-label="전체상품">
+                                    <span class="cat-thumb"><img
+                                            src="https://standoil.kr/web/upload/category/shop1_653_top_487768.jpg"
+                                            alt=""></span>
+                                    <span class="cat-label">전체상품</span>
+                                </a>
+                            </div>
 
 
-                        <div class="cat-item">
-                            <a class="cat-link" href="#" data-label="신발">
-                                <span class="cat-thumb"><img src="https://standoil.kr/web/upload/category/shop1_360_top_202779.jpg" alt=""></span>
-                                <span class="cat-label">상의</span>
-                            </a>
-                        </div>
+                            <div class="cat-item">
+                                <a class="cat-link" href="#" data-label="신발">
+                                    <span class="cat-thumb"><img
+                                            src="https://standoil.kr/web/upload/category/shop1_360_top_202779.jpg"
+                                            alt=""></span>
+                                    <span class="cat-label">신발</span>
+                                </a>
+                            </div>
 
-                        <!-- 필요시 계속 추가 -->
-                        <div class="cat-item">
-                            <a class="cat-link" href="#" data-label="가방">
-                                <span class="cat-thumb"><img src="https://standoil.kr/web/upload/category/shop1_411_top_651291.jpg" alt=""></span>
-                                <span class="cat-label">하의</span>
-                            </a>
-                        </div>
+                            <!-- 필요시 계속 추가 -->
+                            <div class="cat-item">
+                                <a class="cat-link" href="#" data-label="가방">
+                                    <span class="cat-thumb"><img
+                                            src="https://standoil.kr/web/upload/category/shop1_411_top_651291.jpg"
+                                            alt=""></span>
+                                    <span class="cat-label">가방</span>
+                                </a>
+                            </div>
 
-                        <div class="cat-item">
-                            <a class="cat-link" href="#" data-label="악세서리">
-                                <span class="cat-thumb"><img src="https://standoil.kr/web/upload/category/shop1_277_top_957757.jpg" alt=""></span>
-                                <span class="cat-label">셋업</span>
-                            </a>
-                        </div>
-
-                        <div class="cat-item">
-                            <a class="cat-link" href="#" data-label="악세서리">
-                                <span class="cat-thumb"><img src="https://standoil.kr/web/upload/category/shop1_277_top_957757.jpg" alt=""></span>
-                                <span class="cat-label">신발</span>
-                            </a>
+                            <div class="cat-item">
+                                <a id="Ju" class="cat-link" href="#" data-label="악세서리">
+                                    <span class="cat-thumb"><img
+                                            src="https://standoil.kr/web/upload/category/shop1_277_top_957757.jpg"
+                                            alt=""></span>
+                                    <span class="cat-label">악세서리</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <button class="cat-btn cat-next" aria-label="다음">›</button>
+                    <button class="cat-btn cat-next" aria-label="다음">›</button>
+                </div>
             </div>
+        </section>
+
+        <div class="select-category">
+            <p> 전체 상품</p>
         </div>
-    </section>
 
-    <div class="select-category">
-        <p> 전체 상품</p>
-    </div>
+        <!-- 상품 리스트 -->
+        <section class="product-list">
+            <ul class="product-list-1">
+                <li th:each="product : ${pagenation.elements}">
+                    <!--  아래 추가 [김영수님](9/20)-->
+                    <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
+                        <div class="product-image">
+                            <!-- DB 이미지 있으면 출력 -->
+                            <!-- ✨ 여기를 이렇게 바꿔줘! product.base64ImageData 사용 ✨ -->
+                            <img th:if="${product.base64ImageData != null}"
+                                 th:src="'data:image/jpeg;base64,' + ${product.base64ImageData}"
+                                 alt="Product Image"/>
 
-    <!-- 상품 리스트 -->
-    <section class="product-list">
-        <ul class="product-list-1">
-            <li th:each="product : ${pagenation.elements}">
-                <div class="product-image">
-                    <a th:href="@{/product/details/{id}(id=${product.productId})}">
-                        <!-- DB 이미지 있으면 출력 -->
-                        <img th:if="${product.baseImageData != null}"
-                             th:src="'data:image/jpeg;base64,' + ${product.baseImageData}"
-                             alt="Product Image"/>
-
-                        <!-- DB 이미지 없으면 기본 이미지 -->
-                        <img th:if="${product.baseImageData == null}"
-                             src="/images/no-image.png"
-                             alt="No Image"/>
+                            <!-- DB 이미지 없으면 기본 이미지 -->
+                            <img th:unless="${product.base64ImageData != null}"
+                                 src="/images/no-image.png"
+                                 alt="No Image"/>
+                        </div>
                     </a>
-                </div>
 
-                <div class="product-box">
-                    <div class="product-promotion">
-                        <p th:text="${product.promotion}">프로모션(선택사항)</p>
+                    <div class="product-box">
+                        <div class="product-promotion">
+                            <p th:text="${product.promotion}">프로모션(선택사항)</p>
+                        </div>
+                        <div class="product-name">
+                            <p th:text="${product.name}">제품이름</p>
+                        </div>
+                        <div class="product-price">
+                            <p th:text="${product.price} + '원'">금액</p>
+                        </div>
                     </div>
-                    <div class="product-name">
-                        <p th:text="${product.name}">제품이름</p>
-                    </div>
-                    <div class="product-price">
-                        <p th:text="${product.price} + '원'">금액</p>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </section>
-
-    <nav class="nav">
-        <ul th:if="${pagenation.totalElementsCount != 0}">
-            <li th:if="${pagenation.startPageIndex != 1}">
-                <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.startPageIndex-1}, size=${pagenation.size})}"><</a>
-            </li>
-
-            <th:block th:if="${pagenation.page != 1}">
-                <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.page - 1)}">
-                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}" th:text="${index}">1</a>
                 </li>
-            </th:block>
+            </ul>
+        </section>
 
-            <li>
-                <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.page}, size=${pagenation.size})}" th:text="${pagenation.page}" th:active="true">1</a>
-            </li>
-
-
-            <th:block th:if="${pagenation.page != pagenation.totalPageCount}">
-                <li th:each="index: ${#numbers.sequence(pagenation.page + 1, pagenation.endPageIndex)}">
-                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}" th:text="${index}">1</a>
+        <nav class="nav">
+            <ul th:if="${pagenation.totalElementsCount != 0}">
+                <li th:if="${pagenation.startPageIndex != 1}">
+                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.startPageIndex-1}, size=${pagenation.size})}"><</a>
                 </li>
-            </th:block>
 
-            <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
-                <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.endPageIndex+1}, size=${pagenation.size})}">></a>
-            </li>
-        </ul>
-    </nav>
+                <th:block th:if="${pagenation.page != 1}">
+                    <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.page - 1)}">
+                        <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
+                           th:text="${index}">1</a>
+                    </li>
+                </th:block>
 
-</main>
+                <li>
+                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.page}, size=${pagenation.size})}"
+                       th:text="${pagenation.page}" th:active="true">1</a>
+                </li>
+
+
+                <th:block th:if="${pagenation.page != pagenation.totalPageCount}">
+                    <li th:each="index: ${#numbers.sequence(pagenation.page + 1, pagenation.endPageIndex)}">
+                        <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
+                           th:text="${index}">1</a>
+                    </li>
+                </th:block>
+
+                <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
+                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.endPageIndex+1}, size=${pagenation.size})}">></a>
+                </li>
+            </ul>
+        </nav>
+
+    </main>
 </div>
 </html>

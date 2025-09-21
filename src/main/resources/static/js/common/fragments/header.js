@@ -19,7 +19,6 @@ searchInput.onblur = () => {
 // NAV 버튼
 const navButtons = document.querySelectorAll(".product-list-section > li");
 const currentPath = window.location.pathname;
-let selectedButton = null;
 
 navButtons.forEach(button => {
     const aTag = button.querySelector("a");
@@ -28,12 +27,40 @@ navButtons.forEach(button => {
     }
 });
 
+// 헤더 카트 알림
+const basketSection = document.querySelector(".basket-section");
+const cartAlert = document.querySelector(".cart-container .cart-alert");
+
+function animateCartIcon() {
+    sessionStorage.setItem('cartVisible', 'true');
+
+    cartAlert.style.display = 'flex';
+    cartAlert.classList.add('pulse');
+
+    setTimeout(() => {
+        cartAlert.classList.remove('pulse');
+    }, 500);
+}
+
+//장바구니 페이지면 안 보이게
+if (basketSection) {
+    cartAlert.style.display = 'none';
+    sessionStorage.removeItem('cartVisible');
+} else {
+    if (sessionStorage.getItem('cartVisible') === 'true') {
+        cartAlert.style.display = 'flex';
+    } else {
+        cartAlert.style.display = 'none';
+    }
+}
+
+
 // 로그아웃 Form
 const logoutForm = document.querySelector(".logout-form");
 
 if (logoutForm) {
     logoutForm.onsubmit = event => {
-        if(!confirm("정말 로그아웃 하시겠습니까?"))
-        event.preventDefault();
+        if (!confirm("정말 로그아웃 하시겠습니까?")) //취소하면 preventDefault();
+            event.preventDefault();
     }
 }

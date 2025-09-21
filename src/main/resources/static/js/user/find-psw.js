@@ -86,8 +86,9 @@ findPswForm.addEventListener("submit", function (event) {
         .then(response => {
             if (response.ok) {
                 return response.json();
+            } else {
+                throw Error("서버 응답 에러");
             }
-            throw Error("서버 응답 에러");
         })
         .then(isSuccess => {
             if (isSuccess) {
@@ -96,9 +97,9 @@ findPswForm.addEventListener("submit", function (event) {
             } else {
                 alert("입력하신 정보와 일치하는 사용자가 없습니다. 아이디와 휴대폰 번호를 다시 확인해 주세요");
             }
-        }).catch(error => {
-        console.error("Fetch Error: " + error);
-    });
-
-
+        })
+        .catch(error => {
+            console.error("비밀번호 찾기 도중 에러 발생: " + error);
+            alert("비밀번호 찾기에 에러가 발생했습니다. 다시 시도해 주세요");
+        });
 });

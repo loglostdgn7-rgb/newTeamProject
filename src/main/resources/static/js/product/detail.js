@@ -34,46 +34,66 @@ document.addEventListener('DOMContentLoaded', () => {
             updateTotalPrice();
         }
     });
-    const CartBtn = document.getElementById("addToCartBtn");
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return null;
-    }
+    /********** 아래 [구매하기/장바구니 기능]을 [김영수]님이 최신 수정(9/20) ****************/
 
-    function addToCart(title, quantity) {
-        let cart = getCookie('cart');
-        if (cart) cart = JSON.parse(cart);
-        else cart = [];
+    const buyBtn = document.getElementById("buyBtn");
+    const basketBtn = document.getElementById("addToCartBtn");
 
-        let exists = false;
-        cart.forEach((item) => {
-            if (item.title === title) {
-                item.quantity += parseInt(quantity);
-                exists = true;
-            }
-        });
+    //장바구니 추가
+    const addBasket = () => {
+        const productId = parseInt(document.getElementById("productId").value);
+        const product_quantity = parseInt(quantityInput.value);
+        const token = document.querySelector("meta[name='_csrf']").content;
+        const header = document.querySelector("meta[name='_csrf_header']").content;
 
-        if (!exists) {
-            cart.push({ title, quantity: parseInt(quantity) });
+        // 검증
+        if (isNaN(productId) || isNaN(product_quantity) || product_quantity < 1) {
+            alert("올바른 상품 수량을 입력해주세요.");
+            return; // 유효하지 않으면 함수를 여기서 중단시킵니다.
         }
+        //보낼 데이터
+        const basketData = {
+            product: {
+                id: productId
+            },
+            quantity: product_quantity,
+            updateType: "add"
+        }
+        //통신. 넘겨주기
+        fetch("/user/basket/update", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                [header]: token
+            },
+            body: JSON.stringify(basketData)
+        })
+            .then(response => {
+                if (response.ok) return response.text();
+                else {
+                    throw Error("서버 응답 에러");
+                }
+            })
+            .then(data => {
+                console.log("장바구니 추가");
+                if (!basketSection) {
+                    animateCartIcon();
+                }
+            })
+            .catch(error => {
+                console.error("장바구니 추가중 에러 발생: " + error);
+                alert("장바구니 추가 중에 에러가 발생했습니다. 다시 시도해 주세요");
+            });
+    };
 
-        document.cookie = `cart=${JSON.stringify(cart)}; path=/; max-age=${60*60*24}`;
-    }
-
-    CartBtn.onclick = () => {
-        const product_title = document.getElementsByClassName("product-title")[0].innerText;
-        const product_quantity = document.getElementsByClassName("quantity")[0].querySelector("input").value;
-
-        addToCart(product_title, product_quantity);
-        console.log(document.cookie);
-
-        alert("장바구니에 추가되었습니다");
-        if(confirm("장바구니로 이동하시겠습니까?")){
+    basketBtn.onclick = addBasket;
+    buyBtn.onclick = () => {
+        addBasket();
+        if (confirm("장바구니로 이동하시겠습니까?")) {
             location.href = "/user/basket";
         }
-    };
+    }
+
 
 });

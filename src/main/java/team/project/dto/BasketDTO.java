@@ -1,18 +1,15 @@
 package team.project.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class BasketDTO {
     private ProductDTO product;
     private int quantity;
+    private String updateType;
 
-    public BasketDTO(ProductDTO product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
-    }
 }

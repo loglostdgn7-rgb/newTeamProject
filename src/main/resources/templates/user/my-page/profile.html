@@ -10,7 +10,6 @@
     <link rel="stylesheet" th:href="@{/css/user/my-page/profile.css}">
 </th:block>
 <th:block layout:fragment="js">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
     <script th:src="@{/js/user/my-page/profile.js}" defer></script>
 </th:block>
 
@@ -25,12 +24,12 @@
 
                 <div class="profile-box">
                     <ul class="profile-case">
-<!--                        <li>-->
-<!--                            <span>아이디</span>-->
-<!--                            <label>-->
-<!--                                <input type="text" class="profile-id-input" th:value="${user.id}" disabled>-->
-<!--                            </label>-->
-<!--                        </li>-->
+                        <!--                        <li>-->
+                        <!--                            <span>아이디</span>-->
+                        <!--                            <label>-->
+                        <!--                                <input type="text" class="profile-id-input" th:value="${user.id}" disabled>-->
+                        <!--                            </label>-->
+                        <!--                        </li>-->
                         <li class="profile-psw">
                             <span>비밀번호</span>
                             <label>
@@ -107,14 +106,20 @@
             <div class="sns-connect-container">
                 <h1>SNS 계정 연동</h1>
                 <div>
-                    <button id="kakao" class="sns-link-button" th:disabled="${snsUsers.containsKey('kakao')}">
-                        <img src="/images/logos/kakao_login.png" alt="kakao_login">
-                        <span th:text="${snsUsers.containsKey('kakao') ? snsUsers.get('kakao').linkedAt + '에 연동 됨' : '미등록'}">0000/00/00 00:00:00</span>
-                    </button>
-                    <button id="naver" class="sns-link-button" th:disabled="${snsUsers.containsKey('naver')}">
-                        <img src="/images/logos/naver_login.png" alt="naver_login">
-                        <span th:text="${snsUsers.containsKey('naver') ? snsUsers.get('naver').linkedAt + '에 연동 됨' : '미등록'}">0000/00/00 00:00:00</span>
-                    </button>
+                    <div class="button-container">
+                        <button id="kakao" class="sns-link-button" th:disabled="${snsUsers.containsKey('kakao')}">
+                            <img src="/images/logos/kakao_login.png" alt="kakao_login">
+                            <span th:text="${snsUsers.containsKey('kakao') ? snsUsers.get('kakao').linkedAt + '에 연동 됨' : '미등록'}">0000/00/00 00:00:00</span>
+                        </button>
+                        <button class="unlink" data-client-name="kakao" th:if="${snsUsers.containsKey('kakao')}">연동 해제</button>
+                    </div>
+                    <div class="button-container">
+                        <button id="naver" class="sns-link-button" th:disabled="${snsUsers.containsKey('naver')}">
+                            <img src="/images/logos/naver_login.png" alt="naver_login">
+                            <span th:text="${snsUsers.containsKey('naver') ? snsUsers.get('naver').linkedAt + '에 연동 됨' : '미등록'}">0000/00/00 00:00:00</span>
+                        </button>
+                        <button class="unlink" data-client-name="naver" th:if="${snsUsers.containsKey('naver')}">연동 해제</button>
+                    </div>
                 </div>
             </div>
 

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.project.mapper.ProductMapper">
     <resultMap id="productMap" type="ProductDTO" autoMapping="true">
-        <id property="id" column="id"/>
+        <id property="id" column="product_id"/>
     </resultMap>
 <!--페이지네이션-->
 <!--리스트 나열-->
@@ -24,11 +24,12 @@
         LIMIT #{size} OFFSET #{offset}
     </select>
 
-    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">
-        SELECT id, name, price
-        FROM product
-        WHERE id = #{productId}
-    </select>
+<!--    이거 안쓰는 것 같아서 주석처리[김영수님](9/20)-->
+<!--    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">-->
+<!--        SELECT id, name, price-->
+<!--        FROM product-->
+<!--        WHERE id = #{productId}-->
+<!--    </select>-->
 
 
     <!--    상품 리스트 들고오는 select    -->
@@ -36,12 +37,19 @@
         SELECT * FROM product
     </select>
 
-    <select id="selectProductIdDetail" resultMap="productMap">
-        SELECT * FROM product WHERE product.productId = #{id};
-    </select>
+<!--    <select id="selectProductIdDetail" resultMap="productMap">-->
+<!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
+<!--    </select>-->
+
+<!--    위에꺼 주석하고 아래 복사[김영수님](9/20)-->
+<select id="selectProductIdDetail" resultMap="productMap">
+    SELECT *
+    FROM product
+    WHERE product.product_id = #{productId};
+</select>
 
     <insert id="insertProduct">
-        INSERT INTO product (id, name, price, promotion)
+        INSERT INTO product (product_id, name, price, promotion)
         VALUES (#{id}, #{name}, #{price}, #{promotion})
     </insert>
 

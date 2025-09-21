@@ -22,7 +22,7 @@ const checkBoxes = document.querySelectorAll(".checkbox-container input[type='ch
 // 서버 메세지
 const serverMessageDiv = document.querySelector(".serve-message");
 
-if (serverMessageDiv){
+if (serverMessageDiv) {
     const message = serverMessageDiv.getAttribute("data-message");
     alert(message);
 }
@@ -38,17 +38,23 @@ checkIdDuplicated.onclick = () => {
         .then(response => {
             if (response.ok && response.status === 200) {
                 return response.json();
+            } else {
+                alert("아이디 중복 찾기에 실패 하였습니다. 다시 시도해 주세요");
+                throw Error("서버 응답 에러");
             }
-            throw Error();
         })
         .then(value => {
             if (value) {
-                alert("이미 사용중인 아이디 입니다");
                 isDuplicated = true;// 중복이다
+                alert("이미 사용중인 아이디 입니다");
             } else {
-                alert("사용 가능한 아이디 입니다");
                 isDuplicated = false //중복 아니다
+                alert("사용 가능한 아이디 입니다");
             }
+        })
+        .catch(error => {
+            console.error("회원 가집 도중 에러 발생: " + error);
+            alert("회원 가집 도중 에러 발생 했습니다. 다시 시도해 주세요");
         });
 }
 
@@ -65,12 +71,12 @@ authenticationBtn.onclick = () => {
         {
             channelKey: "channel-key-bb87913f-7fa3-4f4d-a293-49776bfb989f"
         },
-        function (rsp) {
-            console.log("response: ", rsp);
-            if (rsp.success) {
+        function (response) {
+            console.log("response: ", response);
+            if (response.success) {
                 telPrev.disabled = true;
                 telBody.disabled = true;
-                authenticationKeyInput.value = rsp["imp_uid"];
+                authenticationKeyInput.value = response["imp_uid"];
                 authenticationBtn.textContent = "인증성공";
                 authenticationBtn.disabled = true;
                 authenticationCheckSpan.style.display = "none";
@@ -86,7 +92,7 @@ authenticationBtn.onclick = () => {
 }
 
 // 회원가입 눌렀을때
-signupForm.addEventListener("submit", function (event){
+signupForm.addEventListener("submit", function (event) {
     const password = passwordInput.value;
     const passwordRe = passwordReInput.value;
     // 비밀번호
@@ -117,7 +123,7 @@ signupForm.addEventListener("submit", function (event){
     }
 
     for (const checkBox of checkBoxes) {
-        if (!checkBox.checked){
+        if (!checkBox.checked) {
             event.preventDefault();
             alert("이용약관과 개인정보수집 및 이용을 동의해 주세요");
             return;

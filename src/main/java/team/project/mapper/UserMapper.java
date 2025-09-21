@@ -2,13 +2,13 @@ package team.project.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import team.project.dto.ProductDTO;
-import team.project.dto.SnsUserDTO;
-import team.project.dto.UserDTO;
+import team.project.dto.*;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
-    //    유저 선택
+    //유저 선택
     UserDTO selectUserById(String id);
 
     String selectUserByTel(String tel);
@@ -18,10 +18,24 @@ public interface UserMapper {
             @Param("clientName") String clientName
     );
 
-    // 장바구니 / 상품 정보
-    ProductDTO selectProductById(String productId);
+    // 주문 내역
+    void insertOrder(OrderDTO order);
 
-    //    유저 삽입
+    void insertOrderDetail(OrderDetailDTO item);
+
+    List<OrderDTO> selectOrdersByUserId(String userId);
+
+    OrderDTO selectOrderByIdAndUserId(
+            @Param("orderId") int orderId,
+            @Param("userId") String userId
+    );
+
+    List<OrderDetailDTO> selectOrderDetailByOrderId(int orderId);
+
+    // 장바구니, 상품 정보
+//    ProductDTO selectProductById(Integer productId);
+
+    // 유저 삽입
     void insertUser(UserDTO user);
 
     void insertSnsUser(
@@ -30,14 +44,20 @@ public interface UserMapper {
             @Param("clientName") String clientName
     );
 
-    //    유저 업데이트
+    // 유저 비번 업데이트
     void updatePassword(
             @Param("userId") String userId,
             @Param("encodedPassword") String encodedPassword
     );
 
+
+    //프로필 업데이트
     void updateProfile(UserDTO user);
 
-    // 유저 삭제
+
     void deleteUserById(String id);
+    void deleteSnsUser(
+            @Param("userId") String userId,
+            @Param("clientName") String clientName
+    );
 }
