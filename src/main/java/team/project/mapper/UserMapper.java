@@ -33,7 +33,7 @@ public interface UserMapper {
     List<OrderDetailDTO> selectOrderDetailByOrderId(int orderId);
 
     // 장바구니, 상품 정보
-    ProductDTO selectProductById(Integer productId);
+//    ProductDTO selectProductById(Integer productId);
 
     // 유저 삽입
     void insertUser(UserDTO user);

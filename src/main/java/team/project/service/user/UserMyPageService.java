@@ -15,7 +15,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import team.project.dto.*;
 import team.project.mapper.UserMapper;
+import team.project.util.ImageUtils;
 
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -46,14 +49,14 @@ public class UserMyPageService {
     private final String NAVER_USER_INFO_URI = "https://openapi.naver.com/v1/nid/me";
 
 
-    //post 주문 내역
+    //post 장바구니->주문 내역(orders) table에 삽입
     @Transactional //복합적인 삽입/수정에 사용
     public void save_order(OrderDTO order, UserDTO principal) {
         order.setUserId(principal.getId());
 
         userMapper.insertOrder(order);
 
-        // 방금 생성된 orderId 가져오기 (useGeneratedKeys 덕분에 가능)
+        // 방금 생성된 orderId 가져오기 (xml의 useGeneratedKeys 덕분에 가능)
         int generatedOrderId = order.getOrderId();
 
         // 각 주문 상품(OrderDetail 테이블)에 orderId를 채워서 저장
@@ -61,12 +64,50 @@ public class UserMyPageService {
             item.setOrderId(generatedOrderId);
             userMapper.insertOrderDetail(item);
         }
-        logger.info("장바구니 추가 완료: {}", order.getOrderId());
+        logger.info("주문 완료: {}", order.getOrderId());
     }
 
-    //주문내역 리스트
+    //주문내역 리스트 불러오기
     public List<OrderDTO> find_orders_by_user_id(String userId) {
-        return userMapper.selectOrdersByUserId(userId);
+        List<OrderDTO> orderList = userMapper.selectOrdersByUserId(userId);
+        logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
+
+        for (OrderDTO order : orderList) {
+            // 날짜 바꾸기
+            if (Objects.nonNull(order.getOrderDate()))
+                order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
+
+            if (Objects.nonNull(order.getMerchantUid())) {
+                String[] shorten = order.getMerchantUid().split("-");
+                order.setShortMerchantUid("(" + shorten[0] + "...)");
+            }
+
+            // 주문 상태 바꾸기
+            if (order.getOrderStatus() != null) { // 이거 안쓰면..hashMap 에러 뜸 switch가 쓰는거라서..
+                switch (order.getOrderStatus()) {
+                    case "PENDING" -> order.setOrderStatusFormatted("입금전");
+                    case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
+                    case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
+                    case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
+                    default -> order.setOrderStatusFormatted(order.getOrderStatus());
+                }
+            } else {
+                order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
+            }
+
+            //개별 상품
+            List<OrderDetailDTO> product = order.getOrderDetails();
+
+            //이미지 바꾸기
+            if (product != null && !product.isEmpty()) {
+                OrderDetailDTO firstItem = product.getFirst();
+
+                String dataUri = ImageUtils.imageDataUir(firstItem.getProductImage(), "image/jpeg");
+                order.setBase64Image(dataUri);
+            }
+            logger.info("가공 후 OrderDTO: {}", order);
+        }
+        return orderList;
     }
 
     //개별(row) 주문 내역

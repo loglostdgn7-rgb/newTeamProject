@@ -38,32 +38,41 @@
         WHERE tel = #{tel}
     </select>
 
-    <!--    주문내역-->
+    <!-- /////// 주문 내역 //////-->
+<!--    주문 내역 넣기-->
     <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId">
-        INSERT INTO orders (order_id, user_id, imp_uid, merchant_uid, order_name, order_price, order_date, buyer_name, buyer_addr, buyer_tel)
-        VALUES (#{orderId}, #{userId}, #{impUid}, #{merchantUid}, #{orderName}, #{orderPrice}, null, #{buyerName},
-                #{buyerAddr}, #{buyerTel})
+        INSERT INTO orders (order_id, user_id, imp_uid, merchant_uid, order_name, order_price, buyer_name, buyer_addr, buyer_tel, order_request)
+        VALUES (#{orderId}, #{userId}, #{impUid}, #{merchantUid}, #{orderName}, #{orderPrice}, #{buyerName},
+                #{buyerAddr}, #{buyerTel}, #{orderRequest})
     </insert>
 
     <insert id="insertOrderDetail">
-        INSERT INTO order_detail (order_detail_id, order_id, product_id, quantity, order_price)
-        VALUES (#{orderDetailId}, #{orderId}, #{productId}, #{quantity}, #{orderPrice})
+        INSERT INTO order_detail (order_detail_id, order_id, product_id, quantity, product_price)
+        VALUES (#{orderDetailId}, #{orderId}, #{productId}, #{quantity}, #{productPrice})
     </insert>
 
+<!--    주문 내역 꺼내기-->
     <resultMap id="orderWithDetailMap" type="OrderDTO" autoMapping="true">
         <id property="orderId" column="order_id" />
-        <collection property="orderDetails" ofType="OrderDetailDTO" autoMapping="true">
-            <id property="orderDetailId" column="order_detail_id"/>
+                    <!-- 왜 select로 해야 작동 되지?-->
+        <collection property="orderDetails"
+                    ofType="OrderDetailDTO"
+                    column="order_id"
+                    select="selectOrderDetailByOrderId">
         </collection>
+<!--        <collection property="orderDetails" ofType="OrderDetailDTO" autoMapping="true">-->
+<!--            <id property="orderDetailId" column="order_detail_id"/>-->
+<!--        </collection>-->
     </resultMap>
     
-    <select id="selectOrdersByUserId" >
+    <select id="selectOrdersByUserId" resultType="OrderDTO" resultMap="orderWithDetailMap">
         SELECT *
         FROM orders
         WHERE user_id = #{userId}
+        ORDER By order_date DESC
     </select>
 
-    <select id="selectOrderByIdAndUserId" >
+    <select id="selectOrderByIdAndUserId" resultType="OrderDTO" resultMap="orderWithDetailMap">
         SELECT *
         FROM orders
         WHERE user_id = #{userId}
@@ -71,19 +80,22 @@
     </select>
 
     <select id="selectOrderDetailByOrderId" resultType="OrderDetailDTO">
-        SELECT *, order_detail_id as orderDetailId, product.name
+        SELECT *,
+               order_detail_id    as orderDetailId,
+               product.image_data as productImage,
+               product.name       as productName
         FROM order_detail
-                 JOIN product on order_detail.product_id = product.product_id
+                 INNER JOIN product on order_detail.product_id = product.product_id
         WHERE order_detail.order_id = #{orderId}
     </select>
 
 
-    <!--    장바구니 / 상품 정보-->
-    <select id="selectProductById" resultType="ProductDTO">
-        SELECT *
-        FROM product
-        WHERE product_id = #{productId}
-    </select>
+<!--    &lt;!&ndash;/////// 장바구니 / 상품 정보 //////&ndash;&gt;-->
+<!--    <select id="selectProductById" resultType="ProductDTO">-->
+<!--        SELECT *-->
+<!--        FROM product-->
+<!--        WHERE product_id = #{productId}-->
+<!--    </select>-->
 
 
     <!--   /////// 유저 삽입 ///////  -->

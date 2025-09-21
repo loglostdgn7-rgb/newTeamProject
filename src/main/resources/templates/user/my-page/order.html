@@ -7,7 +7,8 @@
 
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
     <link rel="stylesheet" th:href="@{/css/user/my-page/order.css}">
 </th:block>
 <th:block layout:fragment="js">
@@ -21,12 +22,14 @@
     <div class="aside-container">
         <aside th:replace="~{layout/aside :: aside}"></aside>
         <section class="order-section">
-
+            <!--            상위 카테고리-->
             <ul class="order-category-container">
                 <li><a href="#">주문내역조회 (0)</a></li>
                 <li><a href="#">취소/반품/교환 내역 (0)</a></li>
             </ul>
+            <!--            선택 란-->
             <ul class="order-select-container">
+                <!--                기간 선택-->
                 <li class="period-group">
                     <label class="select-box period" data-target="period-option">
                         <input value="기간설정" type="text" class="select-box-input no-drag" readonly>
@@ -39,6 +42,7 @@
                         <li class="option"><a href="">6개월</a></li>
                     </ul>
                 </li>
+                <!--                주문상태 선택-->
                 <li>
                     <label class="select-box status" data-target="status-option">
                         <input value="주문상태" type="text" class="select-box-input no-drag" readonly>
@@ -54,7 +58,7 @@
                         <li class="option"><a href="">반품</a></li>
                     </ul>
                 </li>
-
+                <!--                달력 선택-->
                 <li><label class="select-box">
                     <input th:value="${param.startDate}" type="text" id="date-picker-start"
                            class="date-picker-input no-drag form-control bg-white border-0 small">
@@ -65,39 +69,41 @@
                            class="date-picker-input no-drag form-control bg-white border-0 small">
                     <i class="bi bi-chevron-down"></i>
                 </label></li>
+                <!--                버튼-->
                 <li>
                     <button id="get-history" type="button">조회</button>
                 </li>
             </ul>
+            <!--            주문 내역-->
             <div class="order-grid-container">
                 <div class="order-grid-header">주문일자/주문번호</div>
                 <div class="order-grid-header">상품정보</div>
                 <div class="order-grid-header">결제금액</div>
                 <div class="order-grid-header">주문상태</div>
                 <div class="order-grid-header">취소/교환/반품</div>
-                <th:block>
-                    <div class="no-product">주문 내역이 없습니다</div>
-                </th:block>
-                <th:block>
-                    <div class="order-date-and-number"><a href="">1234/4522</a></div>
+                <!--                상품이 없을 때-->
+                <div class="no-product">주문 내역이 없습니다</div>
+                <!--                상품 있을 때-->
+                <a th:each="order : ${orderList}" class="order-grid-contents"
+                   th:href="@{/user/my-page/order/{orderId}(orderId=${order.orderId})}">
+                    <div class="order-date-and-number">
+                        <span th:text="${order.orderDateFormatted} + ' / ' + ${order.shortMerchantUid}">25.09.20 / 9999</span>
+                    </div>
                     <div class="order-info">
-                        <img src="https://standoil.kr/web/product/big/202303/9f10353dd800cd7d5a5257b0c7bd8dd7.jpg"
-                             alt="">
-                        <a href="">가상의 핸드백 고급 핑크블루 123</a></div>
-                    <div class="order-price"><a href="">80000</a></div>
-                    <div class="order-status"><a href="">입금전</a></div>
-                    <div class="order-procedure"><a href="">취소불가</a></div>
-                </th:block>
-                <th:block>
-                    <div class="order-date-and-number"><a href="">1234/4522</a></div>
-                    <div class="order-info">
-                        <img src="https://standoil.kr/web/product/big/202303/9f10353dd800cd7d5a5257b0c7bd8dd7.jpg"
-                             alt="">
-                        <a href="">가상의 핸드백 고급 핑크블루 123</a></div>
-                    <div class="order-price"><a href="">80000</a></div>
-                    <div class="order-status"><a href="">입금전</a></div>
-                    <div class="order-procedure"><a href="">취소불가</a></div>
-                </th:block>
+                        <img th:src="${order.base64Image}"
+                             alt="상품 이미지">
+                        <span th:text="${order.orderName}">상품 이름</span>
+                    </div>
+                    <div class="order-price">
+                        <span th:text="|￦${#numbers.formatInteger(order.orderPrice, 0, 'COMMA')}|">0000</span>
+                    </div>
+                    <div class="order-status">
+                        <span th:text="${order.orderStatusFormatted}">입금전</span>
+                    </div>
+                    <div class="order-procedure">
+                        <span>취소불가</span>
+                    </div>
+                </a>
             </div>
             <div class="order-paging-container">
                 <i class="bi bi-chevron-left"></i>

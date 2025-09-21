@@ -35,8 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-
     /********** 아래 [구매하기/장바구니 기능]을 [김영수]님이 최신 수정(9/20) ****************/
+
     const buyBtn = document.getElementById("buyBtn");
     const basketBtn = document.getElementById("addToCartBtn");
 
@@ -76,8 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             })
             .then(data => {
-                console.log("장바구니 추가: " + data);
-
+                console.log("장바구니 추가");
+                if (!basketSection) {
+                    animateCartIcon();
+                }
             })
             .catch(error => {
                 console.error("장바구니 추가중 에러 발생: " + error);
@@ -88,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     basketBtn.onclick = addBasket;
     buyBtn.onclick = () => {
         addBasket();
-        alert("장바구니에 추가되었습니다");
         if (confirm("장바구니로 이동하시겠습니까?")) {
             location.href = "/user/basket";
         }

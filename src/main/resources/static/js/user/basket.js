@@ -6,7 +6,7 @@ const header = document.querySelector("meta[name='_csrf_header']").content;
 const basketProductSortSpan = document.querySelector(".product-sort");
 
 const basket_product_sort_count = () => {
-    const lis = document.querySelectorAll(".product");
+    const lis = document.querySelectorAll(".basket-section .product");
     basketProductSortSpan.textContent = `(${lis.length})`;
 }
 
@@ -49,7 +49,8 @@ function check_basket_isEmpty() {
 
 
 // 플러스 마이너스 버튼 작용
-const plus_minus_Btns = document.querySelectorAll(".bi");
+const basketContainer = document.querySelector(".basket-container");
+const plus_minus_Btns = basketContainer.querySelectorAll(".bi");
 
 plus_minus_Btns.forEach(iTag => {
     iTag.onclick = event => {
@@ -192,7 +193,7 @@ paymentBtn.onclick = () => {
     const telTail = paymentForm.querySelector(".payment-tel-tail").value;
     const buyerTel = telPrev + telBody + telTail;
     const buyerEmail = paymentForm.querySelector(".email").value;
-    const buyerRequest = paymentForm.querySelector(".request").value;
+    const orderRequest = paymentForm.querySelector(".request").value;
     const priceString = paymentForm.querySelector(".order-total-price").value;
     const amount = priceString.replace(/[^0-9]/g, ""); //정규식 써서 숫자 외 모두 제거
     console.log("price:", amount)
@@ -225,7 +226,7 @@ paymentBtn.onclick = () => {
                     const price = priceSpan.dataset.productPrice;
                     return {
                         product_id: productLi.dataset.productId,
-                        order_price: price,
+                        product_price: price,
                         quantity: productLi.querySelector(".product-quantity").textContent,
                     }
                 })
@@ -241,8 +242,8 @@ paymentBtn.onclick = () => {
                     buyer_tel: buyerTel,
                     buyer_addr: buyerAddress,
                     buyer_postcode: buyerPostcode,
-                    buyer_request: buyerRequest,
-                    order_details: orderDetail // orderDTO 필드명(orderDetails)에 맞춰 s 붙이기
+                    order_details: orderDetail, // orderDTO 필드명(orderDetails)에 맞춰 s 붙이기
+                    order_request: orderRequest,
                 };
 
                 console.log("서버로 보내는 데이터:", dataForBody); //확인용
@@ -256,8 +257,12 @@ paymentBtn.onclick = () => {
                     // imp_uid와 merchant_uid, 주문 정보를 서버에 전달합니다
                     body: JSON.stringify(dataForBody),
                 });
-            } //if문 끝
-        },
+
+                //주문내역 데이터 삽입 후
+                if (confirm("결제가 되었습니다.\n주문 내역을 보시겠습니까?")) location.href = "/user/my-page/order";
+                else location.reload();
+            } //저 위에 if (response.success)문 끝
+        }
     ); //request_pay 끝
     //검증은 패스...
 }

@@ -31,13 +31,14 @@
                     </li>
                     <li th:each="item : ${list}" class="product" th:data-product-id="${item.product.getProductId()}">
                         <a class="product-img-box" href="#">
-                            <img src="https://standoil.cafe24.com/web/product/tiny/202406/8f0c8d46ff44a36493fd240c1f06deba.jpg"
-                                 alt="">
+                            <img th:src="@{${item.product.base64ImageData}}"
+                                 alt="상품 이미지">
                         </a>
                         <div class="product-text-box">
                             <a class="name-color-price" href="#">
                                 <span th:text="${item.product.name}" class="product-name">Hippo Bag · 히포백 / 실버</span>
-                                <span th:text="|￦${#numbers.formatInteger(item.product.price * item.quantity, 0, 'COMMA')}|" th:data-product-price="${item.product.getPrice()}">￦71,000</span>
+                                <span th:text="|￦${#numbers.formatInteger(item.product.price, 0, 'COMMA')}|"
+                                      th:data-product-price="${item.product.getPrice()}">￦71,000</span>
                             </a>
                             <span class="plus-minus-case">
                                 <i class="bi bi-dash"></i>
@@ -90,9 +91,15 @@
                 <label class="payment-address-box">
                     <span>주소</span>
                     <label>
-                        <input type="text" class="postcode" name="postcode" th:value="${user} ? ${user.postcode} : ''" placeholder="우편번호">
-                        <input type="text" class="road-address" name="road-address" th:value="${user} ? ${user.roadAddress} : ''" placeholder="주소">
-                        <input type="text" class="detail-address" name="detail-address" th:value="${user} ? ${user.detailAddress} : ''" placeholder="상세주소">
+                        <input type="text" id="sample4_postcode" class="postcode" name="postcode"
+                               th:value="${user} ? ${user.postcode} : ''" placeholder="우편번호" readonly>
+                        <input type="text" id="sample4_roadAddress" class="road-address" name="roadAddress"
+                               th:value="${user} ? ${user.roadAddress} : ''" placeholder="주소" readonly>
+                        <input type="text" id="sample4_detailAddress" class="detail-address" name="detailAddress"
+                               th:value="${user} ? ${user.detailAddress} : ''" placeholder="상세주소">
+                    </label>
+                    <label class="address-button">
+                        <button type="button" onclick="searchAddress()">우편번호찾기</button>
                     </label>
                 </label>
                 <label class="payment-tel-box">

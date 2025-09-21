@@ -95,10 +95,46 @@ header > nav > .right-section > .logout-container > a {
     }
 }
 
+header > nav > .right-section .cart-container{
+    position: relative;
+}
+
+/*헤더 카트 알림*/
+header > nav > .right-section .cart-container .cart-alert{
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--basic-red);
+    color: var(--basic-white);
+    font-size: 12px;
+}
+
+@keyframes pulse-effect {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.cart-alert.pulse {
+    display: flex;
+    animation: pulse-effect 0.5s ease-in-out;
+}
+
+/*로그아웃*/
 header > nav > .right-section > .logout-container {
     display: flex;
 }
 
+/*마이페이지*/
 header > nav > .right-section > .my-page-container {
     display: flex;
 }

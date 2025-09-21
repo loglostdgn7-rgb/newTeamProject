@@ -235,6 +235,17 @@
     display: flex;
 }
 
+.payment-address-box > label.address-button{
+    align-self: flex-start;
+}
+
+.payment-address-box > .address-button > button{
+    margin-left: 10px;
+    padding: 0 5px;
+    border: 1px solid var(--gray-bright);
+    border-radius: 5px;
+}
+
 .payment-address-box > label {
     display: flex;
     flex-direction: column;

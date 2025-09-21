@@ -1,6 +1,7 @@
 package team.project.controller.user;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,17 @@ public class UserMyPageController {
     @Autowired
     UserMyPageService userMyPageService;
 
-    //주문 내역
+    //장바구니 ->주문 내역 orders table에 삽입
     @ResponseBody
     @PostMapping("/payment/complete")
     public ResponseEntity<String> post_order(
             @RequestBody OrderDTO order,
-            @AuthenticationPrincipal UserDTO principal
+            @AuthenticationPrincipal UserDTO principal,
+            HttpSession session
     ) {
         userMyPageService.save_order(order, principal);
+
+        session.removeAttribute("basket");
 
         return ResponseEntity.ok("주문이 성공적으로 완료 되었습니다.");
     }

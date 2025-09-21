@@ -43,7 +43,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('loglost','$2a$10$BK6mSc18Twrc3lTfm62QTeGn5uSokRDoRMuKTvZY74E9g3y/85X3y','김영수',42006,'대구 수성구 달구벌대로 2315','101동 1602호 (수성동4가,롯데캐슬아파트)','01050382706','loglost_dgn7@naver.com','테스터','USER');
+INSERT INTO `user` VALUES ('loglost','$2a$10$BK6mSc18Twrc3lTfm62QTeGn5uSokRDoRMuKTvZY74E9g3y/85X3y','김영수',42006,'대구 수성구 달구벌대로 2315','국가기밀입니당','01050382706','loglost_dgn7@naver.com','테스터','USER'),('tester','$2a$10$L/aFJ2iTzurRMUpZXk55bu7TlIE7Tc5Go0qD7roBvT5moq/EHoYNG','김영수',42006,'대구 수성구 달구벌대로 2315','국가기밀입니당','01050382706','loglost_dgn7@naver.com','테스터','USER');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-12  0:05:16
+-- Dump completed on 2025-09-21 22:15:06

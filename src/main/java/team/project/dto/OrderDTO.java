@@ -1,5 +1,6 @@
 package team.project.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,13 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "base64Image")
 @NoArgsConstructor
 public class OrderDTO {
     private Integer orderId; //id pk
     private String userId; //fk
+    private LocalDateTime orderDate;
+    private String orderStatus;
     @JsonProperty("imp_uid")
     private String impUid;
     @JsonProperty("merchant_uid")
@@ -31,9 +34,19 @@ public class OrderDTO {
     private String buyerAddr;
     @JsonProperty("buyer_tel")
     private String buyerTel;
-    @JsonProperty("buyer_request")
-    private String buyerRequest;
     @JsonProperty("order_details")
     private List<OrderDetailDTO> orderDetails =  new ArrayList<>();
-    private LocalDateTime orderDate;
+    @JsonProperty("order_request")
+    private String orderRequest;
+
+
+//    화면용
+    private String shortMerchantUid;
+    private String orderDateFormatted;
+    private String orderStatusFormatted;
+    private String base64Image;
+
+
+
+
 }
