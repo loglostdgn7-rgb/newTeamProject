@@ -1,5 +1,6 @@
 package team.project.controller;
 
+import groovyjarjarpicocli.CommandLine;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,9 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import team.project.dto.PagenationDTO;
+import team.project.dto.ProductDTO;
 import team.project.service.ProductService;
 
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.BaseStream;
 
 @Slf4j
 @Controller
@@ -25,6 +29,15 @@ public class ProductController {
             PagenationDTO pagenation
     ) {
         productService.get_products(pagenation);
+
+        for(Object element : pagenation.getElements()){
+            ProductDTO product  = (ProductDTO) element;
+            if(product.getImageData() != null && product.getImageData().length > 0){
+                String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
+                product.setBaseImageData(base64Image);
+            }
+        }
+
         model.addAttribute("pagenation", pagenation);
 
         System.out.println("pagenation: " + pagenation);

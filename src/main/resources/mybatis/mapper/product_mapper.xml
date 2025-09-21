@@ -37,7 +37,7 @@
     </select>
 
     <select id="selectProductIdDetail" resultMap="productMap">
-        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};
+        SELECT * FROM product WHERE product.productId = #{id};
     </select>
 
     <insert id="insertProduct">

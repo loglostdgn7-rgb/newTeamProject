@@ -15,4 +15,5 @@ public class ProductDTO {
     private int price;
     private String promotion;
     private byte[] imageData; // 이미지 데이터를 byte 배열로 저장
+    private String baseImageData;
 }
