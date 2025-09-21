@@ -22,7 +22,7 @@ public class PagenationDTO {
     private final Integer pageViewOffset = 2; // 화면에 보여줄 앞 뒤 페이지 번호 개수
     /***************** 실제 Element 항목 관련 *************************/
     private Integer totalElementsCount; // 게시물 전체 개수
-    @Setter private List<ProductDTO> elements; // 페이지네이션 대상 요소 (QnABoard)
+    @Setter private List<ProductDTO> elements; // 페이지네이션 대상 요소
 
     // MyBatis에서 가져가서 사용할 수 있도록 변수 없이 getter만 생성 (mapper xml 에서만 사용됨)
     public Integer getOffset(){

@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
+import team.project.dto.ProductDetailDTO;
 import team.project.service.ProductService;
 
 import java.util.Base64;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -25,23 +27,18 @@ public class ProductController {
             Model model,
             PagenationDTO pagenation
     ) {
-        // productService에서 pagenation 객체를 업데이트하고 productDTO 리스트를 가져온다고 가정
-        productService.get_products(pagenation); // 이 안에서 productDTO 리스트가 pagenation에 채워질 거야.
+        productService.get_products(pagenation);
 
-        // ✨ 추가할 부분 시작! ✨
         if (pagenation.getElements() != null) {
-            // pagenation.elements에 있는 각 ProductDTO를 반복하며 이미지 처리
             for (Object element : pagenation.getElements()) {
-                if (element instanceof ProductDTO) { // 안전하게 형변환
+                if (element instanceof ProductDTO) {
                     ProductDTO product = (ProductDTO) element;
                     if (product.getImageData() != null && product.getImageData().length > 0) {
                         String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
-                        product.setBase64ImageData(base64Image); // DTO에 base64 문자열을 저장
-                    }
+                        product.setBase64ImageData(base64Image); }
                 }
             }
         }
-        // ✨ 추가할 부분 끝! ✨
 
         model.addAttribute("pagenation", pagenation);
 
@@ -53,17 +50,23 @@ public class ProductController {
     public String get_detail(
             Model model,
             //////// Integer -> int로 [김영수]님이 수정(9/19) ///////////
-            @PathVariable("id") int id
+            @PathVariable("id") int id,
+            ProductDTO product
     ){
-        var productDetail = productService.get_id_product_detail(id);
+        productService.get_details(product);
 
-        // BLOB → Base64 변환
-        if (productDetail.getImageData() != null && productDetail.getImageData().length > 0) {
-            String base64Image = Base64.getEncoder().encodeToString(productDetail.getImageData());
-            model.addAttribute("base64Image", base64Image);
+        for(Object elements: product.getElements()){
+            ProductDetailDTO productDetail = (ProductDetailDTO) elements;
+            if(productDetail.getDetailImageData() != null && productDetail.getDetailImageData().length > 0) {
+                String base64Image = Base64.getEncoder().encodeToString(productDetail.getDetailImageData());
+                productDetail.setBaseDetailImageData(base64Image);
+            }
         }
+            var productDetail =  productService.get_id_product_detail(id);
+
 
         model.addAttribute("productDetail", productDetail);
+        model.addAttribute("product", product);
         return "shop/product/detail";
     }
 
