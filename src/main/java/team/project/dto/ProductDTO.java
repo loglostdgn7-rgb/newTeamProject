@@ -15,6 +15,10 @@ public class ProductDTO {
     private String name;
     private int categoryId;
     private int price;
+    private String productInfo;
+    private String sizeInfo;
+    private String material;
+    private String colors;
     private String promotion;
     private byte[] imageData; 
     private String base64ImageData; 

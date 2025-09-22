@@ -30,6 +30,8 @@ public class ProductService {
         product.setElements(details);
     }
 
+
+
     // 모든 상품을 가져오는 기능
     public void get_products(PagenationDTO pagenation) {
         List<ProductDTO> elements = productMapper.selectProducts(pagenation);

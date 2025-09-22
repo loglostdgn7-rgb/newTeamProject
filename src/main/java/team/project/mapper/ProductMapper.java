@@ -12,6 +12,8 @@ import java.util.Map;
 
 @Mapper
 public interface ProductMapper {
+    List<ProductDTO> get_product_info(ProductDTO productDTO);
+
     List<ProductDTO> selectProducts(PagenationDTO pagenation);
     List<ProductDetailDTO> selectDetailProduct(ProductDTO product);
 
