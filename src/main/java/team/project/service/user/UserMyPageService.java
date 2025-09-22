@@ -65,10 +65,6 @@ public class UserMyPageService {
         logger.info("주문 완료: {}", order.getOrderId());
     }
 
-    private void image_chane(){
-
-    }
-
     //주문내역 리스트 불러오기
     public List<OrderDTO> find_orders_by_user_id(String userId) {
         List<OrderDTO> orderList = userMapper.selectOrdersByUserId(userId);
