@@ -7,7 +7,7 @@
 
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{}">
+    <link rel="stylesheet" href="">
 </th:block>
 <th:block layout:fragment="js">
 
@@ -17,7 +17,36 @@
 <main layout:fragment="content">
     <div class="aside-container">
         <aside th:replace="~{layout/aside :: aside}"></aside>
-        오더 디테일란~
+        <section class="order-detail-section">
+            <!--            주문 내역-->
+            <div class="order-grid-container">
+                <!-- 그리드 헤더-->
+                <div  class="order-date-and-number order-grid-header"
+                      th:text="${order.orderDateFormatted} + ' / ' + ${order.merchantUid}">주문날짜 / merchantUid</div>
+                <!--  개별 주문 내역 상품들-->
+                <div class="order-detail-grid-contents" th:each="product : ${order}">
+                    <div class="order-info">
+                        <img th:src="${product.}"
+                             alt="상품 이미지">
+                        <span th:text="${order.orderName}">상품 이름</span>
+                    </div>
+                    <div class="order-price">
+                        <span th:text="|￦${#numbers.formatInteger(order.orderPrice, 0, 'COMMA')}|">0000</span>
+                    </div>
+                    <div class="order-status">
+                        <span th:text="${order.orderStatusFormatted}">입금전</span>
+                    </div>
+                    <div class="order-procedure">
+                        <span>취소불가</span>
+                    </div>
+                </div>
+            </div>
+            <div class="order-paging-container">
+                <i class="bi bi-chevron-left"></i>
+                <span>1</span>
+                <i class="bi bi-chevron-right"></i>
+            </div>
+        </section>
     </div>
 </main>
 <footer th:replace="~{layout/fragments/footer :: footer}"></footer>
