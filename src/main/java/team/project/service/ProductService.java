@@ -13,6 +13,14 @@ public class ProductService {
     @Autowired ProductMapper productMapper;
 
 
+    // index에서 신상품 목록에 랜덤으로 10개 가져오는 메서드
+    public void randomProducts(PagenationDTO pagenation) {
+        List<ProductDTO> products = productMapper.randomProduct();
+        pagenation.setElements(products);
+    }
+
+
+
     public void add_product(ProductDTO productDTO) {
         productMapper.insertProduct(productDTO);
     }

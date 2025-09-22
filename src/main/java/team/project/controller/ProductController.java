@@ -45,6 +45,30 @@ public class ProductController {
         System.out.println("pagenation: " + pagenation);
     }
 
+    @GetMapping("/")
+    public String getIndex(
+            Model model,
+            PagenationDTO pagenation
+    ) {
+        productService.randomProducts(pagenation);
+
+        if (pagenation.getElements() != null) {
+            for (Object element : pagenation.getElements()) {
+                if (element instanceof ProductDTO) {
+                    ProductDTO product = (ProductDTO) element;
+                    if (product.getImageData() != null && product.getImageData().length > 0) {
+                        String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
+                        product.setBase64ImageData(base64Image); }
+                }
+            }
+        }
+
+        model.addAttribute("pagenation", pagenation);
+
+        return "index"; // 뷰 이름 반환
+    }
+
+
 
     @GetMapping("/product/detail/{id}")
     public String get_detail(

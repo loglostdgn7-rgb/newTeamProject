@@ -29,9 +29,10 @@
             </h2>
             <div class="product-slide-wrapper swiper">
                 <ul class="product-list-container swiper-wrapper">
-                    <li class="product swiper-slide">
+                    <li class="product swiper-slide" th:each="product : ${pagenation}">
                         <a href="#">
                             <div class="product-img-box">
+                                <img th:src="@{'data:image/jpeg;base64,' + ${product.baseDetailImageData}}">
                                 <img src="https://standoil.kr/web/product/big/202507/9e4004752089a4d52333f7cb2e165966.jpg"
                                      alt="">
                             </div>

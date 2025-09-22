@@ -68,4 +68,15 @@
         VALUES (#{id}, #{name}, #{price}, #{promotion})
     </insert>
 
+
+
+    <select id="selectRandomProducts" resultMap="productMap">
+        SELECT *
+        FROM product
+        ORDER BY RAND()
+            LIMIT 10
+    </select>
+
+
+
 </mapper>
