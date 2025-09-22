@@ -12,7 +12,6 @@
 /* 이미지 영역 */
 .product-image {
     flex: 7;
-    border: 1px solid #ccc;
     padding: 10px;
     background-color: #fff;
     box-sizing: border-box;
