@@ -15,7 +15,7 @@ public class ProductService {
 
     // index에서 신상품 목록에 랜덤으로 10개 가져오는 메서드
     public void randomProducts(PagenationDTO pagenation) {
-        List<ProductDTO> products = productMapper.randomProduct();
+        List<ProductDTO> products = productMapper.selectRandomProducts();
         pagenation.setElements(products);
     }
 
