@@ -119,6 +119,15 @@ public class UserMyPageService {
         if (order == null) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
+
+        for(OrderDetailDTO product : order.getOrderDetails()){
+            if (Objects.nonNull(product.getProductImage())){
+                String dataUri = ImageUtils.imageDataUir(product.getProductImage(), "image/jpeg");
+
+                product.set
+            }
+        }
+
         return order;
     }
 

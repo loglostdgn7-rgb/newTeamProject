@@ -24,4 +24,6 @@ public class OrderDetailDTO {
     @JsonProperty("product_price")
     private Integer productPrice;
 
+    private 
+
 }
