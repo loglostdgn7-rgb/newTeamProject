@@ -1,14 +1,12 @@
 package team.project.service;
-
 import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.project.dto.ProductDetailDTO;
 import team.project.mapper.ProductMapper;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ProductService {
@@ -21,6 +19,15 @@ public class ProductService {
 
     public ProductDTO get_id_product_detail(Integer id) {
         return productMapper.selectProductIdDetail(id);
+    }
+
+    public List<ProductDetailDTO> get_product_detail(Integer productId) {
+        return productMapper.selectProductDetail(productId);
+    }
+
+    public void get_details(ProductDTO product){
+        List<ProductDetailDTO> details = productMapper.selectDetailProduct(product);
+        product.setElements(details);
     }
 
     // 모든 상품을 가져오는 기능

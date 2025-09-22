@@ -6,6 +6,9 @@
     <resultMap id="productMap" type="ProductDTO" autoMapping="true">
         <id property="id" column="product_id"/>
     </resultMap>
+    <resultMap id="productDetailMap" type="ProductDetailDTO" autoMapping="true">
+        <id property="id" column="detail_id"/>
+    </resultMap>
 <!--페이지네이션-->
 <!--리스트 나열-->
 
@@ -37,6 +40,11 @@
         SELECT * FROM product
     </select>
 
+    <!--    상품 디테일 들고오는 select    -->
+    <select id="selectAllProductDetail" resultType="ProductDetailDTO" resultMap="productDetailMap">
+        SELECT * FROM product_detail WHERE product_detail.product_id = #{productId}
+    </select>
+
 <!--    <select id="selectProductIdDetail" resultMap="productMap">-->
 <!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
 <!--    </select>-->
@@ -47,6 +55,13 @@
     FROM product
     WHERE product.product_id = #{productId};
 </select>
+
+    <select id="selectDetailProduct" resultMap="productDetailMap">
+        SELECT *
+        FROM product_detail
+        WHERE product_detail.product_id = #{productId};
+    </select>
+
 
     <insert id="insertProduct">
         INSERT INTO product (product_id, name, price, promotion)
