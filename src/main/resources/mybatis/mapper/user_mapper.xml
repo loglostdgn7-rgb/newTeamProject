@@ -56,7 +56,7 @@
     <resultMap id="orderWithDetailResultMap" type="OrderDTO" autoMapping="true">
         <id property="orderId" column="order_id"/>
         <collection property="orderDetails" ofType="OrderDetailDTO" javaType="list" autoMapping="true">
-            <id property="oderDetailId" column="oder_detail_id"/>
+            <id property="orderDetailId" column="order_detail_id"/>
             <result property="productName" column="product_name"/>
             <result property="productImage" column="product_image"/>
         </collection>
@@ -69,11 +69,11 @@
                od.product_price,
                od.quantity,
                p.name       as product_name,
-               p.image_data as product_iamge
+               p.image_data as product_image
         FROM orders o
                  LEFT JOIN order_detail od ON o.order_id = od.order_id
                  LEFT JOIN product p ON od.product_id = p.product_id
-        WHERE o.order_id = #{userId}
+        WHERE o.user_id = #{userId}
         ORDER BY o.order_date DESC
     </select>
 
