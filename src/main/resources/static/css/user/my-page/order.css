@@ -1,7 +1,5 @@
-
 .order-section {
-    width: 100%;
-    padding: 0 200px;
+    margin: 0 auto;
 }
 
 .order-section a,
@@ -11,7 +9,7 @@
 .order-section button,
 .order-section span,
 .order-section div {
-    font-size: var(--font-x-small);
+    font-size: var(--font-small);
 }
 
 /*카테고리*/
@@ -44,8 +42,10 @@
     margin-right: 40px;
 }
 
+.order-section > .order-select-container > li > .calender{
 
-.order-section > .order-select-container > li > .select-box,
+}
+
 .order-section > .order-select-container > li > .select-box > input {
     &:hover {
         cursor: pointer;
@@ -116,6 +116,13 @@
     pointer-events: none;
 }
 
+.order-section > .order-select-container > li > .calender > i.bi-chevron-down{
+    margin-right: -10px;
+}
+
+.order-section > .order-select-container > li > .calender{
+    width: 120%;
+}
 
 .order-section > .order-select-container > li > .select-box > .datepicker-dropdown {
     margin-top: 6px;
@@ -138,12 +145,12 @@
     display: grid;
     position: relative;
     grid-template-columns: auto minmax(300px, 1fr) auto auto auto;
-    /*border-bottom: 1px solid var(--gray-bright);*/
 }
 
 /*주문 내역이 없을 때*/
 .order-section > .order-grid-container .no-product {
     display: none;
+    /*그리드 헤더가 그리드의 1번 줄부터 마지막(-1) 줄까지 모두 차지*/
     grid-column: 1/-1;
     padding: 100px 0;
     justify-content: center;
@@ -156,7 +163,7 @@
     align-items: center;
     justify-content: center;
     padding: 15px 10px;
-    font-size: var(--font-x-small);
+    font-size: var(--font-small);
     white-space: nowrap;
     border-bottom: 1px solid #D1D1D1ED;
 }
@@ -172,8 +179,12 @@
     border-bottom: 1px solid #D1D1D1ED;
 }
 
+.order-grid-container > a.order-grid-contents> div> span{
+    font-size: var(--font-small);
+}
 .order-section > .order-grid-container .order-info >  img {
     width: 50px;
+    margin-right: 10px;
 }
 
 

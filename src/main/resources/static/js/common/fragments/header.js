@@ -43,14 +43,16 @@ function animateCartIcon() {
 }
 
 //장바구니 페이지면 안 보이게
-if (basketSection) {
-    cartAlert.style.display = 'none';
-    sessionStorage.removeItem('cartVisible');
-} else {
-    if (sessionStorage.getItem('cartVisible') === 'true') {
-        cartAlert.style.display = 'flex';
-    } else {
+if (cartAlert) {
+    if (basketSection) {
         cartAlert.style.display = 'none';
+        sessionStorage.removeItem('cartVisible');
+    } else {
+        if (sessionStorage.getItem('cartVisible') === 'true') {
+            cartAlert.style.display = 'flex';
+        } else {
+            cartAlert.style.display = 'none';
+        }
     }
 }
 

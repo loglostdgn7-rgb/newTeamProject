@@ -79,6 +79,7 @@ public class UserMyPageService {
             if (Objects.nonNull(order.getOrderDate()))
                 order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
 
+            //uid 줄이기
             if (Objects.nonNull(order.getMerchantUid())) {
                 String[] shorten = order.getMerchantUid().split("-");
                 order.setShortMerchantUid("(" + shorten[0] + "...)");
@@ -104,7 +105,6 @@ public class UserMyPageService {
 
             if (product != null && !product.isEmpty()) {
                 OrderDetailDTO firstItem = product.getFirst();
-
                 String dataUri = ImageUtils.imageDataUir(firstItem.getProductImage(), "image/jpeg");
                 order.setBase64Image(dataUri);
             }
@@ -123,14 +123,30 @@ public class UserMyPageService {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
 
+        // 날짜 바꾸기
+        if (Objects.nonNull(order.getOrderDate()))
+            order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
+
+        // 주문 상태 바꾸기
+        if (order.getOrderStatus() != null) { // 이거 안쓰면..hashMap 에러 뜸 switch가 쓰는거라서..
+            switch (order.getOrderStatus()) {
+                case "PENDING" -> order.setOrderStatusFormatted("입금전");
+                case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
+                case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
+                case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
+                default -> order.setOrderStatusFormatted(order.getOrderStatus());
+            }
+        } else {
+            order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
+        }
+
+        //주문의 상품마다 이미지 변경, 불러오기
         for(OrderDetailDTO product : order.getOrderDetails()){
             if (Objects.nonNull(product.getProductImage())){
                 String dataUri = ImageUtils.imageDataUir(product.getProductImage(), "image/jpeg");
-
-                product.set
+                product.setBase64Image(dataUri);
             }
         }
-
         return order;
     }
 

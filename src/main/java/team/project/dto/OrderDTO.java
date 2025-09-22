@@ -46,6 +46,9 @@ public class OrderDTO {
     private String orderStatusFormatted;
     private String base64Image;
 
+    public String getOrderDateFormatted(){
+        return orderDateFormatted;
+    };
 
 
 

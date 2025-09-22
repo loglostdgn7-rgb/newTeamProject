@@ -7,7 +7,7 @@
 
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="/css/user/my-page/order-detail.css">
 </th:block>
 <th:block layout:fragment="js">
 
@@ -18,30 +18,34 @@
     <div class="aside-container">
         <aside th:replace="~{layout/aside :: aside}"></aside>
         <section class="order-detail-section">
-            <!--            주문 내역-->
-            <div class="order-grid-container">
+            <div class="order-detail-container">
+                <!-- 날짜/ merchantUid -->
+                <div  class="order-date-and-number"
+                      th:text="|주문 날짜: ${order.orderDateFormatted} / 주문 번호: ${order.merchantUid}|">주문날짜 / 주문번호</div>
                 <!-- 그리드 헤더-->
-                <div  class="order-date-and-number order-grid-header"
-                      th:text="${order.orderDateFormatted} + ' / ' + ${order.merchantUid}">주문날짜 / merchantUid</div>
+                <div class="order-detail-grid-header">상품정보</div>
+                <div class="order-detail-grid-header">결제금액</div>
+                <div class="order-detail-grid-header">주문상태</div>
+                <div class="order-detail-grid-header">취소/교환/반품</div>
                 <!--  개별 주문 내역 상품들-->
                 <div class="order-detail-grid-contents" th:each="product : ${order.orderDetails}">
-                    <div class="order-info">
+                    <div class="order-detail-info">
                         <img th:src="${product.base64Image}"
                              alt="상품 이미지">
                         <span th:text="${product.productName}">상품 이름</span>
                     </div>
-                    <div class="order-price">
+                    <div class="order-detail-price">
                         <span th:text="|￦${#numbers.formatInteger(product.productPrice, 0, 'COMMA')}|">0000</span>
                     </div>
-                    <div class="order-status">
+                    <div class="order-detail-status">
                         <span th:text="${order.orderStatusFormatted}">입금전</span>
                     </div>
-                    <div class="order-procedure">
+                    <div class="order-detail-procedure">
                         <span>취소불가</span>
                     </div>
                 </div>
             </div>
-            <div class="order-paging-container">
+            <div class="order-detail-paging-container">
                 <i class="bi bi-chevron-left"></i>
                 <span>1</span>
                 <i class="bi bi-chevron-right"></i>
