@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,6 @@ import team.project.dto.*;
 import team.project.mapper.UserMapper;
 import team.project.util.ImageUtils;
 
-import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -67,6 +65,10 @@ public class UserMyPageService {
         logger.info("주문 완료: {}", order.getOrderId());
     }
 
+    private void image_chane(){
+
+    }
+
     //주문내역 리스트 불러오기
     public List<OrderDTO> find_orders_by_user_id(String userId) {
         List<OrderDTO> orderList = userMapper.selectOrdersByUserId(userId);
@@ -99,6 +101,7 @@ public class UserMyPageService {
             List<OrderDetailDTO> product = order.getOrderDetails();
 
             //이미지 바꾸기
+
             if (product != null && !product.isEmpty()) {
                 OrderDetailDTO firstItem = product.getFirst();
 
