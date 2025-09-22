@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"imageData", "base64ImageData"})
 public class ProductDTO {
     private int productId;
     private String name;

@@ -243,4 +243,19 @@
 }
 
 
+header > nav > ul a,
+header > nav > ul button{
+    text-decoration: none;
+    color: black;
 
+    &:hover{
+        color: var(--basic-red);
+        cursor: pointer;
+    }
+}
+
+/* 다음 버튼 아이콘 항상 검정색 */
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    filter: invert(1) grayscale(100%) brightness(0); /* 항상 검정 */
+}
