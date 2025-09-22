@@ -16,6 +16,7 @@ public interface ProductMapper {
 
     List<ProductDTO> randomProduct();
     List<ProductDTO> selectRandomProducts();
+    List<ProductDTO> selectRandomProductPromotion();
 
 
     List<ProductDTO> selectProducts(PagenationDTO pagenation);

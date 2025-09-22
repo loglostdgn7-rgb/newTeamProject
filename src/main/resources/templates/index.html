@@ -41,7 +41,7 @@
                             </div>
                             <ul class="price">
                                 <li><span class="line-through" th:text="${product.price}">￦89000</span></li>
-                                <li><span th:text="${(product.Price * 0.8).intValue()}">￦80000</span></li>
+                                <li><span th:text="${product.salePrice}">￦80000</span></li>
                             </ul>
                         </a>
                     </li>

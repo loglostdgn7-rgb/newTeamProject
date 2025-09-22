@@ -21,7 +21,8 @@ public class ProductDTO {
     private String colors;
     private String promotion;
     private byte[] imageData; 
-    private String base64ImageData; 
+    private String base64ImageData;
+    private int salePrice;
     //아래 추가 [김영수님](9/20)
     public void setId(Integer id) {
         this.productId = id;
