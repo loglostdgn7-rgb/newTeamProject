@@ -68,4 +68,27 @@
         VALUES (#{id}, #{name}, #{price}, #{promotion})
     </insert>
 
+
+
+    <select id="selectRandomProducts" resultType="ProductDTO">
+        SELECT product_id,
+               name,
+               price,
+               promotion,
+               image_data,
+               price * (1 - promotion / 100) AS salePrice
+        FROM (SELECT product_id,
+                     name,
+                     price,
+                     image_data,
+                     FLOOR(1 + (RAND() * 8)) * 10 AS promotion
+              FROM product
+              ORDER BY RAND() LIMIT 10)
+                 AS sale
+    </select>
+
+
+
+
+
 </mapper>

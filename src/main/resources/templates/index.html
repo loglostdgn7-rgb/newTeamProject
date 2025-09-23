@@ -29,87 +29,88 @@
             </h2>
             <div class="product-slide-wrapper swiper">
                 <ul class="product-list-container swiper-wrapper">
-                    <li class="product swiper-slide">
+                    <li class="product swiper-slide" th:each="product : ${pagenation.elements}">
                         <a href="#">
                             <div class="product-img-box">
-                                <img src="https://standoil.kr/web/product/big/202507/9e4004752089a4d52333f7cb2e165966.jpg"
-                                     alt="">
+                                <img th:src="@{'data:image/jpeg;base64,' + ${product.base64ImageData}}" alt="">
+<!--                                <img src="https://standoil.kr/web/product/big/202507/9e4004752089a4d52333f7cb2e165966.jpg" alt="">-->
                             </div>
                             <div class="promotion">NEW ARRIVAL∙10% OFF</div>
                             <div class="name-color">
-                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>
+                                <span th:text="${product.name}">상품명</span>
                             </div>
                             <ul class="price">
-                                <li><span class="line-through">￦89000</span></li>
-                                <li><span>￦80000</span></li>
+                                <li><span class="line-through" th:text="${product.price}">￦89000</span></li>
+                                <li><span th:text="${product.salePrice}">￦80000</span></li>
                             </ul>
                         </a>
                     </li>
 
-                    <li class="product swiper-slide">
-                        <a href="#">
-                            <div class="product-img-box">
-                                <img src="https://standoil.kr/web/product/big/202507/d60a57991ca58561de2cf22b43027411.jpg"
-                                     alt="">
-                            </div>
-                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>
-                            <div class="name-color">
-                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>
-                            </div>
-                            <ul class="price">
-                                <li><span class="line-through">￦89000</span></li>
-                                <li><span>￦80000</span></li>
-                            </ul>
-                        </a>
-                    </li>
-                    <li class="product swiper-slide">
-                        <a href="#">
-                            <div class="product-img-box">
-                                <img src="https://standoil.kr/web/product/big/202507/8f4c64e8d595ba62963821e3c8610095.jpg"
-                                     alt="">
-                            </div>
-                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>
-                            <div class="name-color">
-                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>
-                            </div>
-                            <ul class="price">
-                                <li><span class="line-through">￦89000</span></li>
-                                <li><span>￦80000</span></li>
-                            </ul>
-                        </a>
-                    </li>
-                    <li class="product swiper-slide">
-                        <a href="#">
-                            <div class="product-img-box">
-                                <img src="https://standoil.kr/web/product/big/202507/ce4d748bb9e15d926ad7ce39c6d5aa43.jpg"
-                                     alt="">
-                            </div>
-                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>
-                            <div class="name-color">
-                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>
-                            </div>
-                            <ul class="price">
-                                <li><span class="line-through">￦89000</span></li>
-                                <li><span>￦80000</span></li>
-                            </ul>
-                        </a>
-                    </li>
-                    <li class="product swiper-slide">
-                        <a href="#">
-                            <div class="product-img-box">
-                                <img src="https://standoil.kr/web/product/big/202507/5c1de347f71d490faf9cadc1553a4e69.jpg"
-                                     alt="">
-                            </div>
-                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>
-                            <div class="name-color">
-                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>
-                            </div>
-                            <ul class="price">
-                                <li><span class="line-through">￦89000</span></li>
-                                <li><span>￦80000</span></li>
-                            </ul>
-                        </a>
-                    </li>
+
+<!--                    <li class="product swiper-slide">-->
+<!--                        <a href="#">-->
+<!--                            <div class="product-img-box">-->
+<!--                                <img src="https://standoil.kr/web/product/big/202507/d60a57991ca58561de2cf22b43027411.jpg"-->
+<!--                                     alt="">-->
+<!--                            </div>-->
+<!--                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>-->
+<!--                            <div class="name-color">-->
+<!--                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>-->
+<!--                            </div>-->
+<!--                            <ul class="price">-->
+<!--                                <li><span class="line-through">￦89000</span></li>-->
+<!--                                <li><span>￦80000</span></li>-->
+<!--                            </ul>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="product swiper-slide">-->
+<!--                        <a href="#">-->
+<!--                            <div class="product-img-box">-->
+<!--                                <img src="https://standoil.kr/web/product/big/202507/8f4c64e8d595ba62963821e3c8610095.jpg"-->
+<!--                                     alt="">-->
+<!--                            </div>-->
+<!--                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>-->
+<!--                            <div class="name-color">-->
+<!--                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>-->
+<!--                            </div>-->
+<!--                            <ul class="price">-->
+<!--                                <li><span class="line-through">￦89000</span></li>-->
+<!--                                <li><span>￦80000</span></li>-->
+<!--                            </ul>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="product swiper-slide">-->
+<!--                        <a href="#">-->
+<!--                            <div class="product-img-box">-->
+<!--                                <img src="https://standoil.kr/web/product/big/202507/ce4d748bb9e15d926ad7ce39c6d5aa43.jpg"-->
+<!--                                     alt="">-->
+<!--                            </div>-->
+<!--                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>-->
+<!--                            <div class="name-color">-->
+<!--                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>-->
+<!--                            </div>-->
+<!--                            <ul class="price">-->
+<!--                                <li><span class="line-through">￦89000</span></li>-->
+<!--                                <li><span>￦80000</span></li>-->
+<!--                            </ul>-->
+<!--                        </a>-->
+<!--                    </li>-->
+<!--                    <li class="product swiper-slide">-->
+<!--                        <a href="#">-->
+<!--                            <div class="product-img-box">-->
+<!--                                <img src="https://standoil.kr/web/product/big/202507/5c1de347f71d490faf9cadc1553a4e69.jpg"-->
+<!--                                     alt="">-->
+<!--                            </div>-->
+<!--                            <div class="promotion">NEW ARRIVAL∙10% OFF</div>-->
+<!--                            <div class="name-color">-->
+<!--                                <span>Sophie Flat Sneakers · 소피 플랫 스니커즈 / 네이비 콤비</span>-->
+<!--                            </div>-->
+<!--                            <ul class="price">-->
+<!--                                <li><span class="line-through">￦89000</span></li>-->
+<!--                                <li><span>￦80000</span></li>-->
+<!--                            </ul>-->
+<!--                        </a>-->
+<!--                    </li>-->
                 </ul>
                 <div class="swiper-pagination"></div>
                 <button class="slide-prev-btn swiper-button-prev">

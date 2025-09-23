@@ -46,6 +46,9 @@ public class ProductController {
     }
 
 
+
+
+
     @GetMapping("/product/detail/{id}")
     public String get_detail(
             Model model,
@@ -62,10 +65,8 @@ public class ProductController {
                 productDetail.setBaseDetailImageData(base64Image);
             }
         }
-            var productDetail =  productService.get_id_product_detail(id);
-
-
-        model.addAttribute("productDetail", productDetail);
+            var productDetails =  productService.get_id_product_detail(id);
+        model.addAttribute("productDetails", productDetails);
         model.addAttribute("product", product);
         return "shop/product/detail";
     }

@@ -12,6 +12,13 @@ import java.util.Map;
 
 @Mapper
 public interface ProductMapper {
+    List<ProductDTO> get_product_info(ProductDTO productDTO);
+
+    List<ProductDTO> randomProduct();
+    List<ProductDTO> selectRandomProducts();
+    List<ProductDTO> selectRandomProductPromotion();
+
+
     List<ProductDTO> selectProducts(PagenationDTO pagenation);
     List<ProductDetailDTO> selectDetailProduct(ProductDTO product);
 
