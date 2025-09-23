@@ -16,17 +16,20 @@
     font-size: var(--font-x-small);
 }
 
+.order-detail-grid-header {
+    justify-content: center;
+}
+
 .order-detail-grid-header,
-.order-detail-grid-contents > div{
+.order-detail-grid-contents > div {
     display: flex;
     align-items: center;
-    justify-content: center;
     padding: 15px 10px;
     white-space: nowrap;
     border-bottom: 1px solid #D1D1D1ED;
 }
 
-.order-detail-section .order-detail-contents > div > span{
+.order-detail-section .order-detail-contents > div > span {
     font-size: var(--font-small);
 }
 
@@ -41,14 +44,26 @@
     justify-content: flex-start;
 }
 
-.order-detail-info > img {
+.order-detail-info > a {
+    display: flex;
+    align-items: center;
+}
+
+.order-detail-info img {
     width: 50px;
     height: 50px;
     object-fit: contain;
     margin-right: 10px;
 }
 
+.order-detail-price,
+.order-detail-status,
+.order-detail-procedure {
+    justify-content: center;
+}
+
 /*페이지네이션*/
+
 .order-detail-section > .order-detail-paging-container {
     display: flex;
     justify-content: center;

@@ -62,22 +62,7 @@
         </collection>
     </resultMap>
 
-    <select id="selectOrdersByUserId" resultMap="orderWithDetailResultMap">
-        SELECT *,
-               od.order_detail_id,
-               od.product_id,
-               od.product_price,
-               od.quantity,
-               p.name       as product_name,
-               p.image_data as product_image
-        FROM orders o
-                 LEFT JOIN order_detail od ON o.order_id = od.order_id
-                 LEFT JOIN product p ON od.product_id = p.product_id
-        WHERE o.user_id = #{userId}
-        ORDER BY o.order_date DESC
-    </select>
-
-    <select id="selectOrderByIdAndUserId" resultMap="orderWithDetailResultMap">
+    <select id="selectOrders" resultMap="orderWithDetailResultMap">
         SELECT o.*,
                od.order_detail_id,
                od.product_id,
@@ -89,41 +74,21 @@
                  LEFT JOIN order_detail od ON o.order_id = od.order_id
                  LEFT JOIN product p ON od.product_id = p.product_id
         WHERE o.user_id = #{userId}
-          AND o.order_id = #{orderId}
+        ## 동적 sql로 만드는 if. 두 개의 셀렉트를 하나로 만들수 있다.
+        <if test="orderId != null">
+            AND o.order_id = #{orderId}
+        </if>
+        ORDER BY o.order_date DESC
     </select>
 
-
-    <!--    <resultMap id="orderWithDetailMap" type="OrderDTO" autoMapping="true">-->
-    <!--        <id property="orderId" column="order_id"/>-->
-    <!--        <collection property="orderDetails"-->
-    <!--                    ofType="OrderDetailDTO"-->
-    <!--                    column="order_id"-->
-    <!--                    select="selectOrderDetailByOrderId">-->
-    <!--        </collection>-->
-    <!--    </resultMap>-->
-
-    <!--    <select id="selectOrdersByUserId" resultType="OrderDTO" resultMap="orderWithDetailMap">-->
-    <!--        SELECT *-->
-    <!--        FROM orders-->
-    <!--        WHERE user_id = #{userId}-->
-    <!--        ORDER By order_date DESC-->
-    <!--    </select>-->
-
-    <!--    <select id="selectOrderByIdAndUserId" resultType="OrderDTO" resultMap="orderWithDetailMap">-->
-    <!--        SELECT *-->
-    <!--        FROM orders-->
-    <!--        WHERE user_id = #{userId}-->
-    <!--          AND order_id = #{orderId}-->
-    <!--    </select>-->
-
     <select id="selectOrderDetailByOrderId" resultType="OrderDetailDTO">
-        SELECT *,
-               order_detail_id    as orderDetailId,
-               product.image_data as productImage,
-               product.name       as productName
-        FROM order_detail
-                 INNER JOIN product on order_detail.product_id = product.product_id
-        WHERE order_detail.order_id = #{orderId}
+        SELECT od.*,
+               od.order_detail_id as orderDetailId,
+               p.image_data       as productImage,
+               p.name             as productName
+        FROM order_detail od
+                 INNER JOIN product p on od.product_id = p.product_id
+        WHERE od.order_id = #{orderId}
     </select>
 
 

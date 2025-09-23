@@ -20,8 +20,9 @@
         <section class="order-detail-section">
             <div class="order-detail-container">
                 <!-- 날짜/ merchantUid -->
-                <div  class="order-date-and-number"
-                      th:text="|주문 날짜: ${order.orderDateFormatted} / 주문 번호: ${order.merchantUid}|">주문날짜 / 주문번호</div>
+                <div class="order-date-and-number"
+                     th:text="|주문 날짜: ${order.orderDateFormatted} / 주문 번호: ${order.merchantUid}|">주문날짜 / 주문번호
+                </div>
                 <!-- 그리드 헤더-->
                 <div class="order-detail-grid-header">상품정보</div>
                 <div class="order-detail-grid-header">결제금액</div>
@@ -30,9 +31,11 @@
                 <!--  개별 주문 내역 상품들-->
                 <div class="order-detail-grid-contents" th:each="product : ${order.orderDetails}">
                     <div class="order-detail-info">
-                        <img th:src="${product.base64Image}"
-                             alt="상품 이미지">
-                        <span th:text="${product.productName}">상품 이름</span>
+                        <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
+                            <img th:src="${product.base64Image}"
+                                 alt="상품 이미지">
+                            <span th:text="${product.productName}">상품 이름</span>
+                        </a>
                     </div>
                     <div class="order-detail-price">
                         <span th:text="|￦${#numbers.formatInteger(product.productPrice, 0, 'COMMA')}|">0000</span>

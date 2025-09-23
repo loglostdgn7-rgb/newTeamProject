@@ -30,7 +30,6 @@ public class UserMyPageService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RestTemplate restTemplate;
-    private final Random random = new Random();
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String KAKAO_CLIENT_ID;
@@ -65,40 +64,50 @@ public class UserMyPageService {
         logger.info("주문 완료: {}", order.getOrderId());
     }
 
+    //  공통 포메팅 메소드
+    private void applyCommonOrderFormatting(OrderDTO order) {
+        if (order == null) {
+            return;
+        }
+
+        // 날짜 바꾸기
+        if (Objects.nonNull(order.getOrderDate())) {
+            order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
+        }
+
+        // 주문 상태 바꾸기
+        if (order.getOrderStatus() != null) {
+            switch (order.getOrderStatus()) {
+                case "PENDING" -> order.setOrderStatusFormatted("입금전");
+                case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
+                case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
+                case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
+                default -> order.setOrderStatusFormatted(order.getOrderStatus());
+            }
+        } else {
+            order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
+        }
+    }
+
     //주문내역 리스트 불러오기
     public List<OrderDTO> find_orders_by_user_id(String userId) {
-        List<OrderDTO> orderList = userMapper.selectOrdersByUserId(userId);
+        List<OrderDTO> orderList = userMapper.selectOrders(userId, null);
         logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
 
         for (OrderDTO order : orderList) {
-            // 날짜 바꾸기
-            if (Objects.nonNull(order.getOrderDate()))
-                order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
-
             //uid 줄이기
             if (Objects.nonNull(order.getMerchantUid())) {
                 String[] shorten = order.getMerchantUid().split("-");
-                order.setShortMerchantUid("(" + shorten[0] + "...)");
+                order.setShortMerchantUid(shorten[0] + "...");
             }
 
-            // 주문 상태 바꾸기
-            if (order.getOrderStatus() != null) { // 이거 안쓰면..hashMap 에러 뜸 switch가 쓰는거라서..
-                switch (order.getOrderStatus()) {
-                    case "PENDING" -> order.setOrderStatusFormatted("입금전");
-                    case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
-                    case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
-                    case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
-                    default -> order.setOrderStatusFormatted(order.getOrderStatus());
-                }
-            } else {
-                order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
-            }
+            //  공통 포메팅 메소드 적용
+            applyCommonOrderFormatting(order);
 
             //개별 상품
             List<OrderDetailDTO> product = order.getOrderDetails();
 
             //이미지 바꾸기
-
             if (product != null && !product.isEmpty()) {
                 OrderDetailDTO firstItem = product.getFirst();
                 String dataUri = ImageUtils.imageDataUir(firstItem.getProductImage(), "image/jpeg");
@@ -114,31 +123,19 @@ public class UserMyPageService {
             int orderId,
             String userId
     ) {
-        OrderDTO order = userMapper.selectOrderByIdAndUserId(orderId, userId);
-        if (order == null) {
+        List<OrderDTO> orderList = userMapper.selectOrders(userId, orderId);
+        if (orderList == null ||orderList.isEmpty()) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
 
-        // 날짜 바꾸기
-        if (Objects.nonNull(order.getOrderDate()))
-            order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
+        OrderDTO order = orderList.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다.
 
-        // 주문 상태 바꾸기
-        if (order.getOrderStatus() != null) { // 이거 안쓰면..hashMap 에러 뜸 switch가 쓰는거라서..
-            switch (order.getOrderStatus()) {
-                case "PENDING" -> order.setOrderStatusFormatted("입금전");
-                case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
-                case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
-                case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
-                default -> order.setOrderStatusFormatted(order.getOrderStatus());
-            }
-        } else {
-            order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
-        }
+        //  공통 포메팅 메소드 적용
+        applyCommonOrderFormatting(order);
 
         //주문의 상품마다 이미지 변경, 불러오기
-        for(OrderDetailDTO product : order.getOrderDetails()){
-            if (Objects.nonNull(product.getProductImage())){
+        for (OrderDetailDTO product : order.getOrderDetails()) {
+            if (Objects.nonNull(product.getProductImage())) {
                 String dataUri = ImageUtils.imageDataUir(product.getProductImage(), "image/jpeg");
                 product.setBase64Image(dataUri);
             }

@@ -23,11 +23,9 @@ public interface UserMapper {
 
     void insertOrderDetail(OrderDetailDTO item);
 
-    List<OrderDTO> selectOrdersByUserId(String userId);
-
-    OrderDTO selectOrderByIdAndUserId(
-            @Param("orderId") int orderId,
-            @Param("userId") String userId
+    List<OrderDTO> selectOrders(
+            @Param("userId") String userId,
+            @Param("orderId") Integer orderId
     );
 
     List<OrderDetailDTO> selectOrderDetailByOrderId(int orderId);

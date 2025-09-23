@@ -42,7 +42,7 @@
     margin-right: 40px;
 }
 
-.order-section > .order-select-container > li > .calender{
+.order-section > .order-select-container > li > .calender {
 
 }
 
@@ -116,11 +116,11 @@
     pointer-events: none;
 }
 
-.order-section > .order-select-container > li > .calender > i.bi-chevron-down{
+.order-section > .order-select-container > li > .calender > i.bi-chevron-down {
     margin-right: -10px;
 }
 
-.order-section > .order-select-container > li > .calender{
+.order-section > .order-select-container > li > .calender {
     width: 120%;
 }
 
@@ -172,21 +172,32 @@
     display: contents;
 }
 
-.order-section > .order-grid-container > a.order-grid-contents> div{
+.order-section > .order-grid-container > a.order-grid-contents > div {
     display: flex;
     align-items: center;
-    justify-content: center;
     border-bottom: 1px solid #D1D1D1ED;
 }
 
-.order-grid-container > a.order-grid-contents> div> span{
+.order-section > .order-grid-container > a.order-grid-contents > .order-date-and-number {
+    width: 100%;
+    margin-right: 50px;
+}
+
+a.order-grid-contents > .order-price,
+a.order-grid-contents > .order-status,
+a.order-grid-contents > .order-procedure{
+    justify-content: center;
+}
+
+
+.order-grid-container > a.order-grid-contents > div > span {
     font-size: var(--font-small);
 }
-.order-section > .order-grid-container .order-info >  img {
+
+.order-section > .order-grid-container .order-info > img {
     width: 50px;
     margin-right: 10px;
 }
-
 
 
 /*페이징*/
