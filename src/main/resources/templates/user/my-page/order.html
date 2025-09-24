@@ -117,7 +117,7 @@
 
                     <!-- 이전 페이지로 버튼 -->
                     <li th:if="${paginationTheOrder.startPageIndex != 1}">
-                        <a th:href="@{/user/my-page/order(page=${paginationTheOrder.startPageIndex - 1}, size=${paginationTheOrder.size})}">
+                        <a th:href="@{/user/my-page/order(sort=${paginationTheOrder.sort=== 'period' ? 'period' : 'status'} page=${paginationTheOrder.startPageIndex - 1}, size=${paginationTheOrder.size})}">
                             <i class="bi bi-chevron-left"></i>
                         </a>
                     </li>

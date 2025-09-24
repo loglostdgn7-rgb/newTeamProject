@@ -35,7 +35,9 @@ public interface UserMapper {
     );
 
     //주문 숫자 카운트
-    int selectOrdersCount(@Param("userId")  String userId);
+    int selectOrdersCount(
+            @Param("userId")  String userId
+    );
 
     List<OrderDetailDTO> selectOrderDetailByOrderId(int orderId);
 
