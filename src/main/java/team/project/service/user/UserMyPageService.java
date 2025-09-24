@@ -78,9 +78,12 @@ public class UserMyPageService {
         if (order.getOrderStatus() != null) {
             switch (order.getOrderStatus()) {
                 case "PENDING" -> order.setOrderStatusFormatted("입금전");
-                case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
-                case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
-                case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
+                case "PREPARING" -> order.setOrderStatusFormatted("배송준비중");
+                case "SHIPPED" -> order.setOrderStatusFormatted("배송중");
+                case "DELIVERED" -> order.setOrderStatusFormatted("배송완료");
+                case "CANCEL" -> order.setOrderStatusFormatted("주문취소");
+                case "EXCHANGE" -> order.setOrderStatusFormatted("교환");
+                case "REFUND" -> order.setOrderStatusFormatted("반품");
                 default -> order.setOrderStatusFormatted(order.getOrderStatus());
             }
         } else {
@@ -92,7 +95,7 @@ public class UserMyPageService {
 //    public List<OrderDTO> find_orders_by_user_id(String userId) {
     public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagenation) {
         // 전체 주문 개수를 조회
-        int totalCount = userMapper.selectOrdersCount(userId);
+        int totalCount = userMapper.selectOrdersCount(userId , pagenation);
         pagenation.setTotalElementsCount(totalCount);
 
         //현재 페이지 주문 목록을 조회

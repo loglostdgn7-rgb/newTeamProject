@@ -45,7 +45,7 @@ public class UserMyPageController {
         return ResponseEntity.ok("주문이 성공적으로 완료 되었습니다.");
     }
 
-    //주문 내역 보기
+    //주문 내역 리스트 보기
     @GetMapping("/my-page/order")
     public String get_order(
             @AuthenticationPrincipal UserDTO principal,
@@ -55,14 +55,14 @@ public class UserMyPageController {
         pagination.setSize(5); //주문내역 주문갯수
         pagination.setPageViewOffset(1);//현재 페이지 앞뒤 번호 표시 갯수
 
-        PaginationDTO<OrderDTO> paginationTheOrder = userMyPageService.find_orders_by_user_id(principal.getId(),pagination);
+        PaginationDTO<OrderDTO> paginationTheOrder = userMyPageService.find_orders_by_user_id(principal.getId(), pagination);
 
         model.addAttribute("paginationTheOrder", paginationTheOrder);
 
         return "user/my-page/order";
     }
 
-    //order detail 개별(row) 주문 내역 보기
+    //개별 주문 내역의 상품리스트 보기
     @GetMapping("/my-page/order/{orderId}")
     public String get_order_items(
             @PathVariable("orderId") int orderId,

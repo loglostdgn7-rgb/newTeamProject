@@ -75,6 +75,14 @@ dropdownGroups.forEach(dropdown => {
                 }
                 startDateInput.value = formDate(startDate);
                 endDateInput.value = formDate(today);
+
+                //달력글자 깜박거리기
+                startDateInput.style.fontWeight = "bold";
+                endDateInput.style.fontWeight = "bold";
+                setTimeout(() => {
+                    startDateInput.style.fontWeight = "400";
+                    endDateInput.style.fontWeight = "400";
+                }, 150)
             }
             closeOptionBox();
         });
@@ -120,17 +128,52 @@ endDateInput.addEventListener("changeDate", event => {
     }
 });
 
-// 조회 버튼 클릭 이벤트
-getHistoryBtn.onclick = () => {
-    if (startDateInput.value && endDateInput.value) {
-        location.href = `history?startDate=${startDateInput.value}&endDate=${endDateInput.value}`;
-    } else {
-        alert("조회 기간을 선택해주세요!");
-    }
-};
-
-
 // 드래그 방지 기능
 document.querySelectorAll('.no-drag').forEach(input => {
     input.addEventListener('mousedown', event => event.preventDefault());
 });
+
+/*******************************/
+const params = new URLSearchParams(window.location.search);
+// 조회 버튼 클릭 이벤트
+getHistoryBtn.onclick = () => {
+    const startDate = document.getElementById("date-picker-start").value;
+    const endDate = document.getElementById("date-picker-end").value;
+    const statusText = document.getElementById("select-status").value;
+    let status = "";
+
+    // data-status 값 찾기
+    if (statusText && statusText !== "주문상태") {
+        const statusOptions = document.querySelectorAll(".status-option a");
+        for (const option of statusOptions) {
+            if (option.textContent.trim() === statusText) {
+                status = option.dataset.status;
+                break;
+            }
+        }
+    }
+
+    // URL 파라미터
+    params.set("startDate", startDate);
+    params.set("endDate", endDate);
+    if (status) params.set("status", status);
+
+    const periodText = document.getElementById("select-period").value;
+    if (periodText) params.set("periodText", periodText);
+    else params.delete("periodText");
+
+    location.href = `${location.pathname}?${params.toString()}`;
+};
+
+//앞의 두개 드랍다운 선택 유지
+const periodText = params.get("periodText");
+
+if (periodText) document.getElementById("select-period").value = periodText;
+else document.getElementById("select-period").value = "일주일";
+
+const status = params.get("status");
+if (status) {
+    const statusOption = document.querySelector(`.status-option a[data-status="${status}"]`);
+    if (statusOption) document.getElementById("select-status").value = statusOption.textContent.trim();
+} else document.getElementById("select-status").value = "주문상태";
+/*******************************/

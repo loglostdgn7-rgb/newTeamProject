@@ -59,7 +59,7 @@ public class OrderDTO {
             return this.base64Image = ImageUtils.imageDataUri(firstItem.getProductImage(), "image/jpeg");
 
         }
-        //이것도 안되면,
+        //그것도 안되면,
         return null;
     }
 }

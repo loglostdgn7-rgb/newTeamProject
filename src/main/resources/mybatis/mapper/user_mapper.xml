@@ -64,18 +64,29 @@
 
     <select id="selectOrdersWithPagination" resultMap="orderWithDetailResultMap">
         SELECT o.*,
-               od.order_detail_id,
-               od.product_id,
-               od.product_price,
-               od.quantity,
-               p.name       as product_name,
-               p.image_data as product_image
+        od.order_detail_id,
+        od.product_id,
+        od.product_price,
+        od.quantity,
+        p.name as product_name,
+        p.image_data as product_image
         FROM (
-            SELECT order_id
-            FROM orders
-            WHERE user_id = #{userId}
-            ORDER BY order_date DESC
-            LIMIT #{pagination.size} OFFSET #{pagination.offset}
+        SELECT order_id
+        FROM orders
+        WHERE user_id = #{userId}
+            <if test="pagination.startDate != null and pagination.startDate != ''">
+                            ##order_date가 크거나 같다(이상)
+                AND order_date &gt;= #{pagination.startDate}
+            </if>
+            <if test="pagination.endDate != null and pagination.endDate != ''">
+                            ##order_date가 작거나 같다(이하)
+                AND order_date &lt; #{pagination.endDate}
+            </if>
+            <if test="pagination.status != null and pagination.status != ''">
+                AND order_status = #{pagination.status}
+            </if>
+        ORDER BY order_date DESC
+        LIMIT #{pagination.size} OFFSET #{pagination.offset}
         ) AS paged_orders
         INNER JOIN orders o ON paged_orders.order_id = o.order_id
         LEFT JOIN order_detail od ON o.order_id = od.order_id
@@ -103,6 +114,17 @@
         SELECT count(*)
         FROM orders
         WHERE user_id = #{userId}
+        <if test="pagination.startDate != null and pagination.startDate != ''">
+            ##order_date가 크거나 같다(이상)
+            AND order_date &gt;= #{pagination.startDate}
+        </if>
+        <if test="pagination.endDate != null and pagination.endDate != ''">
+            ##order_date가 작거나 같다(이하)
+            AND order_date &lt; #{pagination.endDate}
+        </if>
+        <if test="pagination.status != null and pagination.status != ''">
+            AND order_status = #{pagination.status}
+        </if>
     </select>
 
     <select id="selectOrderDetailByOrderId" resultType="OrderDetailDTO">
