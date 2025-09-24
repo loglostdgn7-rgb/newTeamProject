@@ -14,7 +14,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import team.project.dto.*;
 import team.project.mapper.UserMapper;
-import team.project.util.ImageUtils;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -90,10 +89,18 @@ public class UserMyPageService {
     }
 
     //주문내역 리스트 불러오기
-    public List<OrderDTO> find_orders_by_user_id(String userId) {
-        List<OrderDTO> orderList = userMapper.selectOrders(userId, null);
+//    public List<OrderDTO> find_orders_by_user_id(String userId) {
+    public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagenation) {
+        // 전체 주문 개수를 조회
+        int totalCount = userMapper.selectOrdersCount(userId);
+        pagenation.setTotalElementsCount(totalCount);
+
+        //현재 페이지 주문 목록을 조회
+        List<OrderDTO> orderList = userMapper.selectOrdersWithPagination(userId, pagenation);
+
         logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
 
+        //merchantUid 줄이기
         for (OrderDTO order : orderList) {
             //uid 줄이기
             if (Objects.nonNull(order.getMerchantUid())) {
@@ -104,18 +111,11 @@ public class UserMyPageService {
             //  공통 포메팅 메소드 적용
             applyCommonOrderFormatting(order);
 
-            //개별 상품
-            List<OrderDetailDTO> product = order.getOrderDetails();
-
-            //이미지 바꾸기
-            if (product != null && !product.isEmpty()) {
-                OrderDetailDTO firstItem = product.getFirst();
-                String dataUri = ImageUtils.imageDataUir(firstItem.getProductImage(), "image/jpeg");
-                order.setBase64Image(dataUri);
-            }
-            logger.info("가공 후 OrderDTO: {}", order);
+            logger.info("주문내역(리스트)[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
         }
-        return orderList;
+        pagenation.setElements(orderList);
+
+        return pagenation;
     }
 
     //개별(row) 주문 내역
@@ -123,23 +123,18 @@ public class UserMyPageService {
             int orderId,
             String userId
     ) {
-        List<OrderDTO> orderList = userMapper.selectOrders(userId, orderId);
-        if (orderList == null ||orderList.isEmpty()) {
+        List<OrderDTO> orderList = userMapper.selectOrderById(userId, orderId); //유저랑 *주문번호 매칭해서 가져오기
+        if (orderList == null || orderList.isEmpty()) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
 
-        OrderDTO order = orderList.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다.
+        OrderDTO order = orderList.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
 
         //  공통 포메팅 메소드 적용
         applyCommonOrderFormatting(order);
 
-        //주문의 상품마다 이미지 변경, 불러오기
-        for (OrderDetailDTO product : order.getOrderDetails()) {
-            if (Objects.nonNull(product.getProductImage())) {
-                String dataUri = ImageUtils.imageDataUir(product.getProductImage(), "image/jpeg");
-                product.setBase64Image(dataUri);
-            }
-        }
+        logger.info("상세 주문 내역[ORDER_ID=[{}]] : {}", order.getOrderId(),order);
+
         return order;
     }
 

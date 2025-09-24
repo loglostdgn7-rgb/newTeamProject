@@ -1,7 +1,6 @@
 package team.project.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import team.project.dto.PagenationDTO;
+import team.project.dto.PaginationDTO;
 import team.project.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 import team.project.dto.ProductDetailDTO;
@@ -19,7 +18,7 @@ public interface ProductMapper {
     List<ProductDTO> selectRandomProductPromotion();
 
 
-    List<ProductDTO> selectProducts(PagenationDTO pagenation);
+    List<ProductDTO> selectProducts(PaginationDTO pagination);
     List<ProductDetailDTO> selectDetailProduct(ProductDTO product);
 
     List<ProductDTO> selectAllProduct();

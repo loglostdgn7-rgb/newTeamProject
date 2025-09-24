@@ -10,7 +10,7 @@ public final class ImageUtils {
         return Base64.getEncoder().encodeToString(imageData);
     }
 
-    public static String imageDataUir(byte[] imageData, String mimeType) {
+    public static String imageDataUri(byte[] imageData, String mimeType) {
         String base64Image = encodeBase64Image(imageData);
 
         if (base64Image == null) {

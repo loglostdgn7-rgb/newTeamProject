@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import team.project.util.ImageUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -46,7 +47,19 @@ public class OrderDTO {
     private String orderStatusFormatted;
     private String base64Image;
 
+    public String getBase64Image() {
+        if (base64Image != null) {
+            return base64Image;
+        }
+        //이미지 변환값이 없으면 아래 시작
+        List<OrderDetailDTO> product = getOrderDetails();
 
+        if (product != null && !product.isEmpty()) {
+            OrderDetailDTO firstItem = product.getFirst();
+            return this.base64Image = ImageUtils.imageDataUri(firstItem.getProductImage(), "image/jpeg");
 
-
+        }
+        //이것도 안되면,
+        return null;
+    }
 }

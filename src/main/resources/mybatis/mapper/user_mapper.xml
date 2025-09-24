@@ -62,7 +62,7 @@
         </collection>
     </resultMap>
 
-    <select id="selectOrders" resultMap="orderWithDetailResultMap">
+    <select id="selectOrdersWithPagination" resultMap="orderWithDetailResultMap">
         SELECT o.*,
                od.order_detail_id,
                od.product_id,
@@ -70,15 +70,39 @@
                od.quantity,
                p.name       as product_name,
                p.image_data as product_image
+        FROM (
+            SELECT order_id
+            FROM orders
+            WHERE user_id = #{userId}
+            ORDER BY order_date DESC
+            LIMIT #{pagination.size} OFFSET #{pagination.offset}
+        ) AS paged_orders
+        INNER JOIN orders o ON paged_orders.order_id = o.order_id
+        LEFT JOIN order_detail od ON o.order_id = od.order_id
+        LEFT JOIN product p ON od.product_id = p.product_id
+        ORDER BY o.order_date DESC
+    </select>
+
+    <select id="selectOrderById" resultMap="orderWithDetailResultMap">
+        SELECT o.*,
+               od.order_detail_id,
+               od.product_id,
+               od.product_price,
+               od.quantity,
+               p.name as product_name,
+               p.image_data as product_image
         FROM orders o
                  LEFT JOIN order_detail od ON o.order_id = od.order_id
                  LEFT JOIN product p ON od.product_id = p.product_id
         WHERE o.user_id = #{userId}
-        ## 동적 sql로 만드는 if. 두 개의 셀렉트를 하나로 만들수 있다.
-        <if test="orderId != null">
-            AND o.order_id = #{orderId}
-        </if>
-        ORDER BY o.order_date DESC
+          AND o.order_id = #{orderId}
+    </select>
+
+<!--    주문 숫자 카운드-->
+    <select id="selectOrdersCount" resultType="int">
+        SELECT count(*)
+        FROM orders
+        WHERE user_id = #{userId}
     </select>
 
     <select id="selectOrderDetailByOrderId" resultType="OrderDetailDTO">
@@ -90,6 +114,7 @@
                  INNER JOIN product p on od.product_id = p.product_id
         WHERE od.order_id = #{orderId}
     </select>
+
 
 
     <!--   /////// 유저 삽입 ///////  -->

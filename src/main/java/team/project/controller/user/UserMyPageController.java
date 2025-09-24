@@ -12,12 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import team.project.dto.OrderDTO;
+import team.project.dto.PaginationDTO;
 import team.project.dto.UserDTO;
 import team.project.service.user.UserMyPageService;
 import team.project.service.user.UserService;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RequestMapping("/user")
@@ -49,11 +49,15 @@ public class UserMyPageController {
     @GetMapping("/my-page/order")
     public String get_order(
             @AuthenticationPrincipal UserDTO principal,
-            Model model
+            Model model,
+            PaginationDTO<OrderDTO> pagination
     ) {
-        List<OrderDTO> orderList = userMyPageService.find_orders_by_user_id(principal.getId());
+        pagination.setSize(5); //주문내역 주문갯수
+        pagination.setPageViewOffset(1);//현재 페이지 앞뒤 번호 표시 갯수
 
-        model.addAttribute("orderList", orderList);
+        PaginationDTO<OrderDTO> paginationTheOrder = userMyPageService.find_orders_by_user_id(principal.getId(),pagination);
+
+        model.addAttribute("paginationTheOrder", paginationTheOrder);
 
         return "user/my-page/order";
     }

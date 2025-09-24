@@ -88,7 +88,7 @@
                 <!--                상품이 없을 때-->
                 <div class="no-product">주문 내역이 없습니다</div>
                 <!--                상품 있을 때-->
-                <a th:each="order : ${orderList}" class="order-grid-contents"
+                <a th:each="order : ${paginationTheOrder.elements}" class="order-grid-contents"
                    th:href="@{/user/my-page/order/{orderId}(orderId=${order.orderId})}">
                     <div class="order-date-and-number">
                         <span th:text="${order.orderDateFormatted} + ' / ' + ${order.shortMerchantUid}">25.09.20 / 9999</span>
@@ -109,11 +109,49 @@
                     </div>
                 </a>
             </div>
-            <div class="order-paging-container">
-                <i class="bi bi-chevron-left"></i>
-                <span>1</span>
-                <i class="bi bi-chevron-right"></i>
-            </div>
+
+
+            <nav class="order-paging-container">
+<!--                <ul th:if="${paginationTheOrder.getElements != 0}">-->
+                <ul th:if="${not #lists.isEmpty(paginationTheOrder.elements)}">
+
+                    <!-- 이전 페이지로 버튼 -->
+                    <li th:if="${paginationTheOrder.startPageIndex != 1}">
+                        <a th:href="@{/user/my-page/order(page=${paginationTheOrder.startPageIndex - 1}, size=${paginationTheOrder.size})}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    <!-- 현재 보다 이전 페이지 나열 -->
+                    <th:block th:if="${paginationTheOrder.page != 1}">
+                        <li th:each="index : ${#numbers.sequence(paginationTheOrder.startPageIndex, paginationTheOrder.page - 1)}">
+                            <a th:href="@{/user/my-page/order(page=${index}, size=${paginationTheOrder.size})}"
+                               th:text="${index}">1</a>
+                        </li>
+                    </th:block>
+
+                    <!-- 현재 페이지 -->
+                    <li class="now-page">
+                        <a th:href="@{/user/my-page/order(page=${paginationTheOrder.page}, size=${paginationTheOrder.size})}"
+                           th:text="${paginationTheOrder.page}" th:active="true">1</a>
+                    </li>
+
+                    <!-- 현재 보다 다음 페이지 나열 -->
+                    <th:block th:if="${paginationTheOrder.page != paginationTheOrder.totalPageCount}">
+                        <li th:each="index: ${#numbers.sequence(paginationTheOrder.page + 1, paginationTheOrder.endPageIndex)}">
+                            <a th:href="@{/user/my-page/order(page=${index}, size=${paginationTheOrder.size})}"
+                               th:text="${index}">1</a>
+                        </li>
+                    </th:block>
+
+                    <!-- 다음 페이지로 버튼-->
+                    <li th:if="${paginationTheOrder.endPageIndex != paginationTheOrder.totalPageCount}">
+                        <a th:href="@{/user/my-page/order(page=${paginationTheOrder.endPageIndex+1}, size=${paginationTheOrder.size})}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </section>
     </div>
 </main>

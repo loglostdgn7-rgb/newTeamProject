@@ -33,7 +33,7 @@ CREATE TABLE `order_detail` (
   KEY `product_id` (`product_id`),
   CONSTRAINT `order_detail_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
   CONSTRAINT `order_detail_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `order_detail` (
 
 LOCK TABLES `order_detail` WRITE;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
-INSERT INTO `order_detail` VALUES (1,5,3,1,59000),(2,6,82,1,15000),(3,6,78,1,119000),(4,7,7,1,89000),(5,7,16,4,119000);
+INSERT INTO `order_detail` VALUES (1,5,3,1,59000),(2,6,82,1,15000),(3,6,78,1,119000),(4,7,7,1,89000),(5,7,16,4,119000),(6,8,6,2,89000),(7,8,83,1,12000),(8,8,283,1,89000),(9,9,2,2,39000),(10,10,10,2,89000),(11,10,16,1,119000),(12,10,73,1,49000),(13,10,80,1,139000),(14,10,86,1,10000),(15,10,95,1,7000);
 /*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-21 22:15:06
+-- Dump completed on 2025-09-24 19:18:21

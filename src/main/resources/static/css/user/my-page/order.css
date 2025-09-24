@@ -185,7 +185,7 @@
 
 a.order-grid-contents > .order-price,
 a.order-grid-contents > .order-status,
-a.order-grid-contents > .order-procedure{
+a.order-grid-contents > .order-procedure {
     justify-content: center;
 }
 
@@ -201,18 +201,29 @@ a.order-grid-contents > .order-procedure{
 
 
 /*페이징*/
-.order-section > .order-paging-container {
+nav.order-paging-container > ul {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 30px 0;
 }
 
-.order-section > .order-paging-container span {
+nav.order-paging-container > ul > li {
+
+}
+
+nav.order-paging-container > ul > li > a{
+    padding: 5px 10px;
+}
+nav.order-paging-container > ul > li > a[active=true]{
+    font-weight: bold;
+}
+
+nav.order-paging-container span {
     margin: 0 20px;
     font-size: var(--font-small);
 }
 
-.order-section > .order-paging-container .bi {
+.order-section > nav.order-paging-container .bi {
     font-size: var(--font-small);
 }

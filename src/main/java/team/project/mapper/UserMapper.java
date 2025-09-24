@@ -23,10 +23,19 @@ public interface UserMapper {
 
     void insertOrderDetail(OrderDetailDTO item);
 
-    List<OrderDTO> selectOrders(
+    //주문 내역 조회
+    List<OrderDTO> selectOrdersWithPagination(
             @Param("userId") String userId,
-            @Param("orderId") Integer orderId
+            @Param("pagination") PaginationDTO<OrderDTO> pagination
     );
+
+    List<OrderDTO> selectOrderById(
+            @Param("userId") String userId,
+            @Param("orderId") int orderId
+    );
+
+    //주문 숫자 카운트
+    int selectOrdersCount(@Param("userId")  String userId);
 
     List<OrderDetailDTO> selectOrderDetailByOrderId(int orderId);
 
