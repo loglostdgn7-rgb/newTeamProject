@@ -13,6 +13,7 @@ import java.util.List;
 public class ProductDTO {
     private int productId;
     private String name;
+    private int parentId;
     private int categoryId;
     private int price;
     private String productInfo;

@@ -22,7 +22,7 @@ public class MainController {
             PagenationDTO pagenation
     ) {
         productService.randomProducts(pagenation);
-
+        productService.Category();
         if (pagenation.getElements() != null) {
             for (Object element : pagenation.getElements()) {
                 if (element instanceof ProductDTO) {
@@ -35,6 +35,11 @@ public class MainController {
         }
 
         model.addAttribute("pagenation", pagenation);
+        model.addAttribute("ParentCategory", productService.getParentCategoryMap());
+        model.addAttribute("ChildCategory", productService.getChildCategoryMap());
+
+        System.out.println("getCategory: " + productService.getParentCategoryMap());
+        System.out.println("getCategory: " + productService.getChildCategoryMap());
 
         return "index"; // 뷰 이름 반환
     }

@@ -48,7 +48,7 @@
                                     <span class="cat-thumb"><img
                                             src="https://standoil.kr/web/upload/category/shop1_360_top_202779.jpg"
                                             alt=""></span>
-                                    <span class="cat-label">신발</span>
+                                    <span class="cat-label">상의</span>
                                 </a>
                             </div>
 
@@ -58,7 +58,7 @@
                                     <span class="cat-thumb"><img
                                             src="https://standoil.kr/web/upload/category/shop1_411_top_651291.jpg"
                                             alt=""></span>
-                                    <span class="cat-label">가방</span>
+                                    <span class="cat-label">하의</span>
                                 </a>
                             </div>
 
@@ -67,7 +67,7 @@
                                     <span class="cat-thumb"><img
                                             src="https://standoil.kr/web/upload/category/shop1_277_top_957757.jpg"
                                             alt=""></span>
-                                    <span class="cat-label">악세서리</span>
+                                    <span class="cat-label">신발</span>
                                 </a>
                             </div>
                         </div>
@@ -125,26 +125,26 @@
 
                 <th:block th:if="${pagenation.page != 1}">
                     <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.page - 1)}">
-                        <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
+                        <a th:href="@{/shop/product/list/{parentId}(parentId=${parentId},sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
                            th:text="${index}">1</a>
                     </li>
                 </th:block>
 
                 <li>
-                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.page}, size=${pagenation.size})}"
+                    <a th:href="@{/shop/product/list/{parentId}(parentId=${parentId},sort=${pagenation.sort}, page=${pagenation.page}, size=${pagenation.size})}"
                        th:text="${pagenation.page}" th:active="true">1</a>
                 </li>
 
 
                 <th:block th:if="${pagenation.page != pagenation.totalPageCount}">
                     <li th:each="index: ${#numbers.sequence(pagenation.page + 1, pagenation.endPageIndex)}">
-                        <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
+                        <a th:href="@{/shop/product/list/{parentId}(parentId=${parentId},sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
                            th:text="${index}">1</a>
                     </li>
                 </th:block>
 
                 <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
-                    <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.endPageIndex+1}, size=${pagenation.size})}">></a>
+                    <a th:href="@{/shop/product/list/{parentId}(parentId=${parentId},sort=${pagenation.sort}, page=${pagenation.endPageIndex+1}, size=${pagenation.size})}">></a>
                 </li>
             </ul>
         </nav>

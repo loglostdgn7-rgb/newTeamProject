@@ -13,10 +13,17 @@
             </li>
         </ul>
         <ul class="product-list-section">
+            <li><a th:href="@{/shop/product/list}">All SHOP</a></li>
+            <li><a th:href="@{/shop/product/list/{id}(id=5)}">Parent Id: 5</a></li>
+            <li><a th:href="@{/shop/product/list/{id}(id=6)}">Parent Id: 6</a></li>
+            <li><a th:href="@{/shop/product/list/{id}(id=7)}">Parent Id: 7</a></li>
+            <li><a th:href="@{/shop/product/list/{id}(id=8)}">Parent Id: 8</a></li>
+            <li><a th:href="@{/shop/product/list/{id}(id=9)}">Parent Id: 9</a></li>
+            <li><a th:href="@{/shop/product/list/{id}(id=10)}">Parent Id: 10</a></li>
             <li><a th:href="@{/intro/about}">ABOUT</a></li>
-            <li><a th:href="@{/shop/product/list}">SHOP</a></li>
             <li><a th:href="@{/board/qna}">Q&A</a></li>
         </ul>
+
         <ul class="right-section">
             <li class="search-i-container">
                 <i class="bi bi-search search-btn"></i>

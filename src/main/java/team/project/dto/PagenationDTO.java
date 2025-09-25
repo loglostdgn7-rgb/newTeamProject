@@ -14,6 +14,7 @@ public class PagenationDTO {
     @Setter private Integer page = 1; // 현재 페이지 번호
     @Setter private Integer size = 16; // 한 페이지에 보여줄 게시물 개수
     @Setter private String sort = "wroteAt"; // 정렬 방식
+    private Integer prentId;
     /***************** SETTER 가 없어도 되는 항목 (계산된 항목들) *********************/
     private Integer totalPageCount; // 전체 페이지 개수 (조회된 Element개수와는 상관없음)
     private Integer startPageIndex; // 현재 페이지에서 보여줄 페이지 시작 번호
