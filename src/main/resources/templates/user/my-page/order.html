@@ -25,14 +25,15 @@
             <!--            상위 카테고리-->
             <ul class="order-category-container">
                 <li><a href="#">주문내역조회 (0)</a></li>
-                <li><a href="#">취소/반품/교환 내역 (0)</a></li>
+<!--                <li><a href="#">취소/반품/교환 내역 (0)</a></li>-->
             </ul>
             <!--            선택 란-->
             <ul class="order-select-container">
                 <!--                기간 선택-->
                 <li class="period-group">
                     <label class="select-box period" data-target="period-option">
-                        <input th:value="${param.period}" type="text" id="select-period" class="select-box-input no-drag" readonly >
+                        <input th:value="${param.period}" type="text" id="select-period"
+                               class="select-box-input no-drag" readonly>
                         <i class="bi bi-chevron-down"></i>
                     </label>
                     <ul class="select-box option-box period-option">
@@ -45,10 +46,12 @@
                 <!--                주문상태 선택-->
                 <li>
                     <label class="select-box status" data-target="status-option">
-                        <input th:value="${param.status}" type="text" id="select-status" class="select-box-input no-drag" readonly>
+                        <input th:value="${param.status}" type="text" id="select-status"
+                               class="select-box-input no-drag" readonly>
                         <i class="bi bi-chevron-down"></i>
                     </label>
                     <ul class="select-box option-box status-option">
+                        <li class="option"><a href="#" data-status="ALL">전체</a></li>
                         <li class="option"><a href="#" data-status="PENDING">입금전</a></li>
                         <li class="option"><a href="#" data-status="PREPARING">배송준비중</a></li>
                         <li class="option"><a href="#" data-status="SHIPPED">배송중</a></li>
@@ -61,7 +64,7 @@
 
 
                 <!-- 달력 선택-->
-                    <!--달력 시작 날짜-->
+                <!--달력 시작 날짜-->
                 <li>
                     <label class="select-box calender">
                         <input th:value="${param.startDate}" type="text" id="date-picker-start"
@@ -69,7 +72,7 @@
                         <i class="bi bi-chevron-down"></i>
                     </label>
                 </li>
-                    <!--달력 끝나는 날짜-->
+                <!--달력 끝나는 날짜-->
                 <li>
                     <label class="select-box calender">
                         <input th:value="${param.endDate}" type="text" id="date-picker-end"
@@ -80,6 +83,7 @@
                 <!-- 버튼-->
                 <li>
                     <button id="get-history" type="button">조회</button>
+                    <button class="reset-orders-status">상품 상태 초기화</button>
                 </li>
             </ul>
             <!--            주문 내역-->
@@ -108,8 +112,13 @@
                     <div class="order-status">
                         <span th:text="${order.orderStatusFormatted}">입금전</span>
                     </div>
-                    <div class="order-procedure">
-                        <span>취소불가</span>
+
+                    <div class="order-procedure" th:switch="${order.orderStatus}">
+                        <span th:case="'PENDING'">취소가능</span>
+                        <span th:case="'CANCEL'">취소완료</span>
+                        <span th:case="'DELIVERED'">반품가능</span>
+                        <span th:case="'REFUND'">반품완료</span>
+                        <span th:case="*">취소불가</span>
                     </div>
                 </a>
             </div>

@@ -119,6 +119,8 @@ function sns_link_request(AUTH_ENDPOINT, CLIENT_ID, CLIENT_NAME) {
 }
 
 //sns 연동 해제
+const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 const unlinkBtns = document.querySelectorAll(".unlink");
 
 unlinkBtns.forEach(btn => {
@@ -126,9 +128,6 @@ unlinkBtns.forEach(btn => {
         const clientName = btn.dataset.clientName;
 
         if (confirm(clientName.charAt(0).toUpperCase() + clientName.slice(1) + " 연동을 해제 하시겠습니까?")) {
-
-            const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-            const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
             await fetch(`/user/my-page/unlink-sns/${clientName}`, {
                 method: "post",
                 headers: {
@@ -151,3 +150,36 @@ unlinkBtns.forEach(btn => {
     }
 });
 
+
+/////////// 유저 초기화 ////////////////////////
+const resetBtn = document.querySelector('.init-user');
+
+if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+        if (!confirm('정말로 프로필을 초기 상태로 되돌리시겠습니까?\n모든 변경사항이 사라집니다.')) {
+            return;
+        }
+
+        fetch('/user/my-page/profile/reset', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                [header]: token
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('서버 응답에 오류가 발생했습니다.');
+            })
+            .then(message => {
+                alert(message); // "프로필이 초기화되었습니다."
+                location.reload(); // 페이지 새로고침
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('초기화 중 오류가 발생했습니다.');
+            });
+    });
+}

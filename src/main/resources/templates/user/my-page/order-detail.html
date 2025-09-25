@@ -10,7 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/user/my-page/order-detail.css}">
 </th:block>
 <th:block layout:fragment="js">
-
+    <script th:src="@{/js/user/my-page/order-detail.js}" defer></script>
 </th:block>
 
 
@@ -23,6 +23,19 @@
                 <div class="order-date-and-number"
                      th:text="|주문 날짜: ${order.orderDateFormatted} / 주문 번호: ${order.merchantUid}|">주문날짜 / 주문번호
                 </div>
+
+                <th:block th:switch="${order.orderStatus}">
+                    <button class="cancel-or-refund-order" th:case="'PENDING'" th:data-order-id="${order.orderId}" data-status="CANCEL">
+                        상품전체 취소
+                    </button>
+                    <button class="cancel-or-refund-order" th:case="'DELIVERED'" th:data-order-id="${order.orderId}" data-status="REFUND">
+                        상품전체 반품
+                    </button>
+                    <button class="cancel-or-refund-order" th:case="*" th:data-order-id="${order.orderId}" disabled>
+                        취소/반품 불가
+                    </button>
+                </th:block>
+
                 <!-- 그리드 헤더-->
                 <div class="order-detail-grid-header">상품정보</div>
                 <div class="order-detail-grid-header">결제금액</div>
@@ -43,16 +56,15 @@
                     <div class="order-detail-status">
                         <span th:text="${order.orderStatusFormatted}">입금전</span>
                     </div>
-                    <div class="order-detail-procedure">
-                        <span>취소불가</span>
+                    <div class="order-detail-procedure" th:switch="${order.orderStatus}">
+                        <span th:case="'PENDING'">취소가능</span>
+                        <span th:case="'CANCEL'">취소완료</span>
+                        <span th:case="'REFUND'">반품완료</span>
+                        <span th:case="*">취소불가</span>
                     </div>
                 </div>
             </div>
-            <div class="order-detail-paging-container">
-                <i class="bi bi-chevron-left"></i>
-                <span>1</span>
-                <i class="bi bi-chevron-right"></i>
-            </div>
+
         </section>
     </div>
 </main>

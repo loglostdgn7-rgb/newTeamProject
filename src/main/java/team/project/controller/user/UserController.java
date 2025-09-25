@@ -204,4 +204,23 @@ public class UserController {
     }
 
 
+
+    /// /////// 유저 초기화 //////////////////////
+    @PostMapping("/my-page/profile/reset")
+    @ResponseBody
+    public ResponseEntity<String> reset_profile(@AuthenticationPrincipal UserDTO principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        try {
+            userService.reset_profile(principal.getId());
+            return ResponseEntity.ok("프로필이 초기화되었습니다.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            logger.error("프로필 초기화 중 오류 발생", e);
+            return ResponseEntity.internalServerError().body("서버 오류로 초기화에 실패했습니다.");
+        }
+    }
 }

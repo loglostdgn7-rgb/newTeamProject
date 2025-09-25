@@ -77,6 +77,7 @@ public class UserMyPageService {
         // 주문 상태 바꾸기
         if (order.getOrderStatus() != null) {
             switch (order.getOrderStatus()) {
+                case "ALL" -> order.setOrderStatusFormatted("전체");
                 case "PENDING" -> order.setOrderStatusFormatted("입금전");
                 case "PREPARING" -> order.setOrderStatusFormatted("배송준비중");
                 case "SHIPPED" -> order.setOrderStatusFormatted("배송중");
@@ -92,14 +93,13 @@ public class UserMyPageService {
     }
 
     //주문내역 리스트 불러오기
-//    public List<OrderDTO> find_orders_by_user_id(String userId) {
-    public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagenation) {
+    public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagination) {
         // 전체 주문 개수를 조회
-        int totalCount = userMapper.selectOrdersCount(userId , pagenation);
-        pagenation.setTotalElementsCount(totalCount);
+        int totalCount = userMapper.selectOrdersCount(userId, pagination);
+        pagination.setTotalElementsCount(totalCount);
 
         //현재 페이지 주문 목록을 조회
-        List<OrderDTO> orderList = userMapper.selectOrdersWithPagination(userId, pagenation);
+        List<OrderDTO> orderList = userMapper.selectOrdersWithPagination(userId, pagination);
 
         logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
 
@@ -116,9 +116,9 @@ public class UserMyPageService {
 
             logger.info("주문내역(리스트)[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
         }
-        pagenation.setElements(orderList);
+        pagination.setElements(orderList);
 
-        return pagenation;
+        return pagination;
     }
 
     //개별(row) 주문 내역
@@ -136,9 +136,31 @@ public class UserMyPageService {
         //  공통 포메팅 메소드 적용
         applyCommonOrderFormatting(order);
 
-        logger.info("상세 주문 내역[ORDER_ID=[{}]] : {}", order.getOrderId(),order);
+        logger.info("상세 주문 내역[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
 
         return order;
+    }
+
+    // 주문 상태 변경
+    public boolean update_order_status(int orderId, String userId, String newStatus) {
+        int updatedRows = userMapper.updateOrderStatus(orderId, userId, newStatus);
+
+        if (updatedRows == 1) {
+            logger.info("주문 상태 변경 완료 orderId={} userId={} newStatus={}", orderId, userId, newStatus);
+            return true;
+        } else {
+            logger.info("주문 상태 변경 실패 orderId={} userId={} newStatus={}", orderId, userId, newStatus);
+            return false;
+        }
+    }
+
+
+    /// ///////// 상품 상태 초기화 ////////////////////////
+    @Transactional
+    public int reset_test_orders_manually(String userId) {
+        logger.info("수동 초기화 실행: {} 계정 주문 상태를 초기화합니다.", userId);
+
+        return userMapper.resetOrderStatus(userId);
     }
 
 
@@ -269,5 +291,7 @@ public class UserMyPageService {
         userMapper.deleteUserById(userId);
         logger.info("{} 사용자가 탈퇴했습니다", userId);
     }
+
+
 
 }

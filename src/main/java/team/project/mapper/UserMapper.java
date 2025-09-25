@@ -40,7 +40,16 @@ public interface UserMapper {
             @Param("pagination") PaginationDTO<OrderDTO> pagination
     );
 
+    //주문 상세
     List<OrderDetailDTO> selectOrderDetailByOrderId(int orderId);
+
+    //주문 상태 변경
+    int updateOrderStatus(
+            @Param("orderId") int orderId,
+            @Param("userId") String userId,
+            @Param("newStatus") String newStatus
+    );
+
 
     // 장바구니, 상품 정보
 //    ProductDTO selectProductById(Integer productId);
@@ -70,4 +79,17 @@ public interface UserMapper {
             @Param("userId") String userId,
             @Param("clientName") String clientName
     );
+
+/**************************/
+    //유저 초기화
+    UserDTO selectDefaultUserById(String id);
+
+    //주문상태초기화
+    int resetOrderStatus(@Param("userId") String userId);
+
+    //관리자 모두 초기화
+    void resetUserProfileToDefault(@Param("userId") String userId);
+
+    int resetAllTestUsersOrderStatus(@Param("userIds") List<String> userIds);
+
 }

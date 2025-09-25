@@ -69,6 +69,7 @@ header > nav > ul .search-input-i {
     margin-right: 5px;
 }
 
+
 header > nav > ul.right-section > li.search-input-container {
     display: flex;
     align-items: center;
@@ -95,12 +96,12 @@ header > nav > .right-section > .logout-container > a {
     }
 }
 
-header > nav > .right-section .cart-container{
+header > nav > .right-section .cart-container {
     position: relative;
 }
 
 /*헤더 카트 알림*/
-header > nav > .right-section .cart-container .cart-alert{
+header > nav > .right-section .cart-container .cart-alert {
     position: absolute;
     top: 10px;
     left: 30px;
@@ -137,4 +138,21 @@ header > nav > .right-section > .logout-container {
 /*마이페이지*/
 header > nav > .right-section > .my-page-container {
     display: flex;
+}
+
+
+/*관리자 초기화 버튼*/
+header > nav > .right-section button.admin-reset-button {
+    background-color: unset;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--basic-red);
+    cursor: pointer;
+
+    &:hover {
+        color: var(--basic-white);
+        background: var(--basic-red);
+    }
 }

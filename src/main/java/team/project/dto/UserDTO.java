@@ -45,6 +45,11 @@ public class UserDTO implements OAuth2User, UserDetails {
         return this.name;
     }
 
+    @JsonIgnore
+    public String setRealName() {
+        return this.name;
+    }
+
 
     private boolean isTelValid() {
         return this.tel != null && (this.tel.length() == 10 || this.tel.length() == 11);

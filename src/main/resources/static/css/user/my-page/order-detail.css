@@ -3,6 +3,7 @@
 }
 
 .order-detail-container {
+    position: relative;
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr;
     width: 100%;
@@ -15,6 +16,31 @@
     border-bottom: 1px solid #D1D1D1ED;
     font-size: var(--font-small);
 }
+
+/*주문 취소/반품*/
+.cancel-or-refund-order {
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    padding: 5px 10px;
+    border: 1px solid var(--gray-bright);
+    border-radius: 5px;
+
+    &:hover {
+        color: var(--basic-white);
+        background: var(--basic-red);
+    }
+}
+
+.cancel-or-refund-order:disabled{
+    color: var(--gray-bright);
+    &:hover {
+        color: var(--gray-bright);;
+        background: unset;
+    }
+}
+
+
 
 .order-detail-grid-header {
     justify-content: center;
@@ -64,8 +90,8 @@
 
 /*페이지네이션*/
 
-.order-detail-section > .order-detail-paging-container {
-    display: flex;
-    justify-content: center;
-    padding: 30px 0;
-}
+/*.order-detail-section > .order-detail-paging-container {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    padding: 30px 0;*/
+/*}*/

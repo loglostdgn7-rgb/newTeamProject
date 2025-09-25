@@ -142,6 +142,7 @@ getHistoryBtn.onclick = () => {
     const statusText = document.getElementById("select-status").value;
     let status = "";
 
+    //상태 옵션
     // data-status 값 찾기
     if (statusText && statusText !== "주문상태") {
         const statusOptions = document.querySelectorAll(".status-option a");
@@ -153,14 +154,33 @@ getHistoryBtn.onclick = () => {
         }
     }
 
+    if (status === "ALL") status = "";
+
+    //기간 옵션
+    const periodText = document.getElementById("select-period").value;
+    let period = "";
+
+    if (periodText) {
+        const periodOptions = document.querySelectorAll(".period-option a");
+        for (const option of periodOptions) {
+            if (option.textContent.trim() === periodText) {
+                period = option.dataset.period;
+                break;
+            }
+        }
+    }
+
+    if (period === "")
+
     // URL 파라미터
     params.set("startDate", startDate);
     params.set("endDate", endDate);
-    if (status) params.set("status", status);
 
-    const periodText = document.getElementById("select-period").value;
-    if (periodText) params.set("periodText", periodText);
-    else params.delete("periodText");
+    if (status) params.set("status", status);
+    else params.delete("status");
+
+    if (period) params.set("period", period);
+    else params.delete("period");
 
     location.href = `${location.pathname}?${params.toString()}`;
 };
@@ -175,5 +195,43 @@ const status = params.get("status");
 if (status) {
     const statusOption = document.querySelector(`.status-option a[data-status="${status}"]`);
     if (statusOption) document.getElementById("select-status").value = statusOption.textContent.trim();
-} else document.getElementById("select-status").value = "주문상태";
-/*******************************/
+} else document.getElementById("select-status").value = "전체";
+
+
+
+
+
+/************ 주문 상태 초기화 *******************/
+const resetBtn = document.querySelector('.reset-orders-status');
+const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content')
+
+if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+        if (!confirm('주문 상태를 초기화 하시겠습니까?')) {
+            return;
+        }
+
+        fetch('/user/my-page/orders/reset', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                [header]: token
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('서버 응답 오류');
+            })
+            .then(message => {
+                alert(message);
+                location.reload(); // 페이지 새로고침
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('초기화 중 오류가 발생했습니다.');
+            });
+    });
+}

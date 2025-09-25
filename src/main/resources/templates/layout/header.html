@@ -42,6 +42,11 @@
                     <button class="logout-btn">LOGOUT</button>
                 </form>
             </li>
+
+            <li sec:authorize="hasRole('ADMIN')">
+                <button class="admin-reset-button">RESET</button>
+            </li>
+
             <li sec:authorize="authenticated" class="my-page-container">
                 <a th:href="@{/user/my-page/order}" class="my-page-btn">MY PAGE</a>
             </li>

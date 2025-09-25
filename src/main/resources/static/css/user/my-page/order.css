@@ -140,6 +140,23 @@
     padding: 0 40px;
 }
 
+/*********주문 상태 초기화*********/
+.order-section > .order-select-container > li > button.reset-orders-status{
+    position: absolute;
+    top: 0;
+    right: -260px;
+    padding: 5px 10px;
+    border: 1px solid var(--gray-bright);
+    border-radius: 5px;
+
+    &:hover {
+        color: var(--basic-white);
+        background: var(--basic-red);
+    }
+}
+/***************************/
+
+
 /*주문 내역*/
 .order-section > .order-grid-container {
     display: grid;
