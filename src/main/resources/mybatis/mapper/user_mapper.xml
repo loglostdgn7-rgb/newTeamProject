@@ -62,7 +62,7 @@
         </collection>
     </resultMap>
 
-    <select id="selectOrdersWithPagination" resultMap="orderWithDetailResultMap">
+    <select id="selectOrdersWithPagenation" resultMap="orderWithDetailResultMap">
         SELECT o.*,
         od.order_detail_id,
         od.product_id,
@@ -74,19 +74,19 @@
         SELECT order_id
         FROM orders
         WHERE user_id = #{userId}
-        <if test="pagination.startDate != null and pagination.startDate != ''">
+        <if test="pagenation.startDate != null and pagenation.startDate != ''">
             ##order_date가 크거나 같다(이상)
-            AND order_date &gt;= #{pagination.startDate}
+            AND order_date &gt;= #{pagenation.startDate}
         </if>
-        <if test="pagination.endDate != null and pagination.endDate != ''">
+        <if test="pagenation.endDate != null and pagenation.endDate != ''">
             ##order_date가 작거나 같다(이하)
-            AND order_date &lt; DATE_ADD(#{pagination.endDate}, INTERVAL 1 DAY)
+            AND order_date &lt; DATE_ADD(#{pagenation.endDate}, INTERVAL 1 DAY)
         </if>
-        <if test="pagination.status != null and pagination.status != ''">
-            AND order_status = #{pagination.status}
+        <if test="pagenation.status != null and pagenation.status != ''">
+            AND order_status = #{pagenation.status}
         </if>
         ORDER BY order_date DESC
-        LIMIT #{pagination.size} OFFSET #{pagination.offset}
+        LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
         ) AS paged_orders
         INNER JOIN orders o ON paged_orders.order_id = o.order_id
         LEFT JOIN order_detail od ON o.order_id = od.order_id
@@ -114,16 +114,16 @@
         SELECT count(*)
         FROM orders
         WHERE user_id = #{userId}
-        <if test="pagination.startDate != null and pagination.startDate != ''">
+        <if test="pagenation.startDate != null and pagenation.startDate != ''">
             ##order_date가 크거나 같다(이상)
-            AND order_date &gt;= #{pagination.startDate}
+            AND order_date &gt;= #{pagenation.startDate}
         </if>
-        <if test="pagination.endDate != null and pagination.endDate != ''">
+        <if test="pagenation.endDate != null and pagenation.endDate != ''">
             ##order_date가 작거나 같다(이하)
-            AND order_date &lt; #{pagination.endDate}
+            AND order_date &lt; #{pagenation.endDate}
         </if>
-        <if test="pagination.status != null and pagination.status != ''">
-            AND order_status = #{pagination.status}
+        <if test="pagenation.status != null and pagenation.status != ''">
+            AND order_status = #{pagenation.status}
         </if>
     </select>
 

@@ -45,14 +45,14 @@ section > .view-more-section > h2 > .view-more-href {
 }
 
 /*************** 페이지네이션(점)************/
-.swiper-pagination {
+.swiper-pagenation {
     position: relative; /* 슬라이더 아래에 위치하도록 기본값으로 변경 */
     bottom: 0;
     margin-top: 20px; /* 슬라이더와의 간격 */
 }
 
 /* 기본 점 스타일 */
-.swiper-pagination-bullet {
+.swiper-pagenation-bullet {
     background-color: #ccc; /* 기본 점 색상: 회색 */
     opacity: 1;
     width: 10px;
@@ -60,7 +60,7 @@ section > .view-more-section > h2 > .view-more-href {
 }
 
 /* 활성화된 점 스타일 */
-.swiper-pagination-bullet-active {
+.swiper-pagenation-bullet-active {
     background-color: #000; /* 활성화된 점 색상: 검은색 */
 }
 /*******************************************/

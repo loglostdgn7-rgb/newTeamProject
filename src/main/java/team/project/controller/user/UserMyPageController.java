@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import team.project.dto.OrderDTO;
-import team.project.dto.PaginationDTO;
+import team.project.dto.pagenationDTO;
 import team.project.dto.UserDTO;
 import team.project.service.user.UserMyPageService;
 import team.project.service.user.UserService;
@@ -51,14 +51,14 @@ public class UserMyPageController {
     public String get_order(
             @AuthenticationPrincipal UserDTO principal,
             Model model,
-            PaginationDTO<OrderDTO> pagination
+            pagenationDTO<OrderDTO> pagenation
     ) {
-        pagination.setSize(5); //주문내역 주문갯수
-        pagination.setPageViewOffset(1);//현재 페이지 앞뒤 번호 표시 갯수
+        pagenation.setSize(5); //주문내역 주문갯수
+        pagenation.setPageViewOffset(1);//현재 페이지 앞뒤 번호 표시 갯수
 
-        PaginationDTO<OrderDTO> paginationTheOrder = userMyPageService.find_orders_by_user_id(principal.getId(), pagination);
+        pagenationDTO<OrderDTO> pagenationTheOrder = userMyPageService.find_orders_by_user_id(principal.getId(), pagenation);
 
-        model.addAttribute("paginationTheOrder", paginationTheOrder);
+        model.addAttribute("pagenationTheOrder", pagenationTheOrder);
 
         return "user/my-page/order";
     }

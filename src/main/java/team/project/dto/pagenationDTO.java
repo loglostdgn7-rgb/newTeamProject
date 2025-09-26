@@ -8,10 +8,10 @@ import java.util.List;
 @Setter
 @ToString
 //---------------------------------------------------
-//김영수님 수정. 9/23 PaginationDTO -> PaginationDTO<T>, Annotation 추가
+//김영수님 수정. 9/23 PagenationDTO -> PagenationDTO<T>, Annotation 추가
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaginationDTO<T> {
+public class pagenationDTO<T> {
     //----------------------------------------------------
     @Setter
     private Integer page = 1; // 현재 페이지 번호

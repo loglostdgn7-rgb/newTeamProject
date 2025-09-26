@@ -93,13 +93,13 @@ public class UserMyPageService {
     }
 
     //주문내역 리스트 불러오기
-    public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagination) {
+    public pagenationDTO<OrderDTO> find_orders_by_user_id(String userId, pagenationDTO<OrderDTO> pagenation) {
         // 전체 주문 개수를 조회
-        int totalCount = userMapper.selectOrdersCount(userId, pagination);
-        pagination.setTotalElementsCount(totalCount);
+        int totalCount = userMapper.selectOrdersCount(userId, pagenation);
+        pagenation.setTotalElementsCount(totalCount);
 
         //현재 페이지 주문 목록을 조회
-        List<OrderDTO> orderList = userMapper.selectOrdersWithPagination(userId, pagination);
+        List<OrderDTO> orderList = userMapper.selectOrdersWithPagenation(userId, pagenation);
 
         logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
 
@@ -116,9 +116,9 @@ public class UserMyPageService {
 
             logger.info("주문내역(리스트)[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
         }
-        pagination.setElements(orderList);
+        pagenation.setElements(orderList);
 
-        return pagination;
+        return pagenation;
     }
 
     //개별(row) 주문 내역
