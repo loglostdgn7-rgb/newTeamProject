@@ -43,7 +43,7 @@
                 </form>
             </li>
 
-            <li sec:authorize="hasAuthority('ADMIN')">
+            <li sec:authorize="authenticated" th:if="${#authentication.principal.role == 'ADMIN'}">
                 <button class="admin-reset-button">RESET</button>
             </li>
 
