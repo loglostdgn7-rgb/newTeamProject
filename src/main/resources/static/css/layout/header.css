@@ -1,4 +1,4 @@
-
+/* 헤더 기본 */
 header {
     top: 0;
     left: 0;
@@ -16,14 +16,14 @@ header > nav {
     width: 100%;
     height: 100%;
     justify-content: space-between;
-
 }
 
+/* 공통 UL/LI */
 header > nav > ul {
     height: 100%;
     display: flex;
     align-items: center;
-
+    list-style: none;
 }
 
 header > nav > ul > li {
@@ -33,8 +33,10 @@ header > nav > ul > li {
     align-items: center;
 }
 
+/* 왼쪽 섹션 로고 */
 header > nav > ul.left-section > li {
     padding: 0;
+    position: relative;
 }
 
 header > nav > ul.left-section > li > a {
@@ -51,50 +53,105 @@ header > nav > ul.left-section > li > a > svg.logo{
     height: auto;
 }
 
-header > nav > ul .search-btn,
-header > nav > ul .bi-cart3,
-header > nav > ul a,
-header > nav > ul button {
+/* 상품 리스트 메뉴 */
+header > nav > ul.product-list-section {
     display: flex;
     align-items: center;
-    height: 100%;
-    padding: 0 8px;
-    border: none;
-
-    &:hover {
-        cursor: pointer;
-        color: var(--basic-red);
-    }
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.product-list-section > li.selected a {
+header > nav > ul.product-list-section > li {
+    position: relative; /* 부모 기준 */
+    padding: 0 10px; /* 좌우 여백 */
+    margin: 0 10px;  /* 메뉴 간 간격 */
+}
+
+header > nav > ul.product-list-section > li > a {
+    text-decoration: none;
+    color: black;
+    line-height: 50px;
+    display: block;
+}
+
+header > nav > ul.product-list-section > li:hover > a {
     color: var(--basic-red);
 }
 
-header > nav > ul .search-input-i {
-    margin-right: 5px;
+/* 드롭박스 (서브 메뉴) - 중앙 정렬 */
+header > nav > ul.product-list-section > li > ul {
+    display: none;
+    position: absolute;
+    top: 50px;
+    left: 50%; /* 부모 메뉴 기준 중앙 */
+    transform: translateX(-50%); /* 정확히 가운데 */
+    background-color: #eee;
+    min-width: 150px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    z-index: 1000;
 }
 
+header > nav > ul.product-list-section > li:hover > ul {
+    display: block;
+}
 
-header > nav > ul.right-section > li.search-input-container {
+header > nav > ul.product-list-section > li > ul > li {
+    width: 150px;
+    text-align: center;
+}
+
+header > nav > ul.product-list-section > li > ul > li > a {
+    display: block;
+    line-height: 40px;
+    text-decoration: none;
+    color: black;
+}
+
+header > nav > ul.product-list-section > li > ul > li > a:hover {
+    color: blue;
+}
+
+/* 오른쪽 섹션 */
+header > nav > ul.right-section {
     display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header > nav > ul.right-section > li {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* 검색 버튼 */
+header > nav > ul.right-section .search-btn {
+    cursor: pointer;
+}
+
+/* 검색 입력창 */
+header > nav > ul.right-section > li.search-input-container {
+    display: none;
     align-items: center;
     height: 25px;
     border: 1px solid var(--basic-black);
     background-color: var(--basic-white);
+    padding: 0 5px;
 }
 
-header > nav > ul.right-section > li.search-input-container {
-    display: none;
-}
-
-
-header > nav > .right-section > .search-input-container .search-input {
+header > nav > ul.right-section .search-input {
     border: none;
     height: 100%;
     background-color: unset;
 }
 
+/* 카트 */
+header > nav > ul.right-section .cart-container {
 header > nav > .right-section > .login-container > a,
 header > nav > .right-section > .logout-container > a {
     &:hover {
@@ -106,6 +163,7 @@ header > nav > .right-section .cart-container {
     position: relative;
 }
 
+header > nav > ul.right-section .cart-container .cart-alert {
 /*헤더 카트 알림*/
 header > nav > .right-section .cart-container .cart-alert {
     position: absolute;
@@ -123,12 +181,8 @@ header > nav > .right-section .cart-container .cart-alert {
 }
 
 @keyframes pulse-effect {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.5);
-    }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.5); }
 }
 
 .cart-alert.pulse {
@@ -136,14 +190,16 @@ header > nav > .right-section .cart-container .cart-alert {
     animation: pulse-effect 0.5s ease-in-out;
 }
 
-/*로그아웃*/
-header > nav > .right-section > .logout-container {
-    display: flex;
+/* 로그인, 로그아웃, 마이페이지 */
+header > nav > ul.right-section .login-container a:hover,
+header > nav > ul.right-section .logout-container button:hover,
+header > nav > ul.right-section .my-page-container a:hover {
+    color: var(--basic-red);
 }
 
-/*마이페이지*/
-header > nav > .right-section > .my-page-container {
-    display: flex;
+/* 선택된 메뉴 강조 */
+.product-list-section > li.selected a {
+    color: var(--basic-red);
 }
 
 

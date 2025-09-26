@@ -7,12 +7,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import team.project.dto.PaginationDTO;
+import team.project.dto.CategoryDTO;
+import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
 import team.project.dto.ProductDetailDTO;
 import team.project.service.ProductService;
 
 import java.util.Base64;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -21,28 +23,60 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    @GetMapping("/product/list")
-    public void get_list(
-            Model model,
-            PaginationDTO pagenation
-    ) {
-        productService.get_products(pagenation);
+//    @GetMapping("/product/list/{parentId}")
+//    public void get_list(
+//            Model model,
+//            PagenationDTO pagenation
+//    ) {
+//        productService.get_products(pagenation);
+//
+//
+//        if (pagenation.getElements() != null) {
+//            for (Object element : pagenation.getElements()) {
+//                if (element instanceof ProductDTO) {
+//                    ProductDTO product = (ProductDTO) element;
+//                    if (product.getImageData() != null && product.getImageData().length > 0) {
+//                        String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
+//                        product.setBase64ImageData(base64Image); }
+//                }
+//            }
+//        }
+//
+//        model.addAttribute("pagenation", pagenation);
+//
+//        System.out.println("pagenation: " + pagenation);
+//    }
+@GetMapping("/product/list/{parentId}")
+public String get_list(
+        Model model,
+        @PathVariable("parentId") int parentId,
+        PagenationDTO pagenation
+) {
+    // 해당 카테고리 상품 가져오기
+    productService.get_productsCategory(parentId, pagenation);
 
-        if (pagenation.getElements() != null) {
-            for (Object element : pagenation.getElements()) {
-                if (element instanceof ProductDTO) {
-                    ProductDTO product = (ProductDTO) element;
-                    if (product.getImageData() != null && product.getImageData().length > 0) {
-                        String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
-                        product.setBase64ImageData(base64Image); }
+    // 이미지 Base64 변환
+    if (pagenation.getElements() != null) {
+        for (Object element : pagenation.getElements()) {
+            if (element instanceof ProductDTO product) {
+                if (product.getImageData() != null && product.getImageData().length > 0) {
+                    String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
+                    product.setBase64ImageData(base64Image);
                 }
             }
         }
-
-        model.addAttribute("pagenation", pagenation);
-
-        System.out.println("pagenation: " + pagenation);
     }
+
+    // 페이지네이션과 parentId를 모델에 담기
+    model.addAttribute("pagenation", pagenation);
+    model.addAttribute("parentId", parentId);
+    System.out.println(pagenation);
+    System.out.println(parentId);
+
+    // Thymeleaf 템플릿 경로 반환
+    return "shop/product/list";
+}
+
 
 
 
@@ -80,4 +114,12 @@ public class ProductController {
     public String get_product_set() {
         return "shop/product/product_set";
     }
+
+
+
+    //카테고리
+
 }
+
+
+

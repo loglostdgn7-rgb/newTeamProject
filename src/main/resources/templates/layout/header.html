@@ -27,10 +27,20 @@
             </li>
         </ul>
         <ul class="product-list-section">
+            <li><a th:href="@{/shop/product/list}">All SHOP</a></li>
+            <li th:each="pEntry: ${ParentCategory}">
+                <a th:href="@{|/shop/product/list/${pEntry.key}|}" th:text="${pEntry.value.name}">Parent Id: 5</a>
+                <!-- child 카테고리 List 순회  -->
+                <ul th:each="cCategory: ${ChildCategory[pEntry.key]}">
+                    <li th:each="cCategory: ${ChildCategory[pEntry.key]}">
+                        <a th:href="@{|/shop/product/list/${cCategory.categoryId}|}" th:text="${cCategory.name}">Parent Id: 5</a>
+                    </li>
+                </ul>
+            </li>
             <li><a th:href="@{/intro/about}">ABOUT</a></li>
-            <li><a th:href="@{/shop/product/list}">SHOP</a></li>
             <li><a th:href="@{/board/qna}">Q&A</a></li>
         </ul>
+
         <ul class="right-section">
             <li class="search-i-container">
                 <i class="bi bi-search search-btn"></i>
