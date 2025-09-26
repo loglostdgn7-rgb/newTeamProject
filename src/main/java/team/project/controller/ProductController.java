@@ -14,7 +14,6 @@ import team.project.dto.ProductDetailDTO;
 import team.project.service.ProductService;
 
 import java.util.Base64;
-import java.util.List;
 
 @Slf4j
 @Controller

@@ -39,9 +39,10 @@
     </select>
 
     <!-- /////// 주문 내역 //////-->
-<!--    주문 내역 넣기-->
+    <!--    주문 내역 넣기-->
     <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId">
-        INSERT INTO orders (order_id, user_id, imp_uid, merchant_uid, order_name, order_price, buyer_name, buyer_addr, buyer_tel, order_request)
+        INSERT INTO orders (order_id, user_id, imp_uid, merchant_uid, order_name, order_price, buyer_name, buyer_addr,
+                            buyer_tel, order_request)
         VALUES (#{orderId}, #{userId}, #{impUid}, #{merchantUid}, #{orderName}, #{orderPrice}, #{buyerName},
                 #{buyerAddr}, #{buyerTel}, #{orderRequest})
     </insert>
@@ -51,51 +52,121 @@
         VALUES (#{orderDetailId}, #{orderId}, #{productId}, #{quantity}, #{productPrice})
     </insert>
 
-<!--    주문 내역 꺼내기-->
-    <resultMap id="orderWithDetailMap" type="OrderDTO" autoMapping="true">
-        <id property="orderId" column="order_id" />
-                    <!-- 왜 select로 해야 작동 되지?-->
-        <collection property="orderDetails"
-                    ofType="OrderDetailDTO"
-                    column="order_id"
-                    select="selectOrderDetailByOrderId">
+    <!--    주문 내역 꺼내기-->
+    <resultMap id="orderWithDetailResultMap" type="OrderDTO" autoMapping="true">
+        <id property="orderId" column="order_id"/>
+        <collection property="orderDetails" ofType="OrderDetailDTO" javaType="list" autoMapping="true">
+            <id property="orderDetailId" column="order_detail_id"/>
+            <result property="productName" column="product_name"/>
+            <result property="productImage" column="product_image"/>
         </collection>
-<!--        <collection property="orderDetails" ofType="OrderDetailDTO" autoMapping="true">-->
-<!--            <id property="orderDetailId" column="order_detail_id"/>-->
-<!--        </collection>-->
     </resultMap>
-    
-    <select id="selectOrdersByUserId" resultType="OrderDTO" resultMap="orderWithDetailMap">
-        SELECT *
+
+    <select id="selectOrdersWithPagenation" resultMap="orderWithDetailResultMap">
+        SELECT o.*,
+        od.order_detail_id,
+        od.product_id,
+        od.product_price,
+        od.quantity,
+        p.name as product_name,
+        p.image_data as product_image
+        FROM (
+        SELECT order_id
         FROM orders
         WHERE user_id = #{userId}
-        ORDER By order_date DESC
+        <if test="pagenation.startDate != null and pagenation.startDate != ''">
+            ##order_date가 크거나 같다(이상)
+            AND order_date &gt;= #{pagenation.startDate}
+        </if>
+        <if test="pagenation.endDate != null and pagenation.endDate != ''">
+            ##order_date가 작거나 같다(이하)
+            AND order_date &lt; DATE_ADD(#{pagenation.endDate}, INTERVAL 1 DAY)
+        </if>
+        <if test="pagenation.status != null and pagenation.status != ''">
+            AND order_status = #{pagenation.status}
+        </if>
+        ORDER BY order_date DESC
+        LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
+        ) AS paged_orders
+        INNER JOIN orders o ON paged_orders.order_id = o.order_id
+        LEFT JOIN order_detail od ON o.order_id = od.order_id
+        LEFT JOIN product p ON od.product_id = p.product_id
+        ORDER BY o.order_date DESC
     </select>
 
-    <select id="selectOrderByIdAndUserId" resultType="OrderDTO" resultMap="orderWithDetailMap">
-        SELECT *
+    <select id="selectOrderById" resultMap="orderWithDetailResultMap">
+        SELECT o.*,
+               od.order_detail_id,
+               od.product_id,
+               od.product_price,
+               od.quantity,
+               p.name       as product_name,
+               p.image_data as product_image
+        FROM orders o
+                 LEFT JOIN order_detail od ON o.order_id = od.order_id
+                 LEFT JOIN product p ON od.product_id = p.product_id
+        WHERE o.user_id = #{userId}
+          AND o.order_id = #{orderId}
+    </select>
+
+    <!--    주문 숫자 카운드-->
+    <select id="selectOrdersCount" resultType="int">
+        SELECT count(*)
         FROM orders
         WHERE user_id = #{userId}
-          AND order_id = #{orderId}
+        <if test="pagenation.startDate != null and pagenation.startDate != ''">
+            ##order_date가 크거나 같다(이상)
+            AND order_date &gt;= #{pagenation.startDate}
+        </if>
+        <if test="pagenation.endDate != null and pagenation.endDate != ''">
+            ##order_date가 작거나 같다(이하)
+            AND order_date &lt; #{pagenation.endDate}
+        </if>
+        <if test="pagenation.status != null and pagenation.status != ''">
+            AND order_status = #{pagenation.status}
+        </if>
     </select>
 
+    <!--        주문상세-->
     <select id="selectOrderDetailByOrderId" resultType="OrderDetailDTO">
-        SELECT *,
-               order_detail_id    as orderDetailId,
-               product.image_data as productImage,
-               product.name       as productName
-        FROM order_detail
-                 INNER JOIN product on order_detail.product_id = product.product_id
-        WHERE order_detail.order_id = #{orderId}
+        SELECT od.*,
+               od.order_detail_id as orderDetailId,
+               p.image_data       as productImage,
+               p.name             as productName
+        FROM order_detail od
+                 INNER JOIN product p on od.product_id = p.product_id
+        WHERE od.order_id = #{orderId}
     </select>
 
 
-<!--    &lt;!&ndash;/////// 장바구니 / 상품 정보 //////&ndash;&gt;-->
-<!--    <select id="selectProductById" resultType="ProductDTO">-->
-<!--        SELECT *-->
-<!--        FROM product-->
-<!--        WHERE product_id = #{productId}-->
-<!--    </select>-->
+    <!--    주문상태변경-->
+    <update id="updateOrderStatus">
+        UPDATE orders
+        SET order_status = #{newStatus}
+        WHERE order_id = #{orderId}
+          AND user_id = #{userId}
+    </update>
+
+
+
+    <!--    주문상태 초기화-->
+    <update id="resetOrderStatus">
+        UPDATE orders o
+            JOIN (SELECT order_id,
+                         -- 현재 유저의 주문을 날짜순으로 정렬해 1, 2, 3... 순번을 매깁니다.
+                         ROW_NUMBER() OVER (ORDER BY order_date) as rn
+                  FROM orders
+                  WHERE user_id = #{userId}) as ranked_orders ON o.order_id = ranked_orders.order_id
+        SET o.order_status =
+                -- 순번을 3으로 나눈 나머지 값에 따라 상태를 명시적으로 지정합니다.
+                CASE MOD(ranked_orders.rn - 1, 3)
+                    WHEN 0 THEN 'PENDING'
+                    WHEN 1 THEN 'SHIPPED'
+                    WHEN 2 THEN 'DELIVERED'
+                    END
+        WHERE o.user_id = #{userId}
+    </update>
+
 
 
     <!--   /////// 유저 삽입 ///////  -->
@@ -132,12 +203,16 @@
         WHERE id = #{userId}
     </update>
 
+
+
     <!-- ///////////// 유저 삭제 /////////////-->
     <delete id="deleteUserById">
         DELETE
         FROM user
         WHERE id = #{id}
     </delete>
+
+
 
     <!-- ///////////// sns 연동 삭제 /////////////-->
     <delete id="deleteSnsUser">
@@ -146,5 +221,54 @@
         WHERE user_id = #{userId}
           AND client_name = #{clientName}
     </delete>
+
+
+
+    <!--///////////// 유저 초기화 /////////////-->
+    <select id="selectDefaultUserById" resultType="UserDTO">
+        SELECT *
+        FROM user_defaults
+        WHERE id = #{id}
+    </select>
+
+
+
+    <!--///////////// 관리자 모두 초기화 /////////////-->
+    <update id="resetUserProfileToDefault">
+        UPDATE user u
+            JOIN user_defaults d ON u.id = d.id
+        SET u.name           = d.name,
+            u.postcode       = d.postcode,
+            u.road_address   = d.road_address,
+            u.detail_address = d.detail_address,
+            u.tel            = d.tel,
+            u.email          = d.email,
+            u.nickname       = d.nickname,
+            u.password       = d.password
+        WHERE u.id = #{userId}
+    </update>
+
+    <update id="resetAllTestUsersOrderStatus">
+        UPDATE orders o
+        JOIN (
+        SELECT
+        order_id,
+        user_id,
+        -- PARTITION BY user_id: 각 유저별로 주문 순번(rn)을 매깁니다.
+        ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY order_date) as rn
+        FROM orders
+        WHERE user_id IN
+        <foreach item="userId" collection="testUserIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ) as ranked_orders ON o.order_id = ranked_orders.order_id
+        SET o.order_status =
+        CASE MOD(ranked_orders.rn - 1, 3)
+        WHEN 0 THEN 'PENDING'
+        WHEN 1 THEN 'SHIPPED'
+        WHEN 2 THEN 'DELIVERED'
+        END
+    </update>
+
 
 </mapper>

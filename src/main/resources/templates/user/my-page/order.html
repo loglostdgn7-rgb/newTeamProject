@@ -25,53 +25,65 @@
             <!--            상위 카테고리-->
             <ul class="order-category-container">
                 <li><a href="#">주문내역조회 (0)</a></li>
-                <li><a href="#">취소/반품/교환 내역 (0)</a></li>
+<!--                <li><a href="#">취소/반품/교환 내역 (0)</a></li>-->
             </ul>
             <!--            선택 란-->
             <ul class="order-select-container">
                 <!--                기간 선택-->
                 <li class="period-group">
                     <label class="select-box period" data-target="period-option">
-                        <input value="기간설정" type="text" class="select-box-input no-drag" readonly>
+                        <input th:value="${param.period}" type="text" id="select-period"
+                               class="select-box-input no-drag" readonly>
                         <i class="bi bi-chevron-down"></i>
                     </label>
                     <ul class="select-box option-box period-option">
-                        <li class="option"><a href="">일주일</a></li>
-                        <li class="option"><a href="">1개월</a></li>
-                        <li class="option"><a href="">3개월</a></li>
-                        <li class="option"><a href="">6개월</a></li>
+                        <li class="option"><a href="#" data-period="oneWeek">일주일</a></li>
+                        <li class="option"><a href="#" data-period="oneMonth">1개월</a></li>
+                        <li class="option"><a href="#" data-period="threeMonths">3개월</a></li>
+                        <li class="option"><a href="#" data-period="sixMonths">6개월</a></li>
                     </ul>
                 </li>
                 <!--                주문상태 선택-->
                 <li>
                     <label class="select-box status" data-target="status-option">
-                        <input value="주문상태" type="text" class="select-box-input no-drag" readonly>
+                        <input th:value="${param.status}" type="text" id="select-status"
+                               class="select-box-input no-drag" readonly>
                         <i class="bi bi-chevron-down"></i>
                     </label>
                     <ul class="select-box option-box status-option">
-                        <li class="option"><a href="">입금전</a></li>
-                        <li class="option"><a href="">배송준비중</a></li>
-                        <li class="option"><a href="">배송중</a></li>
-                        <li class="option"><a href="">배송완료</a></li>
-                        <li class="option"><a href="">취소</a></li>
-                        <li class="option"><a href="">교환</a></li>
-                        <li class="option"><a href="">반품</a></li>
+                        <li class="option"><a href="#" data-status="ALL">전체</a></li>
+                        <li class="option"><a href="#" data-status="PENDING">입금전</a></li>
+                        <li class="option"><a href="#" data-status="PREPARING">배송준비중</a></li>
+                        <li class="option"><a href="#" data-status="SHIPPED">배송중</a></li>
+                        <li class="option"><a href="#" data-status="DELIVERED">배송완료</a></li>
+                        <li class="option"><a href="#" data-status="CANCEL">취소</a></li>
+                        <li class="option"><a href="#" data-status="EXCHANGE">교환</a></li>
+                        <li class="option"><a href="#" data-status="REFUND">반품</a></li>
                     </ul>
                 </li>
-                <!--                달력 선택-->
-                <li><label class="select-box">
-                    <input th:value="${param.startDate}" type="text" id="date-picker-start"
-                           class="date-picker-input no-drag form-control bg-white border-0 small">
-                    <i class="bi bi-chevron-down"></i>
-                </label></li>
-                <li><label class="select-box">
-                    <input th:value="${param.endDate}" type="text" id="date-picker-end"
-                           class="date-picker-input no-drag form-control bg-white border-0 small">
-                    <i class="bi bi-chevron-down"></i>
-                </label></li>
+
+
+                <!-- 달력 선택-->
+                <!--달력 시작 날짜-->
+                <li>
+                    <label class="select-box calender">
+                        <input th:value="${param.startDate}" type="text" id="date-picker-start"
+                               class="date-picker-input no-drag form-control bg-white border-0 small">
+                        <i class="bi bi-chevron-down"></i>
+                    </label>
+                </li>
+                <!--달력 끝나는 날짜-->
+                <li>
+                    <label class="select-box calender">
+                        <input th:value="${param.endDate}" type="text" id="date-picker-end"
+                               class="date-picker-input no-drag form-control bg-white border-0 small">
+                        <i class="bi bi-chevron-down"></i>
+                    </label>
+                </li>
                 <!-- 버튼-->
                 <li>
                     <button id="get-history" type="button">조회</button>
+                    <button class="reset-orders-status">상품 상태 초기화</button>
                 </li>
             </ul>
             <!--            주문 내역-->
@@ -84,7 +96,7 @@
                 <!--                상품이 없을 때-->
                 <div class="no-product">주문 내역이 없습니다</div>
                 <!--                상품 있을 때-->
-                <a th:each="order : ${orderList}" class="order-grid-contents"
+                <a th:each="order : ${pagenationTheOrder.elements}" class="order-grid-contents"
                    th:href="@{/user/my-page/order/{orderId}(orderId=${order.orderId})}">
                     <div class="order-date-and-number">
                         <span th:text="${order.orderDateFormatted} + ' / ' + ${order.shortMerchantUid}">25.09.20 / 9999</span>
@@ -100,16 +112,73 @@
                     <div class="order-status">
                         <span th:text="${order.orderStatusFormatted}">입금전</span>
                     </div>
-                    <div class="order-procedure">
-                        <span>취소불가</span>
+
+                    <div class="order-procedure" th:switch="${order.orderStatus}">
+                        <span th:case="'PENDING'">취소가능</span>
+                        <span th:case="'CANCEL'">취소완료</span>
+                        <span th:case="'DELIVERED'">반품가능</span>
+                        <span th:case="'REFUND'">반품완료</span>
+                        <span th:case="*">취소불가</span>
                     </div>
                 </a>
             </div>
-            <div class="order-paging-container">
-                <i class="bi bi-chevron-left"></i>
-                <span>1</span>
-                <i class="bi bi-chevron-right"></i>
-            </div>
+
+
+            <nav class="order-paging-container">
+                <!-- <ul th:if="${pagenationTheOrder.getElements != 0}">-->
+                <ul th:if="${not #lists.isEmpty(pagenationTheOrder.elements)}">
+
+                    <!-- 이전 페이지로 버튼 -->
+                    <li th:if="${pagenationTheOrder.startPageIndex != 1}">
+                        <a th:href="@{/user/my-page/order(startDate=${param.startDate},endDate=${param.endDate},
+                                                          status=${param.status},
+                                                          page=${pagenationTheOrder.startPageIndex - 1},
+                                                          size=${pagenationTheOrder.size})}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    <!-- 현재 보다 이전 페이지 나열 -->
+                    <th:block th:if="${pagenationTheOrder.page != 1}">
+                        <li th:each="index : ${#numbers.sequence(pagenationTheOrder.startPageIndex, pagenationTheOrder.page - 1)}">
+                            <a th:href="@{/user/my-page/order(startDate=${param.startDate},endDate=${param.endDate},
+                                                              status=${param.status},
+                                                              page=${index},
+                                                              size=${pagenationTheOrder.size})}"
+                               th:text="${index}">1</a>
+                        </li>
+                    </th:block>
+
+                    <!-- 현재 페이지 -->
+                    <li class="now-page">
+                        <a th:href="@{/user/my-page/order(startDate=${param.startDate},endDate=${param.endDate},
+                                                          status=${param.status},
+                                                          size=${pagenationTheOrder.size})}"
+                           th:text="${pagenationTheOrder.page}" th:active="true">1</a>
+                    </li>
+
+                    <!-- 현재 보다 다음 페이지 나열 -->
+                    <th:block th:if="${pagenationTheOrder.page != pagenationTheOrder.totalPageCount}">
+                        <li th:each="index: ${#numbers.sequence(pagenationTheOrder.page + 1, pagenationTheOrder.endPageIndex)}">
+                            <a th:href="@{/user/my-page/order(startDate=${param.startDate},endDate=${param.endDate},
+                                                              status=${param.status},
+                                                              page=${index},
+                                                              size=${pagenationTheOrder.size})}"
+                               th:text="${index}">1</a>
+                        </li>
+                    </th:block>
+
+                    <!-- 다음 페이지로 버튼-->
+                    <li th:if="${pagenationTheOrder.endPageIndex != pagenationTheOrder.totalPageCount}">
+                        <a th:href="@{/user/my-page/order(startDate=${param.startDate},endDate=${param.endDate},
+                                                          status=${param.status},
+                                                          page=${pagenationTheOrder.endPageIndex+1},
+                                                          size=${pagenationTheOrder.size})}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </section>
     </div>
 </main>
