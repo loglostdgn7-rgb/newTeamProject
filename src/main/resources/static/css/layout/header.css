@@ -41,8 +41,14 @@ header > nav > ul.left-section > li > a {
     padding-left: 0;
 }
 
-header > nav > ul.left-section > li > a > .logo-img {
+
+/*header > nav > ul.left-section > li > a > .logo-img {*/
+/*    width: 100px;*/
+/*}*/
+
+header > nav > ul.left-section > li > a > svg.logo{
     width: 100px;
+    height: auto;
 }
 
 header > nav > ul .search-btn,
