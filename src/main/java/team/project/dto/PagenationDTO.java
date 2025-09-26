@@ -11,7 +11,7 @@ import java.util.List;
 //김영수님 수정. 9/23 PagenationDTO -> PagenationDTO<T>, Annotation 추가
 @NoArgsConstructor
 @AllArgsConstructor
-public class pagenationDTO<T> {
+public class PagenationDTO<T> {
     //----------------------------------------------------
     @Setter
     private Integer page = 1; // 현재 페이지 번호

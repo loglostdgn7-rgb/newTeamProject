@@ -1,5 +1,5 @@
 package team.project.service;
-import team.project.dto.pagenationDTO;
+import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class ProductService {
 
 
     // index에서 신상품 목록에 랜덤으로 10개 가져오는 메서드
-    public void randomProducts(pagenationDTO pagenation) {
+    public void randomProducts(PagenationDTO pagenation) {
         List<ProductDTO> products = productMapper.selectRandomProducts();
         pagenation.setElements(products);
     }
@@ -41,7 +41,7 @@ public class ProductService {
 
 
     // 모든 상품을 가져오는 기능
-    public void get_products(pagenationDTO pagenation) {
+    public void get_products(PagenationDTO pagenation) {
         List<ProductDTO> elements = productMapper.selectProducts(pagenation);
         // 화면에 표시할 요소가 있다면
         if(elements != null && !elements.isEmpty()) {

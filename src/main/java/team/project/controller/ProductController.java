@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import team.project.dto.pagenationDTO;
+import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
 import team.project.dto.ProductDetailDTO;
 import team.project.service.ProductService;
@@ -24,7 +24,7 @@ public class ProductController {
     @GetMapping("/product/list")
     public void get_list(
             Model model,
-            pagenationDTO pagenation
+            PagenationDTO pagenation
     ) {
         productService.get_products(pagenation);
 

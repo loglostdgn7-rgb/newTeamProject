@@ -93,7 +93,7 @@ public class UserMyPageService {
     }
 
     //주문내역 리스트 불러오기
-    public pagenationDTO<OrderDTO> find_orders_by_user_id(String userId, pagenationDTO<OrderDTO> pagenation) {
+    public PagenationDTO<OrderDTO> find_orders_by_user_id(String userId, PagenationDTO<OrderDTO> pagenation) {
         // 전체 주문 개수를 조회
         int totalCount = userMapper.selectOrdersCount(userId, pagenation);
         pagenation.setTotalElementsCount(totalCount);
