@@ -27,7 +27,7 @@
         LIMIT #{size} OFFSET #{offset}
     </select>
 
-<!--    이거 안쓰는 것 같아서 주석처리[김영수님](9/20)-->
+<!-- ******* 이거 안쓰는 것 같아서 주석처리[김영수님](9/20) *******-->
 <!--    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">-->
 <!--        SELECT id, name, price-->
 <!--        FROM product-->
@@ -49,7 +49,7 @@
 <!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
 <!--    </select>-->
 
-<!--    위에꺼 주석하고 아래 복사[김영수님](9/20)-->
+<!-- ******* 위에꺼 주석하고 아래 복사[김영수님](9/20) ********-->
 <select id="selectProductIdDetail" resultMap="productMap">
     SELECT *
     FROM product
@@ -68,7 +68,6 @@
         VALUES (#{id}, #{name}, #{price}, #{promotion})
     </insert>
 
-
     <select id="selectRandomProducts" resultType="ProductDTO">
         SELECT product_id,
                name,
@@ -85,9 +84,7 @@
               ORDER BY RAND() LIMIT 10)
                  AS sale
     </select>
-
-
-
+    <select id="selectRandomModelImage" resultType="team.project.dto.MainImageDTO"></select>
 
 
 </mapper>

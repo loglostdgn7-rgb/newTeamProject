@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 @ToString
 //---------------------------------------------------
-//김영수님 수정. 9/23 PagenationDTO -> PagenationDTO<T>, Annotation 추가
+/*****김영수님 수정. 9/23 PagenationDTO -> PagenationDTO<T>, Annotation 추가 *********/
 @NoArgsConstructor
 @AllArgsConstructor
 public class PagenationDTO<T> {
@@ -26,19 +26,19 @@ public class PagenationDTO<T> {
     private final Integer totalPageViewCount = 3; // 화면에 보여줄 페이지 번호 총 개수
     //-------------------------------------------------------------------------
 //    private final Integer pageViewOffset = 2; // 화면에 보여줄 앞 뒤 페이지 번호 개수
-    //김영수님 수정 9/24 수정. 위에꺼에서 아래껄로 변경 final -> " "
+    /**** 김영수님 수정 9/24 수정. 위에꺼에서 아래껄로 변경 final -> " " ****/
     private Integer pageViewOffset = 2; // 화면에 보여줄 앞 뒤 페이지 번호 개수
     //-------------------------------------------------------------------------
     /***************** 실제 Element 항목 관련 *************************/
     private Integer totalElementsCount; // 게시물 전체 개수
     //-------------------------------------------------------------------------
-    //김영수님 수정 9/23 수정.  위에꺼에서 아래껄로 수정
+    /*****김영수님 수정 9/23 수정.  위에꺼에서 아래껄로 수정*****/
     //    @Setter private List<ProductDTO> elements; // 페이지네이션 대상 요소
     @Setter
     private List<T> elements; // 페이지네이션 대상 요소
 
     //---------------------------------------------------
-    // 김영수님 9/25 수정. 변수 추가
+    /***** 김영수님 9/25 수정. 변수 추가*******/
     private String startDate;
     private String endDate;
     private String status;

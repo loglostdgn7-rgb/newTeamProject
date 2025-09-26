@@ -86,7 +86,7 @@
         <section class="product-list">
             <ul class="product-list-1">
                 <li th:each="product : ${pagenation.elements}">
-                    <!--  아래 추가 [김영수님](9/20)-->
+
                     <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
                         <div class="product-image">
                             <!-- DB 이미지 있으면 출력 -->
