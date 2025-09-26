@@ -34,11 +34,13 @@
         SELECT *
         FROM product
         WHERE product.category_id IN (
-            SELECT category_id
-            FROM category
-            WHERE parent_id = #{parentId}
+            SELECT CHILD.category_id
+            FROM category PARENT
+                     INNER JOIN category CHILD
+                                ON PARENT.category_id = CHILD.parent_id
+            WHERE CHILD.parent_id = #{parentId} OR CHILD.category_id = #{parentId}
         )
-            LIMIT #{pagenation.size} OFFSET #{pagenation.offset};
+            LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
     </select>
 
 

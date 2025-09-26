@@ -70,6 +70,8 @@ public String get_list(
     // 페이지네이션과 parentId를 모델에 담기
     model.addAttribute("pagenation", pagenation);
     model.addAttribute("parentId", parentId);
+    System.out.println(pagenation);
+    System.out.println(parentId);
 
     // Thymeleaf 템플릿 경로 반환
     return "shop/product/list";

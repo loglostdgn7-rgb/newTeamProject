@@ -1,4 +1,6 @@
 package team.project.service;
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import team.project.dto.CategoryDTO;
 import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
@@ -17,22 +19,21 @@ public class ProductService {
 
 
     // Header 대분류
+    @Getter
     Map<Integer,CategoryDTO> parentCategoryMap = new HashMap<>();
-
     // Header 소분류
-    Map<Integer,List<CategoryDTO>> childCategoryMap = new HashMap<>();
+    @Getter Map<Integer,List<CategoryDTO>> childCategoryMap = new HashMap<>();
 
-
-        public void Category(){
-            List<CategoryDTO> parentCategory = productMapper.parentCategory();
-            for(CategoryDTO ParentCategory : parentCategory){
-                parentCategoryMap.put(ParentCategory.getCategoryId(), ParentCategory);
-                List<CategoryDTO> childCategory = productMapper.childCategory(ParentCategory.getCategoryId());
-                for(CategoryDTO ChildCategory : childCategory){
-                    childCategoryMap.put(ChildCategory.getCategoryId(), childCategory);
-                }
-            }
+    @PostConstruct
+    public void Category(){
+        List<CategoryDTO> parentCategory = productMapper.parentCategory();
+        System.out.println(parentCategory);
+        for(CategoryDTO ParentCategory : parentCategory){
+            parentCategoryMap.put(ParentCategory.getCategoryId(), ParentCategory);
+            List<CategoryDTO> childCategory = productMapper.childCategory(ParentCategory.getCategoryId());
+            childCategoryMap.put(ParentCategory.getCategoryId(), childCategory);
         }
+    }
 
         public Map<Integer, CategoryDTO> getParentCategoryMap() {
             return parentCategoryMap;
