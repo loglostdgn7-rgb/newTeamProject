@@ -51,6 +51,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
         //일단 무조건 로그인 시킨다
         return UserDTO.builder()
                 .id("Anonymous")
+                .role("USER")
                 .snsUsers(new ArrayList<>(List.of(snsUser)))
                 .build();
     }

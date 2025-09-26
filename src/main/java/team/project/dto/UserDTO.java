@@ -93,7 +93,10 @@ public class UserDTO implements OAuth2User, UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("READ"));
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.role));
+//        return List.of(new SimpleGrantedAuthority("READ"));
+        return authorities;
     }
 
     @Override
