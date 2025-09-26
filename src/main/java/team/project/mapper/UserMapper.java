@@ -90,6 +90,6 @@ public interface UserMapper {
     //관리자 모두 초기화
     void resetUserProfileToDefault(@Param("userId") String userId);
 
-    int resetAllTestUsersOrderStatus(@Param("userIds") List<String> userIds);
+    int resetAllTestUsersOrderStatus(@Param("testUserIds") List<String> testUserIds);
 
 }

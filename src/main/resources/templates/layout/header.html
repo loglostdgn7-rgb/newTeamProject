@@ -43,7 +43,7 @@
                 </form>
             </li>
 
-            <li sec:authorize="hasRole('ADMIN')">
+            <li sec:authorize="hasAuthority('ADMIN')">
                 <button class="admin-reset-button">RESET</button>
             </li>
 

@@ -258,7 +258,7 @@
         ROW_NUMBER() OVER (PARTITION BY user_id ORDER BY order_date) as rn
         FROM orders
         WHERE user_id IN
-        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+        <foreach item="userId" collection="testUserIds" open="(" separator="," close=")">
             #{userId}
         </foreach>
         ) as ranked_orders ON o.order_id = ranked_orders.order_id
