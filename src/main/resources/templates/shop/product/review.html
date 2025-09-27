@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>상품 조회</title>
+
+
+    <link rel="stylesheet" th:href="@{/css/product/review.css}">
+    <!--    <script th:src="@{/js/product/list.js}" defer></script>-->
+</head>
+
+
+<main layout:fragment="content">
+    <div class="photo-review-type">
+        <div class="photo-review-all">
+            <span>전체 리뷰</span>
+        </div>
+        <div class="photo-review-normal">
+            <span>일반 리뷰</span>
+        </div>
+        <div class="photo-review-photo">
+            <span>포토 리뷰</span>
+        </div>
+    </div>
+
+
+    <div class="photo-review-content">
+        <div class="photo-review-content-title">
+            <span class="title">photo-review</span>
+            <span class="korea_title">| 포토 리뷰</span>
+            <hr/>
+        </div>
+        <div class="photo-review-sort">
+            <ul>
+                <li>최신순
+                    <div class="photo-review-sort-explain">
+                        <div>
+                            <span>리뷰 정렬 기준:</span>
+                        </div>
+                        <div>
+                            <span>'최신순'정렬은 최신 리뷰를 우선으로 정렬합니다.</span>
+                        </div>
+                    </div>
+                </li>
+                <li>별점순
+                    <div class="photo-review-sort-explain">
+                        <div>
+                            <span>리뷰 정렬 기준:</span>
+                        </div>
+                        <div>
+                            <span>'별점순'정렬은 별점이 높은 리뷰를 우선으로 정렬합니다.</span>
+                        </div>
+                    </div>
+                </li>
+                <li>추천순
+                    <div class="photo-review-sort-explain">
+                        <div>
+                            <span>리뷰 정렬 기준:</span>
+                        </div>
+                        <div>
+                            <span>'추천순'정렬은 추천이 많은 리뷰를 우선으로 정렬합니다.</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <hr style="margin-top: 3px;">
+
+
+        <!--   사진 리뷰   -->
+        <div class="photo-review-section">
+            <div class="photo-review-all-item">
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                    <div class="user-name">
+                        <span>tester</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                    <div class="user-name">
+                        <span>tester</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+                <div class="photo-review-item">
+                    <div class="photo-review-image">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                             alt="#">
+                    </div>
+                    <div class="photo-review-product">
+                        <div class="product-image">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh-iDPkVLT8KcVDyYnt8Vy7XLzvjxB0GGdbA&s"
+                                 alt="#">
+                        </div>
+                        <div class="product-detail">
+                            <div class="product-name">
+                                <span>상품 이름</span>
+                            </div>
+                            <div class="product-photo-review-count">
+                                리뷰<span>3</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="photo-review-text">
+                        <span>입기 좋아요</span>
+                    </div>
+                    <div class="photo-review-star">
+                        <span>★★★★☆ </span>
+                    </div>
+                    <div class="photo-review-created_at">
+                        <span>2025.09.10</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="plus">
+            <button type="button" class="plus-btn">
+                더보기<!----></button>
+        </div>
+    </div>
+
+    <div class="photo-review-content">
+        <div class="content-title">
+            <span class="title">normal-review</span>
+            <span class="korea_title">| 일반 리뷰</span>
+            <hr/>
+        </div>
+        <div class="photo-review-sort">
+            <ul>
+                <li>최신순
+                    <div class="photo-review-sort-explain">
+                        <div>
+                            <span>리뷰 정렬 기준:</span>
+                        </div>
+                        <div>
+                            <span>'최신순'정렬은 최신 리뷰를 우선으로 정렬합니다.</span>
+                        </div>
+                    </div>
+                </li>
+                <li>별점순
+                    <div class="photo-review-sort-explain">
+                        <div>
+                            <span>리뷰 정렬 기준:</span>
+                        </div>
+                        <div>
+                            <span>'별점순'정렬은 별점이 높은 리뷰를 우선으로 정렬합니다.</span>
+                        </div>
+                    </div>
+                </li>
+                <li>추천순
+                    <div class="photo-review-sort-explain">
+                        <div>
+                            <span>리뷰 정렬 기준:</span>
+                        </div>
+                        <div>
+                            <span>'추천순'정렬은 추천이 많은 리뷰를 우선으로 정렬합니다.</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <hr style="margin-top: 3px;">
+
+
+
+    </div>
+
+</main>
+<footer th:replace="~{layout/fragments/footer :: footer}"></footer>
+</html>

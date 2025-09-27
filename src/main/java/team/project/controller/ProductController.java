@@ -117,8 +117,11 @@ public String get_list(
 
 
 
-    //카테고리
-
+    //리뷰
+    @GetMapping("/review")
+    public String get_review(){
+        return "shop/product/review";
+    }
 }
 
 
