@@ -156,13 +156,17 @@ checkoutBtn.onclick = () => {
     paymentForm.querySelector(".order-total-price").value = refreshOrderTotal;
 
     paymentBackground.style.display = "block";
+    //결제창 뜨면 스크롤 안생기게 방지
+    document.body.style.overflow = "hidden";
     openModalBackground = paymentBackground; //지금 나타난 것은 paymentBackground
 }
 
-//모달창 기능
+//모달창 기능(결제창 닫기)
 const closeModal = () => {
     if (openModalBackground) {
         openModalBackground.style.display = "none";
+        //결제창 닫으면 스크롤 가능하게
+        document.body.style.overflow = "auto";
         openModalBackground = null;
     }
 };

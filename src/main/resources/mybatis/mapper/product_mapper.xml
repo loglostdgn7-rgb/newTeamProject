@@ -86,7 +86,6 @@
     </insert>
 
 
-
     <select id="selectRandomProducts" resultType="ProductDTO">
         SELECT product_id,
                name,

@@ -173,7 +173,8 @@
     width: 100vw;
     height: 100vh;
     box-sizing: border-box;
-    position: absolute;
+    /*어느 스크롤에서 결제(모달)창을 열어도 화면 중앙에 뜨도록*/
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 990;

@@ -12,12 +12,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import team.project.dto.OrderDTO;
+import team.project.dto.PaginationDTO;
 import team.project.dto.UserDTO;
 import team.project.service.user.UserMyPageService;
 import team.project.service.user.UserService;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequestMapping("/user")
@@ -45,20 +46,24 @@ public class UserMyPageController {
         return ResponseEntity.ok("주문이 성공적으로 완료 되었습니다.");
     }
 
-    //주문 내역 보기
+    //주문 내역 리스트 보기
     @GetMapping("/my-page/order")
     public String get_order(
             @AuthenticationPrincipal UserDTO principal,
-            Model model
+            Model model,
+            PaginationDTO<OrderDTO> pagination
     ) {
-        List<OrderDTO> orderList = userMyPageService.find_orders_by_user_id(principal.getId());
+        pagination.setSize(5); //주문내역 주문갯수
+        pagination.setPageViewOffset(1);//현재 페이지 앞뒤 번호 표시 갯수
 
-        model.addAttribute("orderList", orderList);
+        PaginationDTO<OrderDTO> paginationTheOrder = userMyPageService.find_orders_by_user_id(principal.getId(), pagination);
+
+        model.addAttribute("paginationTheOrder", paginationTheOrder);
 
         return "user/my-page/order";
     }
 
-    //order detail 개별(row) 주문 내역 보기
+    //개별 주문 내역의 상품리스트 보기
     @GetMapping("/my-page/order/{orderId}")
     public String get_order_items(
             @PathVariable("orderId") int orderId,
@@ -72,6 +77,48 @@ public class UserMyPageController {
         return "user/my-page/order-detail";
     }
 
+
+    //    주문상태변경
+    @PostMapping("/my-page/order/{orderId}/status")
+    @ResponseBody
+    public ResponseEntity<String> update_order_status(
+            @PathVariable int orderId,
+            @RequestBody Map<String, String> statusMap,
+            @AuthenticationPrincipal UserDTO principal
+    ) {
+        String newStatus = statusMap.get("status");
+
+        if (newStatus == null || newStatus.isBlank()) { //널이거나 공백 포함 비었으면
+            return ResponseEntity.badRequest().body("변경할 값이 없음");
+        }
+
+        boolean isSuccess = userMyPageService.update_order_status(orderId, principal.getId(), newStatus);
+
+        if (isSuccess) {
+            String message = newStatus.equals("CANCEL") ? "주문이 정상 취소 되었습니다" : "정상 반품 신청 되었습니다";
+            return ResponseEntity.ok(message); //메세지를 담아서 보내기
+        } else return ResponseEntity.status(403).body("주문 상태를 변경할 권한이 없거나, 주문을 찾을 수 없습니다");
+
+    }
+
+
+        //////////// 상품 상태 초기화 //////////////
+        @PostMapping("/my-page/orders/reset")
+        @ResponseBody
+        public ResponseEntity<String> reset_orders(@AuthenticationPrincipal UserDTO principal) {
+            if (principal == null) {
+                return ResponseEntity.status(401).body("로그인이 필요합니다.");
+            }
+
+            try {
+                // [수정] principal.getId()를 서비스 메서드에 전달
+                int updatedCount = userMyPageService.reset_test_orders_manually(principal.getId());
+                return ResponseEntity.ok(updatedCount + "개 주문의 상태가 초기화되었습니다.");
+            } catch (Exception e) {
+                logger.error("주문 초기화 중 오류 발생", e);
+                return ResponseEntity.internalServerError().body("서버 오류로 초기화에 실패했습니다.");
+            }
+        }
 
     /************************************************/
     // 프로필
