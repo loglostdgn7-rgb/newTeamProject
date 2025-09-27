@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @Service
-@PropertySource("file:../application.properties")
+
 public class PortoneService {
     Logger logger = LoggerFactory.getLogger("PORTONE_LOGGER");
 

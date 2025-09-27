@@ -15,7 +15,7 @@ import team.project.mapper.UserMapper;
 import java.util.*;
 
 @Service
-@PropertySource("file:../application.properties")
+
 public class UserService {
     Logger logger = LoggerFactory.getLogger(UserService.class);
 
