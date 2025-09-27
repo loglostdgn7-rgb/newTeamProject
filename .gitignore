@@ -1,6 +1,8 @@
 HELP.md
 target/
 logs/
+#공개되면 안되는거
+application.properties
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
