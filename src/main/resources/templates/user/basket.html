@@ -31,7 +31,7 @@
                     </li>
                     <li th:each="item : ${list}" class="product" th:data-product-id="${item.product.getProductId()}">
                         <a class="product-img-box" href="#">
-                            <img th:src="@{${item.product.base64ImageData}}"
+                            <img th:src="@{${item.base64Image}}"
                                  alt="상품 이미지">
                         </a>
                         <div class="product-text-box">

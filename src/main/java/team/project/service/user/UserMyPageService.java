@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import team.project.dto.*;
 import team.project.mapper.UserMapper;
-import team.project.util.ImageUtils;
 
-import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -32,7 +29,6 @@ public class UserMyPageService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private RestTemplate restTemplate;
-    private final Random random = new Random();
 
     @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
     private String KAKAO_CLIENT_ID;
@@ -67,47 +63,62 @@ public class UserMyPageService {
         logger.info("주문 완료: {}", order.getOrderId());
     }
 
+    //  공통 포메팅 메소드
+    private void applyCommonOrderFormatting(OrderDTO order) {
+        if (order == null) {
+            return;
+        }
+
+        // 날짜 바꾸기
+        if (Objects.nonNull(order.getOrderDate())) {
+            order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
+        }
+
+        // 주문 상태 바꾸기
+        if (order.getOrderStatus() != null) {
+            switch (order.getOrderStatus()) {
+                case "ALL" -> order.setOrderStatusFormatted("전체");
+                case "PENDING" -> order.setOrderStatusFormatted("입금전");
+                case "PREPARING" -> order.setOrderStatusFormatted("배송준비중");
+                case "SHIPPED" -> order.setOrderStatusFormatted("배송중");
+                case "DELIVERED" -> order.setOrderStatusFormatted("배송완료");
+                case "CANCEL" -> order.setOrderStatusFormatted("주문취소");
+                case "EXCHANGE" -> order.setOrderStatusFormatted("교환");
+                case "REFUND" -> order.setOrderStatusFormatted("반품");
+                default -> order.setOrderStatusFormatted(order.getOrderStatus());
+            }
+        } else {
+            order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
+        }
+    }
+
     //주문내역 리스트 불러오기
-    public List<OrderDTO> find_orders_by_user_id(String userId) {
-        List<OrderDTO> orderList = userMapper.selectOrdersByUserId(userId);
+    public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagination) {
+        // 전체 주문 개수를 조회
+        int totalCount = userMapper.selectOrdersCount(userId, pagination);
+        pagination.setTotalElementsCount(totalCount);
+
+        //현재 페이지 주문 목록을 조회
+        List<OrderDTO> orderList = userMapper.selectOrdersWithPagination(userId, pagination);
+
         logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
 
+        //merchantUid 줄이기
         for (OrderDTO order : orderList) {
-            // 날짜 바꾸기
-            if (Objects.nonNull(order.getOrderDate()))
-                order.setOrderDateFormatted(order.getOrderDate().format(DateTimeFormatter.ofPattern("yy.MM.dd")));
-
+            //uid 줄이기
             if (Objects.nonNull(order.getMerchantUid())) {
                 String[] shorten = order.getMerchantUid().split("-");
-                order.setShortMerchantUid("(" + shorten[0] + "...)");
+                order.setShortMerchantUid(shorten[0] + "...");
             }
 
-            // 주문 상태 바꾸기
-            if (order.getOrderStatus() != null) { // 이거 안쓰면..hashMap 에러 뜸 switch가 쓰는거라서..
-                switch (order.getOrderStatus()) {
-                    case "PENDING" -> order.setOrderStatusFormatted("입금전");
-                    case "PREPARING" -> order.setOrderStatusFormatted("배송 준비 중");
-                    case "SHIPPED" -> order.setOrderStatusFormatted("배송 중");
-                    case "DELIVERED" -> order.setOrderStatusFormatted("배송 완료");
-                    default -> order.setOrderStatusFormatted(order.getOrderStatus());
-                }
-            } else {
-                order.setOrderStatus("처리 과정에서 문제가 생겼으니 고객센터에 문의해 주세요");
-            }
+            //  공통 포메팅 메소드 적용
+            applyCommonOrderFormatting(order);
 
-            //개별 상품
-            List<OrderDetailDTO> product = order.getOrderDetails();
-
-            //이미지 바꾸기
-            if (product != null && !product.isEmpty()) {
-                OrderDetailDTO firstItem = product.getFirst();
-
-                String dataUri = ImageUtils.imageDataUir(firstItem.getProductImage(), "image/jpeg");
-                order.setBase64Image(dataUri);
-            }
-            logger.info("가공 후 OrderDTO: {}", order);
+            logger.info("주문내역(리스트)[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
         }
-        return orderList;
+        pagination.setElements(orderList);
+
+        return pagination;
     }
 
     //개별(row) 주문 내역
@@ -115,11 +126,41 @@ public class UserMyPageService {
             int orderId,
             String userId
     ) {
-        OrderDTO order = userMapper.selectOrderByIdAndUserId(orderId, userId);
-        if (order == null) {
+        List<OrderDTO> orderList = userMapper.selectOrderById(userId, orderId); //유저랑 *주문번호 매칭해서 가져오기
+        if (orderList == null || orderList.isEmpty()) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
+
+        OrderDTO order = orderList.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
+
+        //  공통 포메팅 메소드 적용
+        applyCommonOrderFormatting(order);
+
+        logger.info("상세 주문 내역[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
+
         return order;
+    }
+
+    // 주문 상태 변경
+    public boolean update_order_status(int orderId, String userId, String newStatus) {
+        int updatedRows = userMapper.updateOrderStatus(orderId, userId, newStatus);
+
+        if (updatedRows == 1) {
+            logger.info("주문 상태 변경 완료 orderId={} userId={} newStatus={}", orderId, userId, newStatus);
+            return true;
+        } else {
+            logger.info("주문 상태 변경 실패 orderId={} userId={} newStatus={}", orderId, userId, newStatus);
+            return false;
+        }
+    }
+
+
+    /// ///////// 상품 상태 초기화 ////////////////////////
+    @Transactional
+    public int reset_test_orders_manually(String userId) {
+        logger.info("수동 초기화 실행: {} 계정 주문 상태를 초기화합니다.", userId);
+
+        return userMapper.resetOrderStatus(userId);
     }
 
 
@@ -250,5 +291,7 @@ public class UserMyPageService {
         userMapper.deleteUserById(userId);
         logger.info("{} 사용자가 탈퇴했습니다", userId);
     }
+
+
 
 }

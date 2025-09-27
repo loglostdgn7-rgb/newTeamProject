@@ -43,8 +43,14 @@ header > nav > ul.left-section > li > a {
     padding-left: 0;
 }
 
-header > nav > ul.left-section > li > a > .logo-img {
+
+/*header > nav > ul.left-section > li > a > .logo-img {*/
+/*    width: 100px;*/
+/*}*/
+
+header > nav > ul.left-section > li > a > svg.logo{
     width: 100px;
+    height: auto;
 }
 
 /* 상품 리스트 메뉴 */
@@ -146,10 +152,20 @@ header > nav > ul.right-section .search-input {
 
 /* 카트 */
 header > nav > ul.right-section .cart-container {
+header > nav > .right-section > .login-container > a,
+header > nav > .right-section > .logout-container > a {
+    &:hover {
+        color: var(--basic-red);
+    }
+}
+
+header > nav > .right-section .cart-container {
     position: relative;
 }
 
 header > nav > ul.right-section .cart-container .cart-alert {
+/*헤더 카트 알림*/
+header > nav > .right-section .cart-container .cart-alert {
     position: absolute;
     top: 10px;
     left: 30px;
@@ -184,4 +200,21 @@ header > nav > ul.right-section .my-page-container a:hover {
 /* 선택된 메뉴 강조 */
 .product-list-section > li.selected a {
     color: var(--basic-red);
+}
+
+
+/*관리자 초기화 버튼*/
+header > nav > .right-section button.admin-reset-button {
+    background-color: unset;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--basic-red);
+    cursor: pointer;
+
+    &:hover {
+        color: var(--basic-white);
+        background: var(--basic-red);
+    }
 }
