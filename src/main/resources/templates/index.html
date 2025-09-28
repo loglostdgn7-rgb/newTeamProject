@@ -19,11 +19,26 @@
 
 <main layout:fragment="content">
     <section class="index" th:data-message="${message}">
-        <div class="visual-view-section" >
-            <img src=""
-                 alt="대표 상품 이미지">
+        <div class="visual-view-container">
+            <span class="copyright one">
+                <strong>A VIBRANT LEGACY</strong><br/>
+                <br/>
+                한 시대를 풍미했던 생동감 넘치는 아이콘.<br/>
+                우리의 기억 속 휠라의 선명한 발자취는<br/>
+                새로운 영감의 시작이 됩니다.
+            </span>
+            <a th:href="@{/shop/product/detail/{productId}(productId=${randomMainImage.productId})}">
+                <img th:src="${randomMainImage.base64Image}" alt="대표 상품 이미지">
+            </a>
+            <span class="copyright two">
+                <strong>FOR YOUR EVERY MOMENT</strong><br/>
+                <br/>
+                그 에너지가 이제 당신의 모든 순간에 스며듭니다.<br/>
+                미니멀한 질서 속에서 새롭게 태어난,<br/>
+                가장 본질적인 움직임을 위한 디자인.
+            </span>
         </div>
-        <div class="view-more-section">
+        <div class="view-more-container">
             <h2>NEW ARRIVAL
                 <a class="view-more-href" href="#">VIEW MORE</a>
             </h2>
@@ -32,8 +47,8 @@
                     <li class="product swiper-slide" th:each="product : ${pagenation.elements}">
                         <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
                             <div class="product-img-box">
-                                <img th:src="@{'data:image/jpeg;base64,' + ${product.base64ImageData}}" alt="">
-<!--                                <img src="https://standoil.kr/web/product/big/202507/9e4004752089a4d52333f7cb2e165966.jpg" alt="">-->
+                                <img th:src="${product.base64ImageData}" alt="상품 이미지">
+                                <!--                                <img src="https://standoil.kr/web/product/big/202507/9e4004752089a4d52333f7cb2e165966.jpg" alt="">-->
                             </div>
                             <div class="promotion">NEW ARRIVAL∙10% OFF</div>
                             <div class="name-color">
@@ -46,9 +61,13 @@
                         </a>
                     </li>
                 </ul>
+
+
                 <div class="swiper-pagenation"></div>
+
                 <button class="slide-prev-btn swiper-button-prev">
                 </button>
+
                 <button class="slide-next-btn swiper-button-next">
                 </button>
             </div>

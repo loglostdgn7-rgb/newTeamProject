@@ -153,6 +153,7 @@
                     <li class="now-page">
                         <a th:href="@{/user/my-page/order(startDate=${param.startDate},endDate=${param.endDate},
                                                           status=${param.status},
+                                                          page=${pagenationTheOrder.page},
                                                           size=${pagenationTheOrder.size})}"
                            th:text="${pagenationTheOrder.page}" th:active="true">1</a>
                     </li>

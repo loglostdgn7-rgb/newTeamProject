@@ -16,6 +16,15 @@ searchInput.onblur = () => {
     searchBtnContainer.style.display = "flex";
 }
 
+//검색창 결과 찾기
+searchInput.onkeydown = event => {
+    const searchValue = searchInput.value.trim();
+    if (event.key === "Enter" && searchValue) {
+        event.preventDefault();
+        location.href = `/shop/product/search?searchValue=${searchValue}`;
+    }
+}
+
 // NAV 버튼
 const navButtons = document.querySelectorAll(".product-list-section > li");
 const currentPath = window.location.pathname;
@@ -55,7 +64,6 @@ if (cartAlert) {
         }
     }
 }
-
 
 
 //관리자 초기화 버튼

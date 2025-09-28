@@ -75,7 +75,7 @@
     border-top-right-radius: 0;
     border-top-left-radius: 0;
     background-color: var(--basic-white);
-    z-index: 999;
+    z-index: 800;
 }
 
 .order-section > .order-select-container > li > .option-box > li.option {

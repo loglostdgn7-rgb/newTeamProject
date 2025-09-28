@@ -106,4 +106,18 @@ public class ProductService {
             pagenation.setElements(List.of());
         }
     }
+
+    /******김영수님 추가 9/28*********/
+    public void search_products(PagenationDTO pagenation) {
+        List<ProductDTO> searchedProducts = productMapper.selectProductsBySearchValue(pagenation);
+
+        if (searchedProducts !=null && !searchedProducts.isEmpty()) {
+            Integer totalElementCount = productMapper.countProductsBySearchValue(pagenation);
+            pagenation.setTotalElementsCount(totalElementCount);
+            pagenation.setElements(searchedProducts);
+        }else {
+            pagenation.setTotalElementsCount(0);
+            pagenation.setElements(List.of());
+        }
+    }
 }

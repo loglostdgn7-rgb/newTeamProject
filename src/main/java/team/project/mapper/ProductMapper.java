@@ -24,6 +24,14 @@ public interface ProductMapper {
     List<ProductDTO> selectProductsCategory(@Param("parentId") int parentId, PagenationDTO pagenation);
 
     // 단일 제품의 상세 정보 조회
+
+    /******김영수님 9/28 추가********/
+    List<ProductDTO> selectProductsBySearchValue(PagenationDTO pagenation);
+
+    /******김영수님 9/28 추가********/
+    int countProductsBySearchValue(PagenationDTO pagenation);
+
+
     List<ProductDetailDTO> selectDetailProduct(ProductDTO product);
 
     // 모든 제품 조회

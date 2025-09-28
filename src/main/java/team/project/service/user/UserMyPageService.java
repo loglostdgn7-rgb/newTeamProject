@@ -126,12 +126,12 @@ public class UserMyPageService {
             int orderId,
             String userId
     ) {
-        List<OrderDTO> orderList = userMapper.selectOrderById(userId, orderId); //유저랑 *주문번호 매칭해서 가져오기
-        if (orderList == null || orderList.isEmpty()) {
+        List<OrderDTO> productListInOneOrder = userMapper.selectOrderById(userId, orderId); //유저랑 *주문번호 매칭해서 가져오기
+        if (productListInOneOrder == null || productListInOneOrder.isEmpty()) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
 
-        OrderDTO order = orderList.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
+        OrderDTO order = productListInOneOrder.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
 
         //  공통 포메팅 메소드 적용
         applyCommonOrderFormatting(order);

@@ -8,7 +8,7 @@ import java.util.List;
 @Setter
 @ToString
 //---------------------------------------------------
-//김영수님 수정. 9/23 PagenationDTO -> PagenationDTO<T>, Annotation 추가
+/*****김영수님 수정. 9/23 PagenationDTO -> PagenationDTO<T>, Annotation 추가 *********/
 @NoArgsConstructor
 @AllArgsConstructor
 public class PagenationDTO<T> {
@@ -36,10 +36,12 @@ public class PagenationDTO<T> {
     private List<T> elements; // 페이지네이션 대상 요소
 
     //---------------------------------------------------
-    // 김영수님 9/25 수정. 변수 추가
+    /***** 김영수님 9/25 수정. 변수 추가*******/
     private String startDate;
     private String endDate;
     private String status;
+    /***** 김영수님 9/28 ********/
+    private String searchValue;
     //---------------------------------------------------
 
 
