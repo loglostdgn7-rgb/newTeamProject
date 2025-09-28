@@ -108,13 +108,13 @@
 /*}*/
 
 /* 페이지 네이션 */
-.pagination{
+.pagenation{
     display: flex;
     justify-content: center;
     padding: 10px;
 }
 
-.pagination > .page-item:focus{
+.pagenation > .page-item:focus{
     border-radius: 50%;
     background-color: rgba(207,27,27,0.15);
 }

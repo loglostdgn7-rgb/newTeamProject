@@ -22,8 +22,8 @@
 
     <select id="list" parameterType="map" resultType="ProductDTO">
         SELECT *
-        FROM product LIMIT #{size}
-        OFFSET #{offset}
+        FROM product
+        LIMIT #{size} OFFSET #{offset}
     </select>
     <!--  개수  -->
     <select id="countProducts" resultType="int">
@@ -57,6 +57,32 @@
     <!--        FROM product-->
     <!--        WHERE id = #{productId}-->
     <!--    </select>-->
+    <!--****** 김영수님 9/28 추가 ***********-->
+    <select id="selectProductsBySearchValue" resultType="ProductDTO">
+        SELECT *
+        FROM product
+        <if test="searchValue != null and searchValue != ''">
+            WHERE name LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="countProductsBySearchValue" resultType="int">
+        SELECT COUNT(*)
+        FROM product
+        <if test="searchValue != null and searchValue != ''">
+            WHERE name LIKE CONCAT('%',#{searchValue},'%')
+        </if>
+    </select>
+    <!--**************************************-->
+
+
+    <!--****** 안쓰는 것 같아서 주석처리.김영수님 9/20 *******-->
+    <!--    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">-->
+    <!--        SELECT id, name, price-->
+    <!--        FROM product-->
+    <!--        WHERE id = #{productId}-->
+    <!--    </select>-->
 
 
     <!--    상품 리스트 들고오는 select    -->
@@ -82,6 +108,13 @@
         FROM product
         WHERE product.product_id = #{productId};
     </select>
+
+    <!-- ******* 위에꺼 주석하고 아래 복사[김영수님](9/20) ********-->
+    <!--<select id="selectProductIdDetail" resultMap="productMap">-->
+    <!--    SELECT *-->
+    <!--    FROM product-->
+    <!--    WHERE product.product_id = #{productId};-->
+    <!--</select>-->
 
     <select id="selectDetailProduct" resultMap="productDetailMap">
         SELECT *
@@ -109,9 +142,11 @@
                      image_data,
                      FLOOR(1 + (RAND() * 8)) * 10 AS promotion
               FROM product
-              ORDER BY RAND() LIMIT 10)
+              ORDER BY RAND()
+              LIMIT 10)
                  AS sale
     </select>
+
 
 
     <!--  사진 리뷰 가져오기  -->
@@ -158,5 +193,7 @@
                                       FROM category
                                       WHERE parent_id = #{parentId});
     </select>
+
+
 
 </mapper>

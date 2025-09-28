@@ -7,8 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import team.project.dto.PagenationDTO;
+import team.project.dto.ProductDTO;
+import team.project.dto.ProductDetailDTO;
 import team.project.dto.*;
 import team.project.service.ProductService;
+import team.project.util.ImageUtils;
 
 import java.util.Base64;
 import java.util.List;
@@ -75,6 +80,34 @@ public class ProductController {
     }
 
 
+    /// /////  김영수님이 추가.9/28 ///////////
+    @GetMapping("/product/{search}")
+    public String get_product_search(
+            @RequestParam("searchValue") String searchValue,
+            PagenationDTO pagenation,
+            Model model
+    ) {
+        pagenation.setSearchValue(searchValue);
+        productService.search_products(pagenation);
+
+        if (pagenation.getElements() != null) {
+            for (Object element : pagenation.getElements()) {
+                if (element instanceof ProductDTO) {
+                    ProductDTO product = (ProductDTO) element;
+                    if (product.getImageData() != null && product.getImageData().length > 0) {
+                        String base64Image = ImageUtils.imageDataUri(product.getImageData(), "image/jpeg");
+                        product.setBase64ImageData(base64Image);
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("pagenation", pagenation);
+
+        return "search_result";
+    }
+
+
     @GetMapping("/product/detail/{id}")
     public String get_detail(
             Model model,
@@ -102,16 +135,4 @@ public class ProductController {
     public String get_product_set() {
         return "shop/product/product_set";
     }
-
-
-    //리뷰
-    @GetMapping("/review")
-    public String get_review(Model model) {
-        List<ReviewDTO> reviews = productService.getReview();
-        model.addAttribute("reviews", reviews);
-        return "shop/product/review";
-    }
 }
-
-
-

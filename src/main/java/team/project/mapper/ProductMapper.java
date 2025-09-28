@@ -11,11 +11,11 @@ import java.util.Map;
 public interface ProductMapper {
 
     // ----------------------------
-    // 1️⃣ 제품(Product) 조회 / 상세 / 등록
+    // 제품(Product) 조회 / 상세 / 등록
     // ----------------------------
 
     // 특정 제품 정보 조회 (DTO 조건 기반)
-    List<ProductDTO> get_product_info(ProductDTO productDTO);
+//    List<ProductDTO> get_product_info(ProductDTO productDTO);
 
     // 페이지네이션 적용한 제품 리스트 조회
     List<ProductDTO> selectProducts(PagenationDTO pagenation);
@@ -24,6 +24,14 @@ public interface ProductMapper {
     List<ProductDTO> selectProductsCategory(@Param("parentId") int parentId, PagenationDTO pagenation);
 
     // 단일 제품의 상세 정보 조회
+
+    /******김영수님 9/28 추가********/
+    List<ProductDTO> selectProductsBySearchValue(PagenationDTO pagenation);
+
+    /******김영수님 9/28 추가********/
+    int countProductsBySearchValue(PagenationDTO pagenation);
+
+
     List<ProductDetailDTO> selectDetailProduct(ProductDTO product);
 
     // 모든 제품 조회
@@ -36,40 +44,33 @@ public interface ProductMapper {
     ProductDTO selectProductIdDetail(Integer id);
 
     // 특정 제품 ID의 상세 옵션/세부정보 조회
-    List<ProductDetailDTO> selectProductDetail(Integer productId);
+//    List<ProductDetailDTO> selectProductDetail(Integer productId);
 
     // ----------------------------
-    // 2️⃣ 랜덤 / 프로모션 제품
+    // 랜덤 / 프로모션 제품
     // ----------------------------
 
     // 랜덤 제품 리스트 조회
-    List<ProductDTO> randomProduct();
+//    List<ProductDTO> randomProduct();
 
     // 랜덤 제품 리스트 조회 (별도 버전)
     List<ProductDTO> selectRandomProducts();
 
     // 랜덤 프로모션 제품 조회
-    List<ProductDTO> selectRandomProductPromotion();
+//    List<ProductDTO> selectRandomProductPromotion();
 
     // ----------------------------
-    // 3️⃣ 페이징 / 통계
+    // 페이징 / 통계
     // ----------------------------
 
     // 조건 기반 제품 리스트 조회 (Map 사용)
-    List<Map<String, Object>> list(Map<String, Object> paramMap);
+//    List<Map<String, Object>> list(Map<String, Object> paramMap);
 
     // 전체 제품 개수 조회 (페이징용)
     int countProducts();
 
     // ----------------------------
-    // 4️⃣ 리뷰
-    // ----------------------------
-
-    // 일반 리뷰 리스트 조회
-    List<ReviewDTO> getReview();
-
-    // ----------------------------
-    // 5️⃣ 카테고리(Category)
+    // 카테고리(Category)
     // ----------------------------
 
     // 상위 카테고리 목록 조회

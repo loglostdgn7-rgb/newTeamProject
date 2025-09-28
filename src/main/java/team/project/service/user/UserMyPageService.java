@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
-@PropertySource("file:../application.properties")
+
 public class UserMyPageService {
     Logger logger = LoggerFactory.getLogger(UserMyPageService.class);
 
@@ -93,13 +93,13 @@ public class UserMyPageService {
     }
 
     //주문내역 리스트 불러오기
-    public PaginationDTO<OrderDTO> find_orders_by_user_id(String userId, PaginationDTO<OrderDTO> pagination) {
+    public PagenationDTO<OrderDTO> find_orders_by_user_id(String userId, PagenationDTO<OrderDTO> pagenation) {
         // 전체 주문 개수를 조회
-        int totalCount = userMapper.selectOrdersCount(userId, pagination);
-        pagination.setTotalElementsCount(totalCount);
+        int totalCount = userMapper.selectOrdersCount(userId, pagenation);
+        pagenation.setTotalElementsCount(totalCount);
 
         //현재 페이지 주문 목록을 조회
-        List<OrderDTO> orderList = userMapper.selectOrdersWithPagination(userId, pagination);
+        List<OrderDTO> orderList = userMapper.selectOrdersWithPagenation(userId, pagenation);
 
         logger.info("DB에서 가져온 주문 개수: {}", orderList.size());
 
@@ -116,9 +116,9 @@ public class UserMyPageService {
 
             logger.info("주문내역(리스트)[ORDER_ID=[{}]] : {}", order.getOrderId(), order);
         }
-        pagination.setElements(orderList);
+        pagenation.setElements(orderList);
 
-        return pagination;
+        return pagenation;
     }
 
     //개별(row) 주문 내역
@@ -126,12 +126,12 @@ public class UserMyPageService {
             int orderId,
             String userId
     ) {
-        List<OrderDTO> orderList = userMapper.selectOrderById(userId, orderId); //유저랑 *주문번호 매칭해서 가져오기
-        if (orderList == null || orderList.isEmpty()) {
+        List<OrderDTO> productListInOneOrder = userMapper.selectOrderById(userId, orderId); //유저랑 *주문번호 매칭해서 가져오기
+        if (productListInOneOrder == null || productListInOneOrder.isEmpty()) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
 
-        OrderDTO order = orderList.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
+        OrderDTO order = productListInOneOrder.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
 
         //  공통 포메팅 메소드 적용
         applyCommonOrderFormatting(order);

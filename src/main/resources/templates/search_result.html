@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>검색 결과</title>
+    <link rel="stylesheet" th:href="@{/css/product/list.css}">
+</head>
+
+<div layout:fragment="content">
+    <main>
+        <div class="br"></div>
+
+        <div class="select-category">
+            <p th:text="|[${pagenation.searchValue}]에 대한 검색 결과입니다.|">검색 결과</p>
+        </div>
+
+        <section class="product-list">
+            <div th:if="${pagenation.elements.isEmpty()}" style="text-align: center; padding: 50px;">
+                <p>검색된 상품이 없습니다.</p>
+            </div>
+
+            <ul class="product-list-1" th:if="${!pagenation.elements.isEmpty()}">
+                <li th:each="product : ${pagenation.elements}">
+                    <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
+                        <div class="product-image">
+                            <img th:if="${product.base64ImageData != null}"
+                                 th:src="${product.base64ImageData}" alt="Product Image"/>
+                            <img th:unless="${product.base64ImageData != null}" src="/images/no-image.png"
+                                 alt="No Image"/>
+                        </div>
+                    </a>
+                    <div class="product-box">
+                        <div class="product-promotion">
+                            <p th:text="${product.promotion}">프로모션</p>
+                        </div>
+                        <div class="product-name">
+                            <p th:text="${product.name}">제품이름</p>
+                        </div>
+                        <div class="product-price">
+                            <p th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')} + '원'">금액</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <nav class="nav">
+            <ul th:if="${pagenation.totalElementsCount != 0}">
+                <li th:if="${pagenation.startPageIndex != 1}">
+                    <a th:href="@{/shop/product/search(searchValue=${pagenation.searchValue}, page=${pagenation.startPageIndex-1})}"><</a>
+                </li>
+                <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.endPageIndex)}">
+                    <a th:href="@{/shop/product/search(searchValue=${pagenation.searchValue}, page=${index})}"
+                       th:text="${index}"
+                       th:classappend="${index == pagenation.page} ? 'active' : ''"></a>
+                </li>
+                <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
+                    <a th:href="@{/shop/product/search(searchValue=${pagenation.searchValue}, page=${pagenation.endPageIndex+1})}">></a>
+                </li>
+            </ul>
+        </nav>
+    </main>
+</div>
+</html>
