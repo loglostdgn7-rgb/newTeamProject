@@ -1,7 +1,5 @@
 package team.project.mapper;
 
-import org.apache.ibatis.annotations.Param;
-import team.project.dto.MainImageDTO;
 import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -23,6 +21,13 @@ public interface ProductMapper {
 
 
     List<ProductDTO> selectProducts(PagenationDTO pagenation);
+
+    /******김영수님 9/28 추가********/
+    List<ProductDTO> selectProductsBySearchValue(PagenationDTO pagenation);
+
+    /******김영수님 9/28 추가********/
+    int countProductsBySearchValue(PagenationDTO pagenation);
+
 
     List<ProductDetailDTO> selectDetailProduct(ProductDTO product);
 

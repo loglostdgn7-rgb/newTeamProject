@@ -42,6 +42,8 @@ public class PagenationDTO<T> {
     private String startDate;
     private String endDate;
     private String status;
+    /***** 김영수님 9/28 ********/
+    private String searchValue;
     //---------------------------------------------------
 
 
