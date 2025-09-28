@@ -11,7 +11,7 @@ import java.util.Map;
 public interface ProductMapper {
 
     // ----------------------------
-    // 1️⃣ 제품(Product) 조회 / 상세 / 등록
+    // 제품(Product) 조회 / 상세 / 등록
     // ----------------------------
 
     // 특정 제품 정보 조회 (DTO 조건 기반)
@@ -39,7 +39,7 @@ public interface ProductMapper {
     List<ProductDetailDTO> selectProductDetail(Integer productId);
 
     // ----------------------------
-    // 2️⃣ 랜덤 / 프로모션 제품
+    // 랜덤 / 프로모션 제품
     // ----------------------------
 
     // 랜덤 제품 리스트 조회
@@ -52,7 +52,7 @@ public interface ProductMapper {
     List<ProductDTO> selectRandomProductPromotion();
 
     // ----------------------------
-    // 3️⃣ 페이징 / 통계
+    // 페이징 / 통계
     // ----------------------------
 
     // 조건 기반 제품 리스트 조회 (Map 사용)
@@ -62,14 +62,7 @@ public interface ProductMapper {
     int countProducts();
 
     // ----------------------------
-    // 4️⃣ 리뷰
-    // ----------------------------
-
-    // 일반 리뷰 리스트 조회
-    List<ReviewDTO> getReview();
-
-    // ----------------------------
-    // 5️⃣ 카테고리(Category)
+    // 카테고리(Category)
     // ----------------------------
 
     // 상위 카테고리 목록 조회

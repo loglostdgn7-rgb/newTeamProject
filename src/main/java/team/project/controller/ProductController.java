@@ -103,14 +103,6 @@ public class ProductController {
         return "shop/product/product_set";
     }
 
-
-    //리뷰
-    @GetMapping("/review")
-    public String get_review(Model model) {
-        List<ReviewDTO> reviews = productService.getReview();
-        model.addAttribute("reviews", reviews);
-        return "shop/product/review";
-    }
 }
 
 
