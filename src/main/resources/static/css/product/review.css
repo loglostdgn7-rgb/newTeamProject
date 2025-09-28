@@ -1,0 +1,265 @@
+main {
+    font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+}
+
+/* 리뷰 타입 선택 */
+.photo-review-type {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 30px 0;
+}
+
+.photo-review-type > div > span {
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+/* 콘텐츠 제목 */
+.content-title > .title,
+.photo-review-content-title > .title {
+    font-size: 20px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.content-title > .korea_title,
+.photo-review-content-title > .korea_title {
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+.content-title > hr,
+.photo-review-content-title > hr {
+    height: 4px;
+    background: black;
+    margin-top: 10px;
+    border: none;
+}
+
+/* 정렬 옵션 */
+.photo-review-sort {
+    margin-top: 10px;
+}
+
+.photo-review-sort ul {
+    display: flex;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.photo-review-sort li {
+    font-size: 17px;
+    position: relative;
+    cursor: pointer;
+}
+
+.photo-review-sort li:hover {
+    font-weight: bold;
+}
+
+/* 정렬 기준 툴팁 */
+.photo-review-sort-explain {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 352px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 14px;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.photo-review-sort li:hover .photo-review-sort-explain,
+.photo-review-sort-explain:hover {
+    display: block;
+    opacity: 1;
+}
+
+/* 리뷰 섹션 */
+.photo-review-section {
+    display: flex;
+    justify-content: center;
+}
+
+.photo-review-all-item {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(100px, 1fr));
+    column-gap: 40px;
+    margin: 0;
+    padding: 0;
+    overflow-x: auto;
+}
+
+/* 개별 리뷰 아이템 */
+.photo-review-item {
+    padding-top: 30px;
+}
+
+.photo-review-image {
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 5%;
+}
+
+.photo-review-image img,
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-review-product {
+    display: flex;
+    padding-top: 15px;
+    padding-left: 5px;
+}
+
+.product-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 10%;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.product-detail {
+    display: grid;
+    padding-left: 20px;
+}
+
+.product-name > span {
+    font-weight: 700;
+    color: #14161a;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 리뷰 텍스트, 별점, 작성일 */
+.photo-review-text > span {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 13px;
+    line-height: 18px;
+    color: #14161a;
+    margin-top: 8px;
+}
+
+.photo-review-star > span {
+    font-size: 20px;
+    margin-top: 4px;
+}
+
+.photo-review-created_at > span {
+    font-size: 14px;
+    color: gray;
+    margin-top: 4px;
+}
+
+.user-name {
+    font-size: 12px;
+    color: #707680;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 18px;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+/* 더보기 버튼 */
+.plus-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 24px;
+    margin-top: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #14161a;
+    border-radius: 4px;
+    background: transparent;
+    color: #14161a;
+}
+
+
+ /* normal 리뷰 */
+
+/* 전체 리뷰 박스 */
+.normal-review-product {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+}
+
+/* 왼쪽 이미지 */
+.normal-product-image {
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+    margin-right: 20px;
+}
+.normal-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 오른쪽 내용 */
+.normal-product-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 리뷰 텍스트와 하단 footer를 분리 */
+}
+
+/* 상단: 상품 이름 + 별점/리뷰수 */
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+.product-name {
+    font-weight: bold;
+    font-size: 16px;
+}
+.product-rating {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 리뷰 내용 */
+.review-text {
+    flex-grow: 1; /* 남는 공간 채움 */
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* 하단: 작성자 + 날짜 (항상 하단) */
+.review-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #888;
+    margin-top: auto; /* 여기서 핵심! */
+    padding-top: 50px;
+}

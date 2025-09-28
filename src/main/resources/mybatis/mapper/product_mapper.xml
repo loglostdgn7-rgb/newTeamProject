@@ -9,69 +9,79 @@
     <resultMap id="productDetailMap" type="ProductDetailDTO" autoMapping="true">
         <id property="id" column="detail_id"/>
     </resultMap>
-<!--  카테고리 맵  -->
+    <!--  카테고리 맵  -->
     <resultMap id="categoryMap" type="CategoryDTO" autoMapping="true">
         <id property="categoryId" column="category_id"/>
     </resultMap>
-<!--페이지네이션-->
-<!--리스트 나열-->
+
+    <resultMap id="reviewMap" type="ReviewDTO" autoMapping="true">
+        <id property="reviewId" column="reviewId"/>
+    </resultMap>
+    <!--페이지네이션-->
+    <!--리스트 나열-->
 
     <select id="list" parameterType="map" resultType="ProductDTO">
-        SELECT * FROM product LIMIT #{size} OFFSET #{offset}
+        SELECT *
+        FROM product LIMIT #{size}
+        OFFSET #{offset}
     </select>
-<!--  개수  -->
+    <!--  개수  -->
     <select id="countProducts" resultType="int">
-        SELECT COUNT(*) AS product_count FROM product
+        SELECT COUNT(*) AS product_count
+        FROM product
     </select>
 
     <select id="selectProducts" resultMap="productMap">
-        SELECT
-            *
+        SELECT *
         FROM product p
-        LIMIT #{size} OFFSET #{offset}
+            LIMIT #{size}
+        OFFSET #{offset}
     </select>
     <select id="selectProductsCategory" resultMap="productMap" parameterType="map">
         SELECT *
         FROM product
-        WHERE product.category_id IN (
-            SELECT CHILD.category_id
-            FROM category PARENT
-                     INNER JOIN category CHILD
-                                ON PARENT.category_id = CHILD.parent_id
-            WHERE CHILD.parent_id = #{parentId} OR CHILD.category_id = #{parentId}
-        )
-            LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
+        WHERE product.category_id IN (SELECT CHILD.category_id
+                                      FROM category PARENT
+                                               INNER JOIN category CHILD
+                                                          ON PARENT.category_id = CHILD.parent_id
+                                      WHERE CHILD.parent_id = #{parentId}
+                                         OR CHILD.category_id = #{parentId})
+            LIMIT #{pagenation.size}
+        OFFSET #{pagenation.offset}
     </select>
 
 
-<!--    이거 안쓰는 것 같아서 주석처리[김영수님](9/20)-->
-<!--    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">-->
-<!--        SELECT id, name, price-->
-<!--        FROM product-->
-<!--        WHERE id = #{productId}-->
-<!--    </select>-->
+    <!--    이거 안쓰는 것 같아서 주석처리[김영수님](9/20)-->
+    <!--    <select id="selectProductById" parameterType="int" resultType="team.project.dto.ProductDTO">-->
+    <!--        SELECT id, name, price-->
+    <!--        FROM product-->
+    <!--        WHERE id = #{productId}-->
+    <!--    </select>-->
 
 
     <!--    상품 리스트 들고오는 select    -->
     <select id="selectAllProduct" resultType="ProductDTO" resultMap="productMap">
-        SELECT * FROM product
+        SELECT *
+        FROM product
     </select>
 
     <!--    상품 디테일 들고오는 select    -->
     <select id="selectAllProductDetail" resultType="ProductDetailDTO" resultMap="productDetailMap">
-        SELECT * FROM product_detail WHERE product_detail.product_id = #{productId}
+        SELECT *
+        FROM product_detail
+        WHERE product_detail.product_id = #{productId}
     </select>
 
-<!--    <select id="selectProductIdDetail" resultMap="productMap">-->
-<!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
-<!--    </select>-->
+    <!--    <select id="selectProductIdDetail" resultMap="productMap">-->
+    <!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
+    <!--    </select>-->
 
-<!--    위에꺼 주석하고 아래 복사[김영수님](9/20)-->
-<select id="selectProductIdDetail" resultMap="productMap">
-    SELECT *
-    FROM product
-    WHERE product.product_id = #{productId};
-</select>
+    <!--    위에꺼 주석하고 아래 복사[김영수님](9/20)-->
+    <select id="selectProductIdDetail" resultMap="productMap">
+        SELECT *
+        FROM product
+        WHERE product.product_id = #{productId};
+    </select>
 
     <select id="selectDetailProduct" resultMap="productDetailMap">
         SELECT *
@@ -104,14 +114,39 @@
     </select>
 
 
+    <!--  사진 리뷰 가져오기  -->
+    <select id="getReviewList" resultMap="reviewMap">
+        SELECT *
+        FROM review
+        ORDER BY ${sort} DESC
+            LIMIT #{size} OFFSET #{offset}
+    </select>
+<!--    &lt;!&ndash; 일반 리뷰 가져오기   &ndash;&gt;-->
+<!--    <select id="getNormalReview" resultMap="reviewMap">-->
+<!--        SELECT content, at, userId-->
+<!--        FROM review;-->
+<!--    </select>-->
+
+    <select id="getReviewCount" resultMap="reviewMap">
+        SELECT COUNT(*)
+        FROM review
+    </select>
+
+
+
+
     <!-- 카테고리  -->
     <!--  대분류 카테고리  -->
     <select id="parentCategory" resultMap="categoryMap">
-        SELECT * FROM category WHERE category.parent_id is NULL;
+        SELECT *
+        FROM category
+        WHERE category.parent_id is NULL;
     </select>
     <!--  소분류 카테고리  -->
     <select id="childCategory" resultMap="categoryMap">
-        SELECT * FROM category WHERE category.parent_id = #{parent_id}
+        SELECT *
+        FROM category
+        WHERE category.parent_id = #{parent_id}
     </select>
     <!--  소분류 상세 상품 카테고리  -->
 
@@ -119,11 +154,9 @@
     <select id="detailCategory" resultMap="productMap">
         SELECT *
         FROM product
-        WHERE product.category_id IN (
-            SELECT category_id
-            FROM category
-            WHERE parent_id = #{parentId}
-        );
+        WHERE product.category_id IN (SELECT category_id
+                                      FROM category
+                                      WHERE parent_id = #{parentId});
     </select>
 
 </mapper>

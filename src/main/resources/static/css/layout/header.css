@@ -152,10 +152,20 @@ header > nav > ul.right-section .search-input {
 
 /* 카트 */
 header > nav > ul.right-section .cart-container {
+header > nav > .right-section > .login-container > a,
+header > nav > .right-section > .logout-container > a {
+    &:hover {
+        color: var(--basic-red);
+    }
+}
+
+header > nav > .right-section .cart-container {
     position: relative;
 }
 
 header > nav > ul.right-section .cart-container .cart-alert {
+/*헤더 카트 알림*/
+header > nav > .right-section .cart-container .cart-alert {
     position: absolute;
     top: 10px;
     left: 30px;

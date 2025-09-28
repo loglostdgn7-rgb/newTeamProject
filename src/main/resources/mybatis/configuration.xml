@@ -18,6 +18,6 @@
         <typeAlias type="team.project.dto.OrderDTO" alias="OrderDTO" />
         <typeAlias type="team.project.dto.OrderDetailDTO" alias="OrderDetailDTO" />
         <typeAlias type="team.project.dto.CategoryDTO" alias="CategoryDTO" />
-
+        <typeAlias type="team.project.dto.ReviewDTO" alias="ReviewDTO" />
     </typeAliases>
 </configuration>

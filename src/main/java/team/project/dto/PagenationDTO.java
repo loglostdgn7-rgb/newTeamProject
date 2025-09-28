@@ -24,6 +24,10 @@ public class PagenationDTO<T> {
     private Integer startPageIndex; // 현재 페이지에서 보여줄 페이지 시작 번호
     private Integer endPageIndex; // 현재 페이지에서 보여줄 페이지 끝 번호
     private final Integer totalPageViewCount = 3; // 화면에 보여줄 페이지 번호 총 개수
+    private final Integer pageViewOffset = 2; // 화면에 보여줄 앞 뒤 페이지 번호 개수
+    /***************** 실제 Element 항목 관련 *************************/    private Integer totalElementsCount; // 게시물 전체 개수
+    @Setter private List<ProductDTO> elements; // 페이지네이션 대상 요소
+    @Setter private List<ReviewDTO> reviews; // 페이지네이션 리뷰 대상 요소
     //-------------------------------------------------------------------------
 //    private final Integer pageViewOffset = 2; // 화면에 보여줄 앞 뒤 페이지 번호 개수
     //김영수님 수정 9/24 수정. 위에꺼에서 아래껄로 변경 final -> " "

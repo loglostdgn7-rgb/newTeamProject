@@ -1,12 +1,9 @@
 package team.project.service;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import team.project.dto.CategoryDTO;
-import team.project.dto.PagenationDTO;
-import team.project.dto.ProductDTO;
+import team.project.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.project.dto.ProductDetailDTO;
 import team.project.mapper.ProductMapper;
 
 import java.util.HashMap;
@@ -16,6 +13,13 @@ import java.util.Map;
 @Service
 public class ProductService {
     @Autowired ProductMapper productMapper;
+
+
+
+    public List<ReviewDTO> getReview(){
+        return productMapper.getReview();
+    }
+
 
 
     // Header 대분류
