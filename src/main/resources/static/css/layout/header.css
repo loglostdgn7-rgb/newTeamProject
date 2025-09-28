@@ -152,79 +152,84 @@ header > nav > ul.right-section .search-input {
 
 /* 카트 */
 header > nav > ul.right-section .cart-container {
-    header > nav > .right-section > .login-container > a,
-    header > nav > .right-section > .logout-container > a {
-        &:hover {
-            color: var(--basic-red);
-        }
-    }
+}
 
-    header > nav > .right-section .cart-container {
-        position: relative;
-    }
+header > nav > .right-section > .login-container > a,
+header > nav > .right-section > .logout-container button {
+    border: none;
 
-    header > nav > ul.right-section .cart-container .cart-alert {
-        /*헤더 카트 알림*/
-
-        header > nav > .right-section .cart-container .cart-alert {
-            position: absolute;
-            top: 10px;
-            left: 30px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--basic-red);
-            color: var(--basic-white);
-            font-size: 12px;
-        }
-
-        @keyframes pulse-effect {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.5);
-            }
-        }
-
-        .cart-alert.pulse {
-            display: flex;
-            animation: pulse-effect 0.5s ease-in-out;
-        }
-
-        /* 로그인, 로그아웃, 마이페이지 */
-
-        header > nav > ul.right-section .login-container a:hover,
-        header > nav > ul.right-section .logout-container button:hover,
-        header > nav > ul.right-section .my-page-container a:hover {
-            color: var(--basic-red);
-        }
-
-        /* 선택된 메뉴 강조 */
-
-        .product-list-section > li.selected a {
-            color: var(--basic-red);
-        }
-
-
-        /*관리자 초기화 버튼*/
-
-        header > nav > .right-section button.admin-reset-button {
-            background-color: unset;
-            height: 25px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            color: var(--basic-red);
-            cursor: pointer;
-
-            &:hover {
-                color: var(--basic-white);
-                background: var(--basic-red);
-            }
-        }
+    &:hover {
+        color: var(--basic-red);
     }
 }
+
+header > nav > .right-section .cart-container {
+    position: relative;
+}
+
+header > nav > ul.right-section .cart-container .cart-alert {
+
+}
+
+/*헤더 카트 알림*/
+header > nav > .right-section .cart-container .cart-alert {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--basic-red);
+    color: var(--basic-white);
+    font-size: 12px;
+}
+
+@keyframes pulse-effect {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+.cart-alert.pulse {
+    display: flex;
+    animation: pulse-effect 0.5s ease-in-out;
+}
+
+/* 로그인, 로그아웃, 마이페이지 */
+
+header > nav > ul.right-section .login-container a:hover,
+header > nav > ul.right-section .logout-container button:hover,
+header > nav > ul.right-section .my-page-container a:hover {
+    color: var(--basic-red);
+}
+
+/* 선택된 메뉴 강조 */
+
+.product-list-section > li.selected a {
+    color: var(--basic-red);
+}
+
+
+/*관리자 초기화 버튼*/
+
+header > nav > .right-section button.admin-reset-button {
+    background-color: unset;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--basic-red);
+    cursor: pointer;
+
+    &:hover {
+        color: var(--basic-white);
+        background: var(--basic-red);
+    }
+}
+
