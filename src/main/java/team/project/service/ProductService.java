@@ -65,6 +65,9 @@ public class ProductService {
             Integer totalElementCount = productMapper.countProductsBySearchValue(pagenation);
             pagenation.setTotalElementsCount(totalElementCount);
             pagenation.setElements(searchedProducts);
+        }else {
+            pagenation.setTotalElementsCount(0);
+            pagenation.setElements(List.of());
         }
     }
 }

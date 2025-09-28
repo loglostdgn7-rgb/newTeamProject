@@ -22,7 +22,7 @@
                 <p>검색된 상품이 없습니다.</p>
             </div>
 
-            <ul class="product-list-1">
+            <ul class="product-list-1" th:if="${!pagenation.elements.isEmpty()}">
                 <li th:each="product : ${pagenation.elements}">
                     <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
                         <div class="product-image">
