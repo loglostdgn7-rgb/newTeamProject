@@ -73,8 +73,11 @@ dropdownGroups.forEach(dropdown => {
                         startDate.setMonth(today.getMonth() - 6);
                         break;
                 }
-                startDateInput.value = formDate(startDate);
-                endDateInput.value = formDate(today);
+                // startDateInput.value = formDate(startDate);
+                // endDateInput.value = formDate(today);
+                startDateInput.datepicker.setDate(formDate(startDate));
+                endDateInput.datepicker.setDate(formDate(today));
+
 
                 //달력글자 깜박거리기
                 startDateInput.style.fontWeight = "bold";
@@ -126,6 +129,20 @@ endDateInput.addEventListener("changeDate", event => {
         alert("시작일보다 이전은 선택 할 수 없습니다!");
         endDateInput.datepicker.setDate(startDay);
     }
+
+    document.getElementById("select-period").value = "직접선택";
+});
+
+startDateInput.addEventListener("changeDate", event => {
+    const selectedDate = event.detail.date;
+    const endDay = endDateInput.datepicker.getDate();
+
+    if (selectedDate > endDay) {
+        alert("종료일보다 나중은 선택 할 수 없습니다!");
+        startDateInput.datepicker.setDate(endDay);
+    }
+
+    document.getElementById("select-period").value = "직접선택";
 });
 
 // 드래그 방지 기능
@@ -172,8 +189,8 @@ getHistoryBtn.onclick = () => {
 
     if (period === "")
 
-    // URL 파라미터
-    params.set("startDate", startDate);
+        // URL 파라미터
+        params.set("startDate", startDate);
     params.set("endDate", endDate);
 
     if (status) params.set("status", status);
@@ -185,20 +202,26 @@ getHistoryBtn.onclick = () => {
     location.href = `${location.pathname}?${params.toString()}`;
 };
 
-//앞의 두개 드랍다운 선택 유지
-const periodText = params.get("periodText");
+////앞의 두개 드랍다운 선택 유지///
+const periodInput = document.getElementById("select-period");
+const statusInput = document.getElementById("select-status")
 
-if (periodText) document.getElementById("select-period").value = periodText;
-else document.getElementById("select-period").value = "일주일";
+// 기간
+const periodParam = params.get("period");
+const periodOption = document.querySelector(`.period-option a[data-period=${periodParam}]`);
 
-const status = params.get("status");
-if (status) {
-    const statusOption = document.querySelector(`.status-option a[data-status="${status}"]`);
-    if (statusOption) document.getElementById("select-status").value = statusOption.textContent.trim();
-} else document.getElementById("select-status").value = "전체";
+if (periodParam && periodOption) {
+    periodInput.value = periodOption.textContent;
+} else if (params.has("startDate")) periodInput.value = "직접선택";
+else periodInput.value = "일주일";
 
+//상태
+const statusParam = params.get("status");
+const statusOption = document.querySelector(`.status-option a[data-status=${statusParam}]`);
 
-
+if (statusParam && statusOption) {
+    statusInput.value = statusOption.textContent;
+} else statusInput.value = "전체";
 
 
 /************ 주문 상태 초기화 *******************/

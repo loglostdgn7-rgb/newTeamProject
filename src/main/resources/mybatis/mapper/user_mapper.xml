@@ -120,7 +120,7 @@
         </if>
         <if test="pagenation.endDate != null and pagenation.endDate != ''">
             ##order_date가 작거나 같다(이하)
-            AND order_date &lt; #{pagenation.endDate}
+            AND order_date &lt; DATE_ADD(#{pagenation.endDate}, INTERVAL 1 DAY)
         </if>
         <if test="pagenation.status != null and pagenation.status != ''">
             AND order_status = #{pagenation.status}
