@@ -26,8 +26,10 @@
                 <li th:each="product : ${pagenation.elements}">
                     <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
                         <div class="product-image">
-                            <img th:if="${product.base64ImageData != null}" th:src="${product.base64ImageData}" alt="Product Image"/>
-                            <img th:unless="${product.base64ImageData != null}" src="/images/no-image.png" alt="No Image"/>
+                            <img th:if="${product.base64ImageData != null}"
+                                 th:src="${product.base64ImageData}" alt="Product Image"/>
+                            <img th:unless="${product.base64ImageData != null}" src="/images/no-image.png"
+                                 alt="No Image"/>
                         </div>
                     </a>
                     <div class="product-box">
@@ -48,15 +50,15 @@
         <nav class="nav">
             <ul th:if="${pagenation.totalElementsCount != 0}">
                 <li th:if="${pagenation.startPageIndex != 1}">
-                    <a th:href="@{/shop/product/search(keyword=${pagenation.searchKeyword}, page=${pagenation.startPageIndex-1})}"><</a>
+                    <a th:href="@{/shop/product/search(searchValue=${pagenation.searchValue}, page=${pagenation.startPageIndex-1})}"><</a>
                 </li>
                 <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.endPageIndex)}">
-                    <a th:href="@{/shop/product/search(keyword=${pagenation.searchValue}, page=${index})}"
+                    <a th:href="@{/shop/product/search(searchValue=${pagenation.searchValue}, page=${index})}"
                        th:text="${index}"
                        th:classappend="${index == pagenation.page} ? 'active' : ''"></a>
                 </li>
                 <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
-                    <a th:href="@{/shop/product/search(keyword=${pagenation.searchValue}, page=${pagenation.endPageIndex+1})}">></a>
+                    <a th:href="@{/shop/product/search(searchValue=${pagenation.searchValue}, page=${pagenation.endPageIndex+1})}">></a>
                 </li>
             </ul>
         </nav>
