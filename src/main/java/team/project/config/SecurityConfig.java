@@ -32,7 +32,7 @@ public class SecurityConfig {
 
 
         http.authorizeHttpRequests(configure -> {
-            configure.requestMatchers("/", "/board/**", "/intro/**", "/shop/**",
+            configure.requestMatchers("/", "/board/**", "/intro/**", "/shop/**", "/review/view",
                     "/user/duplicated","/user/login","/user/signup","/user/find-id","/user/find-psw").permitAll();
             configure.requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**").permitAll();
             configure.requestMatchers("/basket").permitAll();
