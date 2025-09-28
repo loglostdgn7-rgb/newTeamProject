@@ -25,10 +25,12 @@
                 </div>
 
                 <th:block th:switch="${order.orderStatus}">
-                    <button class="cancel-or-refund-order" th:case="'PENDING'" th:data-order-id="${order.orderId}" data-status="CANCEL">
+                    <button class="cancel-or-refund-order" th:case="'PENDING'" th:data-order-id="${order.orderId}"
+                            data-status="CANCEL">
                         상품전체 취소
                     </button>
-                    <button class="cancel-or-refund-order" th:case="'DELIVERED'" th:data-order-id="${order.orderId}" data-status="REFUND">
+                    <button class="cancel-or-refund-order" th:case="'DELIVERED'" th:data-order-id="${order.orderId}"
+                            data-status="REFUND">
                         상품전체 반품
                     </button>
                     <button class="cancel-or-refund-order" th:case="*" th:data-order-id="${order.orderId}" disabled>
@@ -60,6 +62,7 @@
                         <span th:case="'PENDING'">취소가능</span>
                         <span th:case="'CANCEL'">취소완료</span>
                         <span th:case="'REFUND'">반품완료</span>
+                        <button th:case="'DELIVERED'">리뷰 등록</button>
                         <span th:case="*">취소불가</span>
                     </div>
                 </div>
