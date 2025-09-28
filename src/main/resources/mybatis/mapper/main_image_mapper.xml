@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="team.project.mapper.MainImageMapper">
+
+    <!--****** 큰 메인 대표 이미지 랜덤 1픽 *******-->
+    <select id="selectRandomMainImage" resultType="team.project.dto.MainImageDTO">
+        SELECT
+            image_data AS imageData,
+            product_id AS productId
+        FROM main_image
+        ORDER BY RAND()
+        LIMIT 1
+    </select>
+</mapper>

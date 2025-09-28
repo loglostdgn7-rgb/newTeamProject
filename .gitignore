@@ -1,7 +1,7 @@
 HELP.md
 target/
 logs/
-#보여주면 안되는거
+##보이면 안되는거
 application.properties
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/

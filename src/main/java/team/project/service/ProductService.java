@@ -1,12 +1,9 @@
 package team.project.service;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import team.project.dto.CategoryDTO;
-import team.project.dto.PagenationDTO;
-import team.project.dto.ProductDTO;
+import team.project.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.project.dto.ProductDetailDTO;
 import team.project.mapper.ProductMapper;
 
 import java.util.HashMap;
@@ -16,6 +13,13 @@ import java.util.Map;
 @Service
 public class ProductService {
     @Autowired ProductMapper productMapper;
+
+
+
+//    public List<ReviewDTO> getReview(){
+//        return productMapper.getReview();
+//    }
+
 
 
     // Header 대분류
@@ -52,17 +56,17 @@ public class ProductService {
 
 
 
-    public void add_product(ProductDTO productDTO) {
-        productMapper.insertProduct(productDTO);
-    }
+//    public void add_product(ProductDTO productDTO) {
+//        productMapper.insertProduct(productDTO);
+//    }
 
     public ProductDTO get_id_product_detail(Integer id) {
         return productMapper.selectProductIdDetail(id);
     }
 
-    public List<ProductDetailDTO> get_product_detail(Integer productId) {
-        return productMapper.selectProductDetail(productId);
-    }
+//    public List<ProductDetailDTO> get_product_detail(Integer productId) {
+//        return productMapper.selectProductDetail(productId);
+//    }
 
     public void get_details(ProductDTO product){
         List<ProductDetailDTO> details = productMapper.selectDetailProduct(product);
@@ -98,6 +102,20 @@ public class ProductService {
         }
         // 화면에 표시할 요소가 없다면
         else{
+            pagenation.setTotalElementsCount(0);
+            pagenation.setElements(List.of());
+        }
+    }
+
+    /******김영수님 추가 9/28*********/
+    public void search_products(PagenationDTO pagenation) {
+        List<ProductDTO> searchedProducts = productMapper.selectProductsBySearchValue(pagenation);
+
+        if (searchedProducts !=null && !searchedProducts.isEmpty()) {
+            Integer totalElementCount = productMapper.countProductsBySearchValue(pagenation);
+            pagenation.setTotalElementsCount(totalElementCount);
+            pagenation.setElements(searchedProducts);
+        }else {
             pagenation.setTotalElementsCount(0);
             pagenation.setElements(List.of());
         }

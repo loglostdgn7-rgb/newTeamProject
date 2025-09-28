@@ -23,8 +23,8 @@ const swiper = new Swiper('.swiper', {
         delay: 4000,
         disableOnInteraction: false,
     },
-    pagination: {
-        el: '.swiper-pagination',
+    pagenation: {
+        el: '.swiper-pagenation',
         clickable: true, // 점을 클릭해서 슬라이드 이동 가능
     },
 
