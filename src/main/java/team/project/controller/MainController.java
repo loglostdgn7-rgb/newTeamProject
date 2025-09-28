@@ -40,6 +40,7 @@ public class MainController {
             model.addAttribute("randomMainImage", randomMainImage);
         }
 
+        //NEW ARRIVAL
         productService.randomProducts(pagenation);
         productService.Category();
         if (pagenation.getElements() != null) {
@@ -47,8 +48,9 @@ public class MainController {
                 if (element instanceof ProductDTO) {
                     ProductDTO product = (ProductDTO) element;
                     if (product.getImageData() != null && product.getImageData().length > 0) {
-                        String base64Image = Base64.getEncoder().encodeToString(product.getImageData());
-                        product.setBase64ImageData(base64Image); }
+                        String base64Image = ImageUtils.imageDataUri(product.getImageData(), "image/jpeg");
+                        product.setBase64ImageData(base64Image);
+                    }
                 }
             }
         }
