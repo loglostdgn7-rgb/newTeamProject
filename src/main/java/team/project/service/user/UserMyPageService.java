@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
-@PropertySource("file:../application.properties")
+
 public class UserMyPageService {
     Logger logger = LoggerFactory.getLogger(UserMyPageService.class);
 

@@ -14,7 +14,7 @@ public class ReviewService {
 
     private final ReviewMapper reviewMapper;
 
-    public PagenationDTO getReviews(PagenationDTO reviewDTO) {
+    public PagenationDTO getReviews(PagenationDTO<ReviewDTO> reviewDTO) {
 
         // 전체 리뷰 수 가져오기
         int totalCount = reviewMapper.getReviewCount(reviewDTO);
@@ -22,7 +22,8 @@ public class ReviewService {
 
         // 리뷰 리스트 가져오기
         List<ReviewDTO> reviews = reviewMapper.getReviewList(reviewDTO);
-        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
+//        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
+        reviewDTO.setElements(reviews); // reviews 필드에 세팅
 
 
         return reviewDTO;

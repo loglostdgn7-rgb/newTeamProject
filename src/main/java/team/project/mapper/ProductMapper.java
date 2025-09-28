@@ -15,7 +15,7 @@ public interface ProductMapper {
     // ----------------------------
 
     // 특정 제품 정보 조회 (DTO 조건 기반)
-    List<ProductDTO> get_product_info(ProductDTO productDTO);
+//    List<ProductDTO> get_product_info(ProductDTO productDTO);
 
     // 페이지네이션 적용한 제품 리스트 조회
     List<ProductDTO> selectProducts(PagenationDTO pagenation);
@@ -36,27 +36,27 @@ public interface ProductMapper {
     ProductDTO selectProductIdDetail(Integer id);
 
     // 특정 제품 ID의 상세 옵션/세부정보 조회
-    List<ProductDetailDTO> selectProductDetail(Integer productId);
+//    List<ProductDetailDTO> selectProductDetail(Integer productId);
 
     // ----------------------------
     // 랜덤 / 프로모션 제품
     // ----------------------------
 
     // 랜덤 제품 리스트 조회
-    List<ProductDTO> randomProduct();
+//    List<ProductDTO> randomProduct();
 
     // 랜덤 제품 리스트 조회 (별도 버전)
     List<ProductDTO> selectRandomProducts();
 
     // 랜덤 프로모션 제품 조회
-    List<ProductDTO> selectRandomProductPromotion();
+//    List<ProductDTO> selectRandomProductPromotion();
 
     // ----------------------------
     // 페이징 / 통계
     // ----------------------------
 
     // 조건 기반 제품 리스트 조회 (Map 사용)
-    List<Map<String, Object>> list(Map<String, Object> paramMap);
+//    List<Map<String, Object>> list(Map<String, Object> paramMap);
 
     // 전체 제품 개수 조회 (페이징용)
     int countProducts();

@@ -16,9 +16,9 @@ public class ProductService {
 
 
 
-    public List<ReviewDTO> getReview(){
-        return productMapper.getReview();
-    }
+//    public List<ReviewDTO> getReview(){
+//        return productMapper.getReview();
+//    }
 
 
 
@@ -56,17 +56,17 @@ public class ProductService {
 
 
 
-    public void add_product(ProductDTO productDTO) {
-        productMapper.insertProduct(productDTO);
-    }
+//    public void add_product(ProductDTO productDTO) {
+//        productMapper.insertProduct(productDTO);
+//    }
 
     public ProductDTO get_id_product_detail(Integer id) {
         return productMapper.selectProductIdDetail(id);
     }
 
-    public List<ProductDetailDTO> get_product_detail(Integer productId) {
-        return productMapper.selectProductDetail(productId);
-    }
+//    public List<ProductDetailDTO> get_product_detail(Integer productId) {
+//        return productMapper.selectProductDetail(productId);
+//    }
 
     public void get_details(ProductDTO product){
         List<ProductDetailDTO> details = productMapper.selectDetailProduct(product);

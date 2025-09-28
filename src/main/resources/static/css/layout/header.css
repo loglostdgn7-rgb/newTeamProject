@@ -48,7 +48,7 @@ header > nav > ul.left-section > li > a {
 /*    width: 100px;*/
 /*}*/
 
-header > nav > ul.left-section > li > a > svg.logo{
+header > nav > ul.left-section > li > a > svg.logo {
     width: 100px;
     height: auto;
 }
@@ -65,7 +65,7 @@ header > nav > ul.product-list-section {
 header > nav > ul.product-list-section > li {
     position: relative; /* 부모 기준 */
     padding: 0 10px; /* 좌우 여백 */
-    margin: 0 10px;  /* 메뉴 간 간격 */
+    margin: 0 10px; /* 메뉴 간 간격 */
 }
 
 header > nav > ul.product-list-section > li > a {
@@ -152,69 +152,79 @@ header > nav > ul.right-section .search-input {
 
 /* 카트 */
 header > nav > ul.right-section .cart-container {
-header > nav > .right-section > .login-container > a,
-header > nav > .right-section > .logout-container > a {
-    &:hover {
-        color: var(--basic-red);
+    header > nav > .right-section > .login-container > a,
+    header > nav > .right-section > .logout-container > a {
+        &:hover {
+            color: var(--basic-red);
+        }
     }
-}
 
-header > nav > .right-section .cart-container {
-    position: relative;
-}
+    header > nav > .right-section .cart-container {
+        position: relative;
+    }
 
-header > nav > ul.right-section .cart-container .cart-alert {
-/*헤더 카트 알림*/
-header > nav > .right-section .cart-container .cart-alert {
-    position: absolute;
-    top: 10px;
-    left: 30px;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--basic-red);
-    color: var(--basic-white);
-    font-size: 12px;
-}
+    header > nav > ul.right-section .cart-container .cart-alert {
+        /*헤더 카트 알림*/
 
-@keyframes pulse-effect {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.5); }
-}
+        header > nav > .right-section .cart-container .cart-alert {
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--basic-red);
+            color: var(--basic-white);
+            font-size: 12px;
+        }
 
-.cart-alert.pulse {
-    display: flex;
-    animation: pulse-effect 0.5s ease-in-out;
-}
+        @keyframes pulse-effect {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.5);
+            }
+        }
 
-/* 로그인, 로그아웃, 마이페이지 */
-header > nav > ul.right-section .login-container a:hover,
-header > nav > ul.right-section .logout-container button:hover,
-header > nav > ul.right-section .my-page-container a:hover {
-    color: var(--basic-red);
-}
+        .cart-alert.pulse {
+            display: flex;
+            animation: pulse-effect 0.5s ease-in-out;
+        }
 
-/* 선택된 메뉴 강조 */
-.product-list-section > li.selected a {
-    color: var(--basic-red);
-}
+        /* 로그인, 로그아웃, 마이페이지 */
+
+        header > nav > ul.right-section .login-container a:hover,
+        header > nav > ul.right-section .logout-container button:hover,
+        header > nav > ul.right-section .my-page-container a:hover {
+            color: var(--basic-red);
+        }
+
+        /* 선택된 메뉴 강조 */
+
+        .product-list-section > li.selected a {
+            color: var(--basic-red);
+        }
 
 
-/*관리자 초기화 버튼*/
-header > nav > .right-section button.admin-reset-button {
-    background-color: unset;
-    height: 25px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    color: var(--basic-red);
-    cursor: pointer;
+        /*관리자 초기화 버튼*/
 
-    &:hover {
-        color: var(--basic-white);
-        background: var(--basic-red);
+        header > nav > .right-section button.admin-reset-button {
+            background-color: unset;
+            height: 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--basic-red);
+            cursor: pointer;
+
+            &:hover {
+                color: var(--basic-white);
+                background: var(--basic-red);
+            }
+        }
     }
 }
