@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class PagenationDTO {
+public class PagenationDTO<T> {
     @Setter private Integer page = 1; // 현재 페이지 번호
     @Setter private Integer size = 16; // 한 페이지에 보여줄 게시물 개수
     @Setter private String sort = "wroteAt"; // 정렬 방식
