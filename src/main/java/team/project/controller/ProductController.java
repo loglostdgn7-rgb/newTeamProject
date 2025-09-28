@@ -80,7 +80,7 @@ public class ProductController {
     }
 
 
-    ////////  김영수님이 추가.9/28 ///////////
+    /// /////  김영수님이 추가.9/28 ///////////
     @GetMapping("/product/{search}")
     public String get_product_search(
             @RequestParam("searchValue") String searchValue,
@@ -108,9 +108,6 @@ public class ProductController {
     }
 
 
-
-
-
     @GetMapping("/product/detail/{id}")
     public String get_detail(
             Model model,
@@ -132,11 +129,6 @@ public class ProductController {
         model.addAttribute("product", product);
         return "shop/product/detail";
     }
-
-
-
-
-
 
 
     @GetMapping("/product/set")

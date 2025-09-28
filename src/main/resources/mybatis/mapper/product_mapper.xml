@@ -148,7 +148,7 @@
     </select>
 
 
-</mapper>
+
     <!--  사진 리뷰 가져오기  -->
     <select id="getReviewList" resultMap="reviewMap">
         SELECT *
@@ -193,3 +193,7 @@
                                       FROM category
                                       WHERE parent_id = #{parentId});
     </select>
+
+
+
+</mapper>
