@@ -100,9 +100,9 @@ public class UserService {
 
 
 
-    ///////// 유저 초기화 /////////////////
+    /********* 유저 초기화 **************/
     public void reset_profile(String id) {
-        UserDTO defaultUser = userMapper.selectDefaultUserById(id); // (이 매퍼 메서드는 새로 만들어야 함)
+        UserDTO defaultUser = userMapper.selectDefaultUserById(id);
 
         if (defaultUser == null) {
             throw new IllegalArgumentException("초기화할 수 없는 사용자입니다.");

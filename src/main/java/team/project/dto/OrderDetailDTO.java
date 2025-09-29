@@ -24,7 +24,8 @@ public class OrderDetailDTO {
     private int productId; // 개별 주문에 포함된 각 개별 상품 id fk
     @JsonProperty("product_price")
     private Integer productPrice;
-
+    private boolean hasReview;//리뷰가 있는가?
+    private boolean isRefunded;//반품이 있는가?
     private String base64Image;
 
     public String getBase64Image() {

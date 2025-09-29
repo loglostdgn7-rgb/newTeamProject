@@ -37,6 +37,7 @@
     &:hover {
         color: var(--gray-bright);;
         background: unset;
+        cursor: unset;
     }
 }
 

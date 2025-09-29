@@ -11,8 +11,7 @@
     <select id="getReviewList" resultMap="reviewMap">
         SELECT *
         FROM review
-        LIMIT #{size}
-        OFFSET #{offset}
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <!-- 리뷰 총 개수 -->
@@ -20,4 +19,37 @@
         SELECT COUNT(*)
         FROM review
     </select>
+
+
+    <!-- 리뷰 된 상품 아이디.   김영수 추가 9/29 -->
+    <select id="selectReviewedProductIdsByOrderId" resultType="int">
+        SELECT productId
+        FROM review
+        WHERE order_id = #{orderId}
+    </select>
+
+
+    <!--************  초기화 김영수 9/29 **************-->
+    <delete id="deleteReviewsByUserId">
+        DELETE
+        FROM review
+        WHERE userId = #{userId}
+    </delete>
+
+    <select id="selectDefaultReviewsByUserId" resultType="team.project.dto.ReviewDTO">
+        SELECT *
+        FROM review_defaults
+        WHERE userId = #{userId}
+    </select>
+
+    <insert id="insertReviews">
+        INSERT INTO review (content, order_id, at, userId, productId, image)
+        VALUES
+        <foreach collection="reviews" item="review" separator=",">
+            (#{review.content}, #{review.orderId}, #{review.at}, #{review.userId}, #{review.productId},
+            #{review.imageData})
+        </foreach>
+    </insert>
+
+
 </mapper>

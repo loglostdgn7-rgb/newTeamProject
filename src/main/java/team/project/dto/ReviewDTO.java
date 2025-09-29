@@ -18,9 +18,14 @@ public class ReviewDTO {
     private byte[] imageData;
     private String base64ImageData;
     private String content;
-
+    /*****김영수 추가 9/29******/
+    private String orderId;
+    private int productId;
+    private String userId;
+    /************************/
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime at;
     private UserDTO user;
-    @Setter private List<ProductDTO> elements; // 페이지네이션 대상 요소
+    @Setter
+    private List<ProductDTO> elements; // 페이지네이션 대상 요소
 }

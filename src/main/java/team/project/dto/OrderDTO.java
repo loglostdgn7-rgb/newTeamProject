@@ -37,6 +37,9 @@ public class OrderDTO {
     private String buyerTel;
     @JsonProperty("order_details")
     private List<OrderDetailDTO> orderDetails =  new ArrayList<>();
+    private boolean hasAnyReviewedItems; //하나라도 리뷰된 상품이 있는가?
+    private boolean hasAllReviewedItems; //전 품목 리뷰 했는가?
+    private boolean hasAnyRefundedItems; //하나라도 반품한 상품이 있는가?
     @JsonProperty("order_request")
     private String orderRequest;
 

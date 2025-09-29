@@ -78,7 +78,7 @@ public class UserMyPageController {
     }
 
 
-    //    주문상태변경
+    //(일괄처리) 주문상태변경
     @PostMapping("/my-page/order/{orderId}/status")
     @ResponseBody
     public ResponseEntity<String> update_order_status(
@@ -101,24 +101,18 @@ public class UserMyPageController {
 
     }
 
+    //개별 상품 반품 처리
+    @PostMapping("/my-page/order/detail/{orderDetailId}/refund")
+    @ResponseBody
+    public ResponseEntity<String> refund_single_product(
+            @PathVariable int orderDetailId,
+            @AuthenticationPrincipal UserDTO principal
+    ) {
+        boolean isSuccess = userMyPageService.refund_single_product(orderDetailId, principal.getId(), "PARTIAL_REFUND");
 
-        //////////// 상품 상태 초기화 //////////////
-        @PostMapping("/my-page/orders/reset")
-        @ResponseBody
-        public ResponseEntity<String> reset_orders(@AuthenticationPrincipal UserDTO principal) {
-            if (principal == null) {
-                return ResponseEntity.status(401).body("로그인이 필요합니다.");
-            }
-
-            try {
-                // [수정] principal.getId()를 서비스 메서드에 전달
-                int updatedCount = userMyPageService.reset_test_orders_manually(principal.getId());
-                return ResponseEntity.ok(updatedCount + "개 주문의 상태가 초기화되었습니다.");
-            } catch (Exception e) {
-                logger.error("주문 초기화 중 오류 발생", e);
-                return ResponseEntity.internalServerError().body("서버 오류로 초기화에 실패했습니다.");
-            }
-        }
+        if (isSuccess) return ResponseEntity.ok("해당 상품의 반품 신청이 완료되었습니다");
+        else return ResponseEntity.status(403).body("반품 처리 권한이 없거나, 처리할 수 없는 상품입니다");
+    }
 
     /************************************************/
     // 프로필
@@ -215,6 +209,26 @@ public class UserMyPageController {
     @GetMapping("/my-page/review")
     public void get_review() {
 
+    }
+
+
+    /********************* 초기화 *************************/
+
+    @PostMapping("/my-page/orders/reset")
+    @ResponseBody
+    public ResponseEntity<String> reset_orders(@AuthenticationPrincipal UserDTO principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body("로그인이 필요합니다.");
+        }
+
+        try {
+
+            int updatedCount = userMyPageService.reset_test_orders_manually(principal.getId());
+            return ResponseEntity.ok(updatedCount + "개 주문의 상태가 초기화되었습니다.");
+        } catch (Exception e) {
+            logger.error("주문 초기화 중 오류 발생", e);
+            return ResponseEntity.internalServerError().body("서버 오류로 초기화에 실패했습니다.");
+        }
     }
 
 

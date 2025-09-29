@@ -15,6 +15,58 @@
 
 
 <main layout:fragment="content">
+    <!-- 오버레이 -->
+    <div class="modal-overlay"></div>
+
+    <!-- 모달 -->
+    <div class="modal" style="display:none;">
+        <div class="modal_body">
+            <form action="/review/add" method="post">
+                <div class="modal-header">
+
+                    <span class="modal-title">리뷰 작성</span>
+                    <span name="orderId" th:text="${order.getOrderId()}"></span>
+                    <span name="productId" class="product-id"></span>
+                    <span name="userId" class="user-name" th:text="'작성자: ' + ${order.userId}">작성자</span>
+                    <span class="close-btn">&times;</span>
+                </div>
+
+                <div class="review-product">
+                    <div class="product-image">
+                        <img src="#" alt="상품 이미지">
+                    </div>
+                    <div class="product-detail">
+                        <div class="product-name"><span></span></div>
+                        <div class="product-price">가격: <span></span></div>
+                    </div>
+                </div>
+
+                <div class="review-star">
+                    별점 : <span>별 별 별 별 별</span>
+                </div>
+
+                <div class="review-info">
+                    <div class="image-upload">
+                        <label for="file">
+                            <div class="image">
+                                <span>포토 리뷰를 할 경우 <br>사진을 업로드 해주세요</span>
+                                <img src="#" alt="#" class="image-box">
+                            </div>
+                        </label>
+                        <input name="image" type="file" id="file" class="upload" accept="image/*">
+                    </div>
+                    <div class="review-comment">
+                        <textarea name="content" placeholder="리뷰 내용을 입력하세요"></textarea>
+                    </div>
+                </div>
+                <!-- 제출 버튼 -->
+                <div class="modal-footer">
+                    <button type="submit" class="submit-btn">등록</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="aside-container">
         <aside th:replace="~{layout/aside :: aside}"></aside>
         <section class="order-detail-section">
@@ -25,12 +77,15 @@
                 </div>
 
                 <th:block th:switch="${order.orderStatus}">
-                    <button class="cancel-or-refund-order" th:case="'PENDING'" th:data-order-id="${order.orderId}"
+                    <button class="cancel-or-refund-order"
+                            th:case="'PENDING'" th:data-order-id="${order.orderId}"
                             data-status="CANCEL">
                         상품전체 취소
                     </button>
-                    <button class="cancel-or-refund-order" th:case="'DELIVERED'" th:data-order-id="${order.orderId}"
-                            data-status="REFUND">
+                    <button class="cancel-or-refund-order"
+                            th:case="'DELIVERED'" th:data-order-id="${order.orderId}"
+                            data-status="REFUND"
+                            th:disabled="${order.hasAnyReviewedItems || order.hasAnyRefundedItems}">
                         상품전체 반품
                     </button>
                     <button class="cancel-or-refund-order" th:case="*" th:data-order-id="${order.orderId}" disabled>
@@ -52,18 +107,44 @@
                             <span th:text="${product.productName}">상품 이름</span>
                         </a>
                     </div>
+
                     <div class="order-detail-price">
                         <span th:text="|￦${#numbers.formatInteger(product.productPrice, 0, 'COMMA')}|">0000</span>
                     </div>
+
                     <div class="order-detail-status">
                         <span th:text="${order.orderStatusFormatted}">입금전</span>
                     </div>
+
                     <div class="order-detail-procedure" th:switch="${order.orderStatus}">
-                        <span th:case="'PENDING'">취소가능</span>
-                        <span th:case="'CANCEL'">취소완료</span>
-                        <span th:case="'REFUND'">반품완료</span>
-                        <button th:case="'DELIVERED'">리뷰 등록</button>
-                        <span th:case="*">취소불가</span>
+                        <span th:if="${order.orderStatus == 'PENDING'}">취소가능</span>
+                        <span th:if="${order.orderStatus == 'CANCEL'}">취소완료</span>
+                        <span th:if="${order.orderStatus == 'REFUND'}">반품완료</span>
+                        <th:block th:if="${order.orderStatus == 'DELIVERED' || order.orderStatus == 'PARTIAL_REFUND'}">
+                            <!--반품 됐으면 -->
+                            <span th:if="${product.isRefunded}">반품완료</span>
+
+                            <!--반품 안됐으면 -->
+                            <div th:unless="${product.isRefunded}">
+                                <!--리뷰 했으면 -->
+                                <span th:if="${product.hasReview}">리뷰완료(반품불가)</span>
+
+                                <!--리뷰 안했으면 -->
+                                <div th:unless="${product.hasReview}">
+                                    <button class="modalBtn">리뷰 등록</button>
+                                    <button class="individual-refund-btn"
+                                            th:data-order-id="${order.orderId}"
+                                            th:data-order-detail-id="${product.orderDetailId}">
+                                        반품하기
+                                    </button>
+                                </div>
+                            </div>
+                        </th:block>
+                        <span th:if="${order.orderStatus == 'PREPARING'
+                                      || order.orderStatus == 'SHIPPED'
+                                      || order.orderStatus == 'EXCHANGE'}">
+                            취소불가
+                        </span>
                     </div>
                 </div>
             </div>

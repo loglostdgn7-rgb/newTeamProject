@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import team.project.dto.*;
+import team.project.mapper.ReviewMapper;
 import team.project.mapper.UserMapper;
 
 import java.time.format.DateTimeFormatter;
@@ -43,6 +44,8 @@ public class UserMyPageService {
     private String NAVER_CLIENT_SECRET;
     private final String NAVER_TOKEN_URI = "https://nid.naver.com/oauth2.0/token";
     private final String NAVER_USER_INFO_URI = "https://openapi.naver.com/v1/nid/me";
+    @Autowired
+    private ReviewMapper reviewMapper;
 
 
     //post 장바구니->주문 내역(orders) table에 삽입
@@ -85,6 +88,7 @@ public class UserMyPageService {
                 case "CANCEL" -> order.setOrderStatusFormatted("주문취소");
                 case "EXCHANGE" -> order.setOrderStatusFormatted("교환");
                 case "REFUND" -> order.setOrderStatusFormatted("반품");
+                case "PARTIAL_REFUND" -> order.setOrderStatusFormatted("일부반품");
                 default -> order.setOrderStatusFormatted(order.getOrderStatus());
             }
         } else {
@@ -130,8 +134,24 @@ public class UserMyPageService {
         if (productListInOneOrder == null || productListInOneOrder.isEmpty()) {
             throw new IllegalArgumentException("해당 주문을 찾을 수 없습니다");
         }
-
+        //주문내역 가져오기
         OrderDTO order = productListInOneOrder.getFirst();//어차피 하나 뿐이지만 그 처음껄 가져온다. 이 안에 상품 리스트가있다.
+
+        //리뷰가있는지 가져오고 확인
+        List<Integer> reviewedProductIds = reviewMapper.selectReviewedProductIdsByOrderId(orderId);
+        boolean hasAnyReviewed = false;
+
+        for (OrderDetailDTO orderDetail : order.getOrderDetails()) {
+            if (reviewedProductIds.contains(orderDetail.getProductId())) {
+                orderDetail.setHasReview(true);
+                hasAnyReviewed = true;
+            }
+        }
+        order.setHasAnyReviewedItems(hasAnyReviewed);
+
+        //주문내역 중 뭐라도 반품한게 있는지 확인
+        boolean hasAnyRefunded = order.getOrderDetails().stream().anyMatch(OrderDetailDTO::isRefunded);
+        order.setHasAnyRefundedItems(hasAnyRefunded);
 
         //  공통 포메팅 메소드 적용
         applyCommonOrderFormatting(order);
@@ -141,7 +161,7 @@ public class UserMyPageService {
         return order;
     }
 
-    // 주문 상태 변경
+    // (일괄처리) 주문 상태 변경
     public boolean update_order_status(int orderId, String userId, String newStatus) {
         int updatedRows = userMapper.updateOrderStatus(orderId, userId, newStatus);
 
@@ -154,13 +174,21 @@ public class UserMyPageService {
         }
     }
 
-
-    /// ///////// 상품 상태 초기화 ////////////////////////
+    //개별 상품 반품
     @Transactional
-    public int reset_test_orders_manually(String userId) {
-        logger.info("수동 초기화 실행: {} 계정 주문 상태를 초기화합니다.", userId);
+    public boolean refund_single_product(int orderDetailId, String userId, String newStatus) {
+        Integer orderId = userMapper.selectOrderIDByOrderDetailId(orderDetailId, userId);
 
-        return userMapper.resetOrderStatus(userId);
+        if (orderId == null) {
+            logger.warn("개별 반품 실패: 권한없음 또는 잘못된 orderDetailId. orderDetailId={}, userId={}", orderDetailId, userId);
+            return false;
+        }
+
+        //반품된 개별 상품, refunds 테이블에 넣기
+        userMapper.insertRefund(orderDetailId);
+
+        logger.info("개별 상품 반품으로 주문상태 변경 : orderId={}, orderDetailId={}", orderId, orderDetailId);
+        return true;
     }
 
 
@@ -292,6 +320,42 @@ public class UserMyPageService {
         logger.info("{} 사용자가 탈퇴했습니다", userId);
     }
 
+
+    /********************* 초기화 ***********************/
+    @Transactional
+    public int reset_test_orders_manually(String userId) {
+        logger.info("수동 초기화 실행: {} 계정의 프로필 및 모든 주문 관련 데이터를 초기화합니다.", userId);
+
+        // 현재 데이터 모두 삭제 (자식 -> 부모 순서)
+        userMapper.deleteRefundsByUserId(userId);
+        reviewMapper.deleteReviewsByUserId(userId);
+        userMapper.deleteOrderDetailsByUserId(userId);
+        userMapper.deleteOrdersByUserId(userId);
+        logger.info("{} 계정의 주문,상세,리뷰,환불 데이터를 모두 삭제했습니다.", userId);
+
+        // 2단계: 백업 데이터 다시 가져오기
+        List<OrderDTO> defaultOrders = userMapper.selectDefaultOrdersByUserId(userId);
+        List<OrderDetailDTO> defaultOrderDetails = userMapper.selectDefaultOrderDetailsByUserId(userId);
+        List<ReviewDTO> defaultReviews = reviewMapper.selectDefaultReviewsByUserId(userId);
+
+        // 백업 데이터 다시 삽입 (부모 -> 자식 순서)
+        if (defaultOrders != null && !defaultOrders.isEmpty()) {
+            userMapper.insertOrders(defaultOrders);
+        }
+        if (defaultOrderDetails != null && !defaultOrderDetails.isEmpty()) {
+            userMapper.insertOrderDetails(defaultOrderDetails);
+        }
+        if (defaultReviews != null && !defaultReviews.isEmpty()) {
+            reviewMapper.insertReviews(defaultReviews);
+        }
+        logger.info("{} 계정의 기본 주문 관련 데이터를 다시 삽입했습니다.", userId);
+
+        // 프로필 정보 초기화
+        userMapper.resetUserProfileToDefault(userId);
+        logger.info("{} 계정의 프로필 정보를 초기화했습니다.", userId);
+
+        return defaultOrders != null ? defaultOrders.size() : 0;
+    }
 
 
 }
