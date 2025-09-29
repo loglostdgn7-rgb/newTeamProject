@@ -23,7 +23,7 @@
     <!--  리뷰 작성 버튼  -->
     <insert id="insertReview" parameterType="ReviewDTO">
         INSERT INTO review (image, content, at, userId, productId, orderId)
-        VALUES (#{image}, #{content}, NOW(), #{userId}, #{productId}, #{orderId})
+        VALUES (#{image}, #{content}, NOW(), #{user.id}, #{product.productId}, #{order.orderId})
     </insert>
 
 
