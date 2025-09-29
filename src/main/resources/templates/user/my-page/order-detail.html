@@ -23,13 +23,19 @@
         <div class="modal_body">
             <form action="/review/add" method="post">
                 <div class="modal-header">
+                    <!-- 폼 제출용 hidden input -->
+                    <input name="orderId" class="orderId" type="hidden" th:value="${order.getOrderId()}"/>
+                    <input name="userId" class="userId" type="hidden" th:value="${order.userId}"/>
+                    <input name="productId" class="product-id" type="hidden" id="productIdInput"/>
 
+                    <!-- 화면 표시용 -->
                     <span class="modal-title">리뷰 작성</span>
-                    <span name="orderId" th:text="${order.getOrderId()}"></span>
-                    <span name="productId" class="product-id"></span>
-                    <span name="userId" class="user-name" th:text="'작성자: ' + ${order.userId}">작성자</span>
+                    <span class="user-name" th:text="'작성자: ' + ${order.userId}">작성자</span>
+
+                    <!-- 모달 닫기 버튼 -->
                     <span class="close-btn">&times;</span>
                 </div>
+
 
                 <div class="review-product">
                     <div class="product-image">
@@ -55,14 +61,16 @@
                         </label>
                         <input name="image" type="file" id="file" class="upload" accept="image/*">
                     </div>
+
                     <div class="review-comment">
                         <textarea name="content" placeholder="리뷰 내용을 입력하세요"></textarea>
                     </div>
                 </div>
-                <!-- 제출 버튼 -->
+
                 <div class="modal-footer">
                     <button type="submit" class="submit-btn">등록</button>
                 </div>
+
             </form>
         </div>
     </div>

@@ -3,13 +3,13 @@ package team.project.controller;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import team.project.dto.PagenationDTO;
 import team.project.dto.ReviewDTO;
 import team.project.service.ReviewService;
+
+import java.io.IOException;
 
 @ToString
 @Controller
@@ -33,18 +33,10 @@ public class ReviewController {
 
 
     @PostMapping("/review/add")
-    public void addReview(
-            ReviewDTO reviewDTO
-    ) {
+    public void addReview(@ModelAttribute ReviewDTO reviewDTO)
+    {
         reviewService.addReview(reviewDTO);
         System.out.println(reviewDTO);
-
-
-//        productId - 상품Id
-//        userId - 유저이름
-//        orderId - 주문번호
-//        image - 업로드 한 리뷰 사진
-//        content - 리뷰 내용
     }
 
 }

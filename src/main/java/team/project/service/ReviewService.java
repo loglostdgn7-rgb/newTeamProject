@@ -31,10 +31,6 @@ public class ReviewService {
 
     // 리뷰 작성
     public void addReview(ReviewDTO reviewDTO) {
-        // 이미지가 없으면 null로 세팅 (텍스트 리뷰만 가능)
-        if (reviewDTO.getImage() == null) {
-            reviewDTO.setImage(null);
-        }
 
         reviewMapper.insertReview(reviewDTO);
     }

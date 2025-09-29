@@ -21,8 +21,7 @@ openBtns.forEach(btn => {
         modal.querySelector('.product-image img').src = imgSrc;
         modal.querySelector('.product-name span').textContent = name;
         modal.querySelector('.product-price span').textContent = price;
-        modal.querySelector('.product-id').textContent = id;
-
+        modal.querySelector('#productIdInput').value = id;
         modal.style.display = 'block';
     });
 });
