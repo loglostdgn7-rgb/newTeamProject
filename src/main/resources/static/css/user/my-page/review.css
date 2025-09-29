@@ -2,6 +2,70 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 420px;
+    width: 100%;
     margin: 0 auto;
+    background-color: black;
+}
+
+.review-card{
+    display: grid;
+    grid-template-areas:
+            'product-image review-header'
+            'product-image review-content';
+    grid-template-columns: 150px 1fr;
+    grid-template-rows: auto 1fr;
+    width: 500px;
+    background-color: white;
+    margin: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+.product-image{
+    display: block;
+    grid-area: product-image;
+    border-right: 1px solid black;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+}
+.review-header{
+    display: flex;
+    padding: 5px 10px;
+    align-items: center;
+    grid-area: review-header;
+    background-color: #4CAF50;
+}
+.product-name{
+    font-size: 16px;
+    font-weight: bold;
+}
+.review-content{
+    grid-area: review-content;
+}
+.review-content{
+    display: grid;
+    grid-template-areas:
+            'content review-image'
+            'review-at review-image';
+    grid-template-columns: 1fr 100px;
+    grid-template-rows: 1fr auto;
+    padding: 5px 10px;
+}
+.review-image{
+    grid-area: review-image;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+}
+.review-content .content {
+    grid-area: content;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #2196F3;
+}
+.review-content .review-at{
+    grid-area: review-at;
+    background-color: #707680;
 }
