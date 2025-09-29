@@ -80,11 +80,13 @@
         WHERE rv.order_id = o.order_id)
         as hasAnyReviewedItems,
         ##모든 상품들을 리뷰 했는지 확인
-        ##주문상세내역 상품 수를 확인한 다음,
-        (SELECT COUNT(*) FROM order_detail od_total WHERE od_total.order_id = o.order_id)
-        ##리뷰 갯수를 확인해서 똑같은지 확인
-        = (SELECT COUNT(*) FROM review rv WHERE rv.order_id = o.order_id)
-        as hasAllItemsReviewed
+        ##주문상세내역 상품 수를 확인한 다음, 리뷰 종류 갯수를 세서 동일한지?
+        CASE
+        WHEN (SELECT COUNT(*) FROM order_detail od_total WHERE od_total.order_id = o.order_id) =
+        (SELECT COUNT(DISTINCT productId) FROM review rv WHERE rv.order_id = o.order_id)
+        THEN TRUE
+        ELSE FALSE
+        END AS hasAllReviewedItems
         FROM (
         SELECT order_id
         FROM orders
