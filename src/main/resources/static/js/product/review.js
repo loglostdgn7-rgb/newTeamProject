@@ -1,5 +1,5 @@
 let page = 1;
-const size = 20;
+const size = 100;
 const reviewContainer = document.getElementById("normal-review-container");
 const loadMoreBtn = document.getElementById("load-more-btn");
 
@@ -11,7 +11,6 @@ function loadMore() {
                 loadMoreBtn.style.display = "none";
                 return;
             }
-
             data.reviews.forEach((review) => {
                 const reviewItem = document.createElement("div");
                 reviewItem.className = 'normal-review-item';
@@ -28,7 +27,7 @@ function loadMore() {
                         <div class="normal-product-detail">
                             <div class="review-text">${review.content}</div>
                             <div class="review-footer">
-                                <div class="review-author">작성자: ${review.user ? review.user.username : '익명'}</div>
+                                <div class="review-author">작성자: ${review.user ? review.user.id : '익명'}</div>
                                 <div class="review-date">${review.at}</div>
                             </div>
                         </div>

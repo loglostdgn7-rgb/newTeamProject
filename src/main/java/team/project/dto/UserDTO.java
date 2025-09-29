@@ -40,6 +40,10 @@ public class UserDTO implements OAuth2User, UserDetails {
     private ArrayList<SnsUserDTO> snsUsers; //이 유저가 연동한 SNS 유저 정보
 
 
+    public String getId() {
+        return id;
+    }
+
     @JsonIgnore
     public String getRealName() {
         return this.name;

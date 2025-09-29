@@ -195,6 +195,21 @@ main {
     background: transparent;
     color: #14161a;
 }
+.photo-plus-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 24px;
+    margin-top: 30px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #14161a;
+    border-radius: 4px;
+    background: transparent;
+    color: #14161a;
+}
 
 
  /* normal 리뷰 */
