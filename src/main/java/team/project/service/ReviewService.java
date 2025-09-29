@@ -24,7 +24,7 @@ public class ReviewService {
 
         // 리뷰 리스트 가져오기
         List<ReviewDTO> reviews = reviewMapper.getReviewList(reviewDTO);
-//        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
+        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
         reviewDTO.setElements(reviews); // reviews 필드에 세팅
 
 

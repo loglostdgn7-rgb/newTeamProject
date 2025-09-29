@@ -21,7 +21,7 @@
     <!-- 모달 -->
     <div class="modal" style="display:none;">
         <div class="modal_body">
-            <form action="/review/add" method="post" enctype="multipart/form-data">
+            <form th:action="@{/review/add}" method="post" enctype="multipart/form-data">
                 <div class="modal-header">
                     <!-- 폼 제출용 hidden input -->
                     <input name="order.orderId" class="orderId" type="hidden" th:value="${order.getOrderId()}"/>

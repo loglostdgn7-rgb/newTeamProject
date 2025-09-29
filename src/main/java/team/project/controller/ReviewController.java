@@ -1,6 +1,7 @@
 package team.project.controller;
 
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import team.project.service.ReviewService;
 
 import java.io.IOException;
 
+@Slf4j
 @ToString
 @Controller
 public class ReviewController {
@@ -35,13 +37,15 @@ public class ReviewController {
 
 
     @PostMapping("/review/add")
-    public void addReview(
+    public String addReview(
             @AuthenticationPrincipal UserDTO userDTO, // 리뷰작성자
             MultipartFile imageFile, // 리뷰 작성 시 첨부한 파일
             ReviewDTO reviewDTO // 리뷰 내용
     ) {
         reviewService.addReview(reviewDTO, userDTO, imageFile);
         System.out.println(reviewDTO);
+
+        return "redirect:/review/view";
     }
 
 }
