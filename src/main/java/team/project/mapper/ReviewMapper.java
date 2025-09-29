@@ -14,4 +14,5 @@ public interface ReviewMapper {
     // 리뷰 총 개수 조회
     int getReviewCount(PagenationDTO reviewDTO);
 
+    int insertReview(ReviewDTO reviewDTO);
 }

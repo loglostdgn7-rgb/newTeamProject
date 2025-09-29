@@ -14,11 +14,15 @@ import java.util.List;
 @Setter
 @ToString
 public class ReviewDTO {
-    private int reviewId;
     private byte[] imageData;
     private String base64ImageData;
-    private String content;
-    private String userId;
+    private int orderId;
+    private int reviewId;        // review_Id
+    private byte[] image;        // image
+    private String content;      // content
+    private String userId;       // userId
+    private int productId;       // productId
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime at;
     private UserDTO user;

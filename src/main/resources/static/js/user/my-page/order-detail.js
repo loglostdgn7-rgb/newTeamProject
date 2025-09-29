@@ -16,11 +16,12 @@ openBtns.forEach(btn => {
         const imgSrc = productRow.querySelector('img').src;
         const name = productRow.querySelector('span').textContent;
         const price = productRow.querySelector('.order-detail-price span').textContent;
+        const id = productRow.querySelector('p').textContent;
 
-        
         modal.querySelector('.product-image img').src = imgSrc;
         modal.querySelector('.product-name span').textContent = name;
         modal.querySelector('.product-price span').textContent = price;
+        modal.querySelector('.product-id').textContent = id;
 
         modal.style.display = 'block';
     });

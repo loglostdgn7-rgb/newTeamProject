@@ -21,4 +21,9 @@
     </select>
 
     <!--  리뷰 작성 버튼  -->
+    <insert id="insertReview" parameterType="ReviewDTO">
+        INSERT INTO review (image, content, at, userId, productId)
+        VALUES (#{image}, #{content}, NOW(), #{userId}, #{productId})
+    </insert>
+
 </mapper>

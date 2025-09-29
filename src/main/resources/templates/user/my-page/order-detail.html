@@ -23,8 +23,11 @@
         <div class="modal_body">
             <form action="/review/add" method="post">
                 <div class="modal-header">
+
                     <span class="modal-title">리뷰 작성</span>
-                    <span name="user" class="user-name" th:text="'작성자: ' + ${order.getUserId()}">작성자</span>
+                    <span name="orderId" th:text="${order.getOrderId()}"></span>
+                    <span name="productId" class="product-id"></span>
+                    <span name="userId" class="user-name" th:text="'작성자: ' + ${order.userId}">작성자</span>
                     <span class="close-btn">&times;</span>
                 </div>
 
@@ -50,7 +53,7 @@
                                 <img src="#" alt="#" class="image-box">
                             </div>
                         </label>
-                        <input type="file" id="file" class="upload" accept="image/*">
+                        <input name="image" type="file" id="file" class="upload" accept="image/*">
                     </div>
                     <div class="review-comment">
                         <textarea name="content" placeholder="리뷰 내용을 입력하세요"></textarea>
@@ -96,6 +99,7 @@
                 <div class="order-detail-grid-contents" th:each="product : ${order.orderDetails}">
                     <div class="order-detail-info">
                         <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
+                            <p th:text="${product.productId}" style="display: none;"></p>
                             <img th:src="${product.base64Image}"
                                  alt="상품 이미지">
                             <span th:text="${product.productName}">상품 이름</span>
