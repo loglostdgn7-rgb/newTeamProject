@@ -221,6 +221,7 @@ header > nav > ul.right-section .my-page-container a:hover {
 header > nav > .right-section button.admin-reset-button {
     background-color: unset;
     height: 25px;
+    padding: 5px;
     border: none;
     border-radius: 5px;
     font-size: 14px;
