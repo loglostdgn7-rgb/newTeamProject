@@ -15,4 +15,7 @@ public interface ReviewMapper {
     int getReviewCount(PagenationDTO reviewDTO);
 
     int insertReview(ReviewDTO reviewDTO);
+
+    // [추가] 포토리뷰 리스트 조회
+    List<ReviewDTO> getPhotoReviewList(PagenationDTO pagenationDTO);
 }

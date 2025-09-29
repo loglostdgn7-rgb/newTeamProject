@@ -48,4 +48,10 @@ public class ReviewController {
         return "redirect:/review/view";
     }
 
+    // [추가] 포토리뷰 데이터만 반환하는 API (AJAX)
+    @GetMapping("/review/list/photo")
+    @ResponseBody
+    public PagenationDTO getPhotoReviewList(PagenationDTO pagenationDTO) {
+        return reviewService.getPhotoReviews(pagenationDTO);
+    }
 }

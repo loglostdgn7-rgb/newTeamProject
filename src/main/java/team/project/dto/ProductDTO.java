@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Base64;
 import java.util.List;
 
 @Getter
@@ -29,7 +30,13 @@ public class ProductDTO {
         this.productId = id;
     }
 
-
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+        if (imageData != null && imageData.length > 0) {
+            // byte[] 데이터를 Base64 문자열로 변환하여 base64ImageData 필드에 저장
+            this.base64ImageData = "data:image/*;base64," + Base64.getEncoder().encodeToString(imageData);
+        }
+    }
 
     @Setter private List<ProductDetailDTO> elements;
 

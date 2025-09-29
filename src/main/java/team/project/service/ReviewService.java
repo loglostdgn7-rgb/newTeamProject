@@ -44,4 +44,12 @@ public class ReviewService {
 
         reviewMapper.insertReview(reviewDTO);
     }
+
+    // [추가] 포토리뷰만 가져오는 서비스
+    public PagenationDTO getPhotoReviews(PagenationDTO<ReviewDTO> reviewDTO) {
+        // 포토리뷰 리스트 가져오기
+        List<ReviewDTO> reviews = reviewMapper.getPhotoReviewList(reviewDTO);
+        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
+        return reviewDTO;
+    }
 }
