@@ -23,19 +23,20 @@
         <div class="modal_body">
             <form action="/review/add" method="post">
                 <div class="modal-header">
-                    <!-- 폼 제출용 hidden input -->
+                    <!-- db저장ㅎ하는것들 -->
                     <input name="orderId" class="orderId" type="hidden" th:value="${order.getOrderId()}"/>
                     <input name="userId" class="userId" type="hidden" th:value="${order.userId}"/>
+
+
+                    <!--      자바스크립트에서 productId값 받아와야하는데           -->
                     <input name="productId" class="product-id" type="hidden" id="productIdInput"/>
 
                     <!-- 화면 표시용 -->
                     <span class="modal-title">리뷰 작성</span>
                     <span class="user-name" th:text="'작성자: ' + ${order.userId}">작성자</span>
 
-                    <!-- 모달 닫기 버튼 -->
                     <span class="close-btn">&times;</span>
                 </div>
-
 
                 <div class="review-product">
                     <div class="product-image">
