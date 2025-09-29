@@ -21,12 +21,11 @@
     <!-- 모달 -->
     <div class="modal" style="display:none;">
         <div class="modal_body">
-            <form action="/review/add" method="post">
+            <form action="/review/add" method="post" enctype="multipart/form-data">
                 <div class="modal-header">
                     <!-- 폼 제출용 hidden input -->
-                    <input name="orderId" class="orderId" type="hidden" th:value="${order.getOrderId()}"/>
-                    <input name="userId" class="userId" type="hidden" th:value="${order.userId}"/>
-                    <input name="productId" class="product-id" type="hidden" id="productIdInput"/>
+                    <input name="order.orderId" class="orderId" type="hidden" th:value="${order.getOrderId()}"/>
+                    <input name="product.productId" class="product-id" type="hidden" id="productIdInput"/>
 
                     <!-- 화면 표시용 -->
                     <span class="modal-title">리뷰 작성</span>
@@ -59,7 +58,7 @@
                                 <img src="#" alt="#" class="image-box">
                             </div>
                         </label>
-                        <input name="image" type="file" id="file" class="upload" accept="image/*">
+                        <input name="imageFile" type="file" id="file" class="upload" accept="image/*">
                     </div>
 
                     <div class="review-comment">

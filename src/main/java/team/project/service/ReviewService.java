@@ -2,8 +2,10 @@ package team.project.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import team.project.dto.PagenationDTO;
 import team.project.dto.ReviewDTO;
+import team.project.dto.UserDTO;
 import team.project.mapper.ReviewMapper;
 
 import java.util.List;
@@ -30,7 +32,15 @@ public class ReviewService {
     }
 
     // 리뷰 작성
-    public void addReview(ReviewDTO reviewDTO) {
+    public void addReview(ReviewDTO reviewDTO, UserDTO user, MultipartFile imageFile) {
+        // 작성자 설정
+        reviewDTO.setUser(user);
+        // 첨부파일이 있으면 설정
+        if(imageFile != null) {
+            try {
+                reviewDTO.setImage(imageFile.getBytes());
+            }catch (Exception e) {}
+        }
 
         reviewMapper.insertReview(reviewDTO);
     }
