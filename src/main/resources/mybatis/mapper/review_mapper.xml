@@ -10,8 +10,7 @@
     <!-- 리뷰 리스트 -->
     <select id="getReviewList" resultMap="reviewMap">
         SELECT *
-        FROM review
-        LIMIT #{size}
+        FROM review LIMIT #{size}
         OFFSET #{offset}
     </select>
 
@@ -20,4 +19,6 @@
         SELECT COUNT(*)
         FROM review
     </select>
+
+    <!--  리뷰 작성 버튼  -->
 </mapper>

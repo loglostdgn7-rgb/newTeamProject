@@ -9,22 +9,28 @@ import team.project.dto.PagenationDTO;
 import team.project.service.ReviewService;
 
 @Controller
-@RequestMapping("/review")
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
 
     // 1) 페이지 열기 (review.html)
-    @GetMapping("/view")
+    @GetMapping("/review/view")
     public String reviewPage() {
         return "shop/product/review"; // review.html 렌더링
     }
 
     // 2) 리뷰 데이터 반환 (AJAX)
-    @GetMapping("/list")
+    @GetMapping("/review/list")
     @ResponseBody
     public PagenationDTO getReviewList(PagenationDTO pagenationDTO) {
         return reviewService.getReviews(pagenationDTO);
     }
+
+
+    // 3) 리뷰 작성
+//    @GetMapping("/user/my-page/order/13")
+//    public String reviewAdd(PagenationDTO pagenation){
+//        return
+//    }
 }

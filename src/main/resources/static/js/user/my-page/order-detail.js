@@ -2,6 +2,35 @@ const cancelOrReturnButton = document.querySelectorAll(".cancel-or-refund-order"
 const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
+
+// modal 리뷰 등록 버튼
+// HTML 문서의 로딩이 완료되었을 때, 해당 함수를 실행
+// elements
+const modal = document.querySelector('.modal');
+const openBtns = document.querySelectorAll('.modalBtn');
+const closeBtn = document.querySelector('.close-btn');
+
+openBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const productRow = e.target.closest('.order-detail-grid-contents');
+        const imgSrc = productRow.querySelector('img').src;
+        const name = productRow.querySelector('span').textContent;
+        const price = productRow.querySelector('.order-detail-price span').textContent;
+
+        
+        modal.querySelector('.product-image img').src = imgSrc;
+        modal.querySelector('.product-name span').textContent = name;
+        modal.querySelector('.product-price span').textContent = price;
+
+        modal.style.display = 'block';
+    });
+});
+
+closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+
 cancelOrReturnButton.forEach(button => {
     button.onclick = event => {
         const orderId = event.target.dataset.orderId;
@@ -28,7 +57,7 @@ cancelOrReturnButton.forEach(button => {
                     throw Error("서버 응답 에러");
                 }
             })
-            .then(message=>{
+            .then(message => {
                 alert(message);
                 location.reload();
             })
@@ -38,6 +67,48 @@ cancelOrReturnButton.forEach(button => {
             })
     }
 });
+
+
+// 업로드 이미지 처리하기
+const thumbnailImage = document.querySelector('.image > img');
+let labelFileInput = document.querySelector('input[type=file]');
+
+labelFileInput.onchange = add_content;
+
+function add_content(event) {
+    const files = event.target.files;
+    if (files.length !== 1) {
+        return;
+    }
+    const file = files[0];
+    const blobURL = URL.createObjectURL(file);
+    thumbnailImage.src = blobURL;
+    thumbnailImage.style.display = 'block';
+
+    const fileInput = document.getElementById('upload');
+    const preview = document.querySelector('.image-box');
+    const labelText = document.querySelector('.image > span');
+
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        var imageSrc;
+        imageSrc = URL.createObjectURL(file);
+
+        preview.src = imageSrc;
+        preview.style.display = 'block';   // 미리보기 표시
+        labelText.style.display = 'none';  // 안내 텍스트 숨김
+    });
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

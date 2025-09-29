@@ -18,7 +18,7 @@ public class ReviewDTO {
     private byte[] imageData;
     private String base64ImageData;
     private String content;
-
+    private String userId;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime at;
     private UserDTO user;

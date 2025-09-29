@@ -98,6 +98,8 @@
         WHERE product_detail.product_id = #{productId}
     </select>
 
+
+
     <!--    <select id="selectProductIdDetail" resultMap="productMap">-->
     <!--        SELECT name, price, image_data FROM product WHERE product.product_id = #{id};-->
     <!--    </select>-->

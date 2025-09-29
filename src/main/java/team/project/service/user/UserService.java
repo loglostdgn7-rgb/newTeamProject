@@ -24,10 +24,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    
+
     private RestTemplate restTemplate;
     private final Random random = new Random();
-    
+
     //유저 가져오기
     public UserDTO get_user_by_Id(String userId) {
         return userMapper.selectUserById(userId);
@@ -95,6 +95,34 @@ public class UserService {
         userMapper.updatePassword(userId, encodedNewPassword);
         logger.info("{} 사용자의 비밀번호가 변경 되었습니다", userId);
     }
+
+
+
+
+
+    ///////// 유저 초기화 /////////////////
+    public void reset_profile(String id) {
+        UserDTO defaultUser = userMapper.selectDefaultUserById(id); // (이 매퍼 메서드는 새로 만들어야 함)
+
+        if (defaultUser == null) {
+            throw new IllegalArgumentException("초기화할 수 없는 사용자입니다.");
+        }
+
+        // 2. 현재 사용자의 정보를 원본 데이터로 덮어쓰기
+        UserDTO userToReset = userMapper.selectUserById(id);
+        userToReset.setId(defaultUser.getId());
+        userToReset.setName(defaultUser.getRealName());
+        userToReset.setPassword(passwordEncoder.encode(defaultUser.getPassword()));
+        userToReset.setPostcode(defaultUser.getPostcode());
+        userToReset.setRoadAddress(defaultUser.getRoadAddress());
+        userToReset.setDetailAddress(defaultUser.getDetailAddress());
+        userToReset.setTel(defaultUser.getTel());
+        userToReset.setEmail(defaultUser.getEmail());
+        userToReset.setNickname(defaultUser.getNickname());
+
+        userMapper.updateProfile(userToReset);
+    }
+
 
 
 }
