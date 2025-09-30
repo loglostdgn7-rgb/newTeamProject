@@ -36,7 +36,7 @@ public class ReviewService {
         // 작성자 설정
         reviewDTO.setUser(user);
         // 첨부파일이 있으면 설정
-        if(imageFile != null) {
+        if(imageFile != null && imageFile.getSize() > 0) {
             try {
                 reviewDTO.setImage(imageFile.getBytes());
             }catch (Exception e) {}

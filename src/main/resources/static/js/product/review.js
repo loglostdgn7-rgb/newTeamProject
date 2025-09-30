@@ -20,26 +20,30 @@ function loadPhotoReviews() {
         .then(response => response.json())
         .then(data => {
             photoReviewContainer.innerHTML = ''; // 컨테이너 비우기
-
             data.reviews.forEach(review => {
-                if (review.base64ImageData) { // 이미지가 있는 리뷰만 처리
+                if (review.base64ImageData && review.base64ImageData.length > 0) { // 이미지가 있는 리뷰만 처리
                     const photoItem = document.createElement('div');
-                    photoItem.className = 'photo-review-item'; // HTML 구조에 맞게 클래스 설정
+                    photoItem.className = 'photo-review-all-item'; // HTML 구조에 맞게 클래스 설정
+
 
                     // 포토리뷰 카드 HTML 구조 (실제 디자인에 맞게 수정 필요)
                     photoItem.innerHTML = `
-                        <div class="photo-review-all-item">
                             <div class="prhoto-review-item">
                                 <div class="photo-review-image">
                                     <img src="${review.base64ImageData}" alt="포토 리뷰 이미지">
                                 </div>
+                                
                                 <div class="photo-review-product">
                                     <div class="product-image">
-                                        <img src="${review.product && review.product.base64ImageData ? review.product.base64ImageData : ''}" alt="상품 썸네일">
+                                        <img src="${review.product.base64ImageData}" alt="상품 썸네일">
                                     </div>
+                                    
                                     <div class="product-detail">
                                         <div class="product-name">
                                             <span>${review.product ? review.product.name : ''}</span>
+                                        </div>
+                                        <div class="product-photo-review-count">
+                                            리뷰<span>3</span>    
                                         </div>
                                     </div>
                                 </div>
@@ -55,7 +59,6 @@ function loadPhotoReviews() {
                                     <span>${review.user ? review.user.nickname : '익명'}</span>
                                 </div>
                             </div> 
-                        </div>
                     `;
                     photoReviewContainer.appendChild(photoItem);
                 }
@@ -86,37 +89,40 @@ function loadNormalReviews() {
             }
 
             data.reviews.forEach((review) => {
-                const reviewItem = document.createElement("div");
-                reviewItem.className = 'normal-review-item';
+                    if (review.base64ImageData == null) {
+                        const reviewItem = document.createElement("div");
+                        reviewItem.className = 'normal-review-item';
+                        let imgSrc = "/images/default_icon.png"; // 기본 이미지 경로
+                        if (review.product.base64ImageData) {
+                            imgSrc = review.product.base64ImageData;
+                        } else if (review.product && review.product.base64ImageData) {
+                            imgSrc = review.product.base64ImageData;
+                        }
 
-                let imgSrc = "/images/default_icon.png"; // 기본 이미지 경로
-                if (review.product.base64ImageData) {
-                    imgSrc = review.product.base64ImageData;
-                } else if (review.product && review.product.base64ImageData) {
-                    imgSrc = review.product.base64ImageData;
-                }
 
+                        const productName = review.product ? review.product.name : '상품 정보 없음';
+                        const authorName = review.user ? review.user.nickname : '익명';
 
-                const productName = review.product ? review.product.name : '상품 정보 없음';
-                const authorName = review.user ? review.user.nickname : '익명';
-
-                reviewItem.innerHTML = `
-                    <div class="normal-review-product">
-                        <div class="normal-product-image">
-                            <img src="${imgSrc}" alt="리뷰 이미지">
-                        </div>
-                        <div class="normal-product-detail">
-                            <div class="product-name">${productName}</div>
-                            <div class="review-text">${review.content}</div>
-                            <div class="review-footer">
-                                <div class="review-author">작성자: ${authorName}</div>
-                                <div class="review-date">${review.at}</div>
+                        reviewItem.innerHTML = `
+                        <div class="normal-review-product">
+                            <div class="normal-product-image">
+                                <img src="${imgSrc}" alt="리뷰 이미지">
+                            </div>
+                            <div class="normal-product-detail">
+                                <div class="product-name">${productName}</div>
+                                <div class="review-text">${review.content}</div>
+                                <div class="review-footer">
+                                    <div class="review-author">작성자: ${authorName}</div>
+                                    <div class="review-date">${review.at}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                normalReviewContainer.appendChild(reviewItem);
-            });
+                    `;
+                        normalReviewContainer.appendChild(reviewItem);
+                    }
+                }
+            )
+            ;
 
             if (data.elements.length < size) {
                 loadMoreBtn.style.display = "none";

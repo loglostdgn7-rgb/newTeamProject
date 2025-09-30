@@ -28,7 +28,6 @@
             r.content    AS review_content,
             r.at         AS review_at,
             r.image      AS review_image,
-
             u.id         AS user_id,
             u.nickname   AS user_nickname,
 
