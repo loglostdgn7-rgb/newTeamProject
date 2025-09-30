@@ -28,8 +28,8 @@ public class PagenationDTO<T> {
     /***************** 실제 Element 항목 관련 *************************/
     private Integer totalElementsCount; // 게시물 전체 개수
 
-//    @Setter
-//    private List<ReviewDTO> reviews; // 페이지네이션 리뷰 대상 요소
+    @Setter
+    private List<ReviewDTO> reviews; // 페이지네이션 리뷰 대상 요소
 
     //김영수님 수정 9/23 수정.  위에꺼에서 아래껄로 수정
     @Setter

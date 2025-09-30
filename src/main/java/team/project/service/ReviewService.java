@@ -2,6 +2,7 @@ package team.project.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import team.project.dto.PagenationDTO;
 import team.project.dto.ProductDTO;
 import team.project.dto.ReviewDTO;
@@ -15,19 +16,40 @@ import java.util.List;
 public class ReviewService {
     private final ReviewMapper reviewMapper;
 
-    public void getUserReviews(PagenationDTO<ReviewDTO> pagenation, UserDTO user) {
-        List<ReviewDTO> elements = reviewMapper.selectUserReviews(pagenation, user);
-        // 화면에 표시할 요소가 있다면
-        if(elements != null && !elements.isEmpty()) {
-            Integer totalElementCount = reviewMapper.selectReviewCount(user);
-            pagenation.setTotalElementsCount(totalElementCount);
-            // 페이지네이션 객체가 실제로 화면에 표시할 데이터들을 가지게 한다
-            pagenation.setElements(elements);
+    public PagenationDTO getReviews(PagenationDTO<ReviewDTO> reviewDTO) {
+
+        // 전체 리뷰 수 가져오기
+        int totalCount = reviewMapper.getReviewCount(reviewDTO);
+        reviewDTO.setTotalElementsCount(totalCount); // 총 페이지/인덱스 계산 포함
+
+        // 리뷰 리스트 가져오기
+        List<ReviewDTO> reviews = reviewMapper.getReviewList(reviewDTO);
+        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
+        reviewDTO.setElements(reviews); // reviews 필드에 세팅
+
+
+        return reviewDTO;
+    }
+
+    // 리뷰 작성
+    public void addReview(ReviewDTO reviewDTO, UserDTO user, MultipartFile imageFile) {
+        // 작성자 설정
+        reviewDTO.setUser(user);
+        // 첨부파일이 있으면 설정
+        if(imageFile != null && imageFile.getSize() > 0) {
+            try {
+                reviewDTO.setImage(imageFile.getBytes());
+            }catch (Exception e) {}
         }
-        // 화면에 표시할 요소가 없다면
-        else{
-            pagenation.setTotalElementsCount(0);
-            pagenation.setElements(List.of());
-        }
+
+        reviewMapper.insertReview(reviewDTO);
+    }
+
+    // [추가] 포토리뷰만 가져오는 서비스
+    public PagenationDTO getPhotoReviews(PagenationDTO<ReviewDTO> reviewDTO) {
+        // 포토리뷰 리스트 가져오기
+        List<ReviewDTO> reviews = reviewMapper.getPhotoReviewList(reviewDTO);
+        reviewDTO.setReviews(reviews); // reviews 필드에 세팅
+        return reviewDTO;
     }
 }

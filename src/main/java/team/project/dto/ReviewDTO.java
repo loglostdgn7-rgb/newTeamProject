@@ -26,9 +26,12 @@ public class ReviewDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime at;
 
+
     public void setImage(byte[] image) {
         this.image = image;
-        this.base64ImageData = "data:image/*;base64," + Base64.getEncoder().encodeToString(image);
+        if(image != null) {
+            this.base64ImageData = "data:image/*;base64," + Base64.getEncoder().encodeToString(image);
+        }
     }
 
     public String getBase64ImageData() {

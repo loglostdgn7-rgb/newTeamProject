@@ -21,8 +21,7 @@ openBtns.forEach(btn => {
         modal.querySelector('.product-image img').src = imgSrc;
         modal.querySelector('.product-name span').textContent = name;
         modal.querySelector('.product-price span').textContent = price;
-        modal.querySelector('.product-id').textContent = id;
-
+        modal.querySelector('#productIdInput').value = id;
         modal.style.display = 'block';
     });
 });
@@ -31,7 +30,7 @@ closeBtn.addEventListener('click', () => {
     modal.style.display = 'none';
 });
 
-//(일괄처리) 취소/반품 버튼
+
 cancelOrReturnButton.forEach(button => {
     button.onclick = event => {
         const orderId = event.target.dataset.orderId;
@@ -99,6 +98,48 @@ individualRefundButtons.forEach(button => {
             });
     }
 });
+
+
+// 업로드 이미지 처리하기
+const thumbnailImage = document.querySelector('.image > img');
+let labelFileInput = document.querySelector('input[type=file]');
+
+labelFileInput.onchange = add_content;
+
+function add_content(event) {
+    const files = event.target.files;
+    if (files.length !== 1) {
+        return;
+    }
+    const file = files[0];
+    const blobURL = URL.createObjectURL(file);
+    thumbnailImage.src = blobURL;
+    thumbnailImage.style.display = 'block';
+
+    const fileInput = document.getElementById('upload');
+    const preview = document.querySelector('.image-box');
+    const labelText = document.querySelector('.image > span');
+
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        var imageSrc;
+        imageSrc = URL.createObjectURL(file);
+
+        preview.src = imageSrc;
+        preview.style.display = 'block';   // 미리보기 표시
+        labelText.style.display = 'none';  // 안내 텍스트 숨김
+    });
+}
+
+
+
+
+
+
+
+
+
+
 
 
 // 업로드 이미지 처리하기

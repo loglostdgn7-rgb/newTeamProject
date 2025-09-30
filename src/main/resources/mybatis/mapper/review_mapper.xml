@@ -9,6 +9,24 @@
         </association>
     </resultMap>
 
+    <resultMap id="reviewWithDetailsMap" type="team.project.dto.ReviewDTO">
+        <id property="reviewId" column="review_id"/>
+        <result property="content" column="review_content"/>
+        <result property="at" column="review_at"/>
+        <result property="image" column="review_image"/>
+
+        <association property="user" javaType="team.project.dto.UserDTO">
+            <id property="id" column="user_id"/>
+            <result property="nickname" column="user_nickname"/>
+        </association>
+
+        <association property="product" javaType="team.project.dto.ProductDTO">
+            <id property="productId" column="product_id"/>
+            <result property="name" column="product_name"/>
+            <result property="imageData" column="product_image_data"/>
+        </association>
+    </resultMap>
+
     <!-- 리뷰 리스트 -->
     <select id="selectUserReviews" resultMap="reviewWithUserMap">
         SELECT *
@@ -19,6 +37,29 @@
         LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
     </select>
 
+    <select id="getReviewList" resultMap="reviewWithDetailsMap">
+        SELECT
+            r.review_id  AS review_id,
+            r.content    AS review_content,
+            r.at         AS review_at,
+            r.image      AS review_image,
+            u.id         AS user_id,
+            u.nickname   AS user_nickname,
+
+            p.product_id AS product_id,
+            p.name       AS product_name,
+            p.image_data AS product_image_data -- 상품 이미지 SELECT
+        FROM
+            review r
+                LEFT JOIN
+            user u ON r.userId = u.id
+                LEFT JOIN
+            product p ON r.productId = p.product_id
+        ORDER BY
+            r.review_id DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
     <!-- 리뷰 총 개수 -->
     <select id="selectReviewCount" resultType="int">
         SELECT COUNT(*)
@@ -26,6 +67,9 @@
         WHERE user_id = #{id}
     </select>
 
+    <select id="getReviewCount" resultType="int">
+        SELECT COUNT(*) FROM review
+    </select>
 
     <!-- 리뷰 된 상품 아이디.   김영수 추가 9/29 -->
     <select id="selectReviewedProductIdsByOrderId" resultType="int">
@@ -34,6 +78,34 @@
         WHERE order_id = #{orderId}
     </select>
 
+    <insert id="insertReview" parameterType="team.project.dto.ReviewDTO">
+        INSERT INTO review (image, content, at, userId, productId, orderid)
+        VALUES (#{image}, #{content}, NOW(), #{user.id}, #{product.productId}, #{order.orderId})
+    </insert>
+
+    <select id="getPhotoReviewList" resultMap="reviewWithDetailsMap">
+        SELECT
+            r.review_id  AS review_id,
+            r.content    AS review_content,
+            r.at         AS review_at,
+            r.image      AS review_image,
+            u.id         AS user_id,
+            u.nickname   AS user_nickname,
+            p.product_id AS product_id,
+            p.name       AS product_name,
+            p.image_data AS product_image_data
+        FROM
+            review r
+                LEFT JOIN
+            user u ON r.userId = u.id
+                LEFT JOIN
+            product p ON r.productId = p.product_id
+        WHERE
+            r.image IS NOT NULL  -- 이미지가 있는 리뷰만 선택
+        ORDER BY
+            r.review_id DESC
+        LIMIT #{size}
+    </select>
 
     <!--************  초기화 김영수 9/29 **************-->
     <delete id="deleteReviewsByUserId">

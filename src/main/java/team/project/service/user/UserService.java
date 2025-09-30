@@ -24,10 +24,10 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    
+
     private RestTemplate restTemplate;
     private final Random random = new Random();
-    
+
     //유저 가져오기
     public UserDTO get_user_by_Id(String userId) {
         return userMapper.selectUserById(userId);

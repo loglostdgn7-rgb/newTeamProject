@@ -26,6 +26,10 @@ public interface ReviewMapper {
     List<Integer> selectReviewedProductIdsByOrderId(@Param("orderId") int orderId);
 
 
+    int insertReview(ReviewDTO reviewDTO);
+
+    // [추가] 포토리뷰 리스트 조회
+    List<ReviewDTO> getPhotoReviewList(PagenationDTO pagenationDTO);
     /**************** 초기화 ****************/
     // 김영수 9/29
     void deleteReviewsByUserId(@Param("userId") String userId);
@@ -33,4 +37,16 @@ public interface ReviewMapper {
     List<ReviewDTO> selectDefaultReviewsByUserId(@Param("userId") String userId);
 
     void insertReviews(@Param("reviews") List<ReviewDTO> reviews);
+
+//    // 리뷰 리스트 조회
+//    List<ReviewDTO> getReviewList(PagenationDTO reviewDTO);
+//
+//    // 리뷰 총 개수 조회
+//    int getReviewCount(PagenationDTO reviewDTO);
+//
+//    int insertReview(ReviewDTO reviewDTO);
+//
+//    // [추가] 포토리뷰 리스트 조회
+//    List<ReviewDTO> getPhotoReviewList(PagenationDTO pagenationDTO);
+
 }

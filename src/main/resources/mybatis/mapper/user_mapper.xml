@@ -157,6 +157,12 @@
         WHERE od.order_id = #{orderId}
     </select>
 
+    <select id="getReviewAdd" resultType="OrderDetailDTO">
+        SELECT * FROM order_detail o
+            INNER JOIN product p
+            ON o.product_id = p.product_id
+    </select>
+
 
     <!--    (일괄처리)주문상태변경-->
     <update id="updateOrderStatus">
