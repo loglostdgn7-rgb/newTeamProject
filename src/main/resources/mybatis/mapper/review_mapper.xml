@@ -52,9 +52,9 @@
         FROM
             review r
                 LEFT JOIN
-            user u ON r.userId = u.id
+            user u ON r.user_id = u.id
                 LEFT JOIN
-            product p ON r.productId = p.product_id
+            product p ON r.product_id = p.product_id
         ORDER BY
             r.review_id DESC
         LIMIT #{size} OFFSET #{offset}
@@ -79,7 +79,7 @@
     </select>
 
     <insert id="insertReview" parameterType="team.project.dto.ReviewDTO">
-        INSERT INTO review (image, content, at, userId, productId, orderid)
+        INSERT INTO review (image, content, at, user_id, product_id, order_id)
         VALUES (#{image}, #{content}, NOW(), #{user.id}, #{product.productId}, #{order.orderId})
     </insert>
 
@@ -97,9 +97,9 @@
         FROM
             review r
                 LEFT JOIN
-            user u ON r.userId = u.id
+            user u ON r.user_id = u.id
                 LEFT JOIN
-            product p ON r.productId = p.product_id
+            product p ON r.product_id = p.product_id
         WHERE
             r.image IS NOT NULL  -- 이미지가 있는 리뷰만 선택
         ORDER BY

@@ -38,15 +38,10 @@ public interface ReviewMapper {
 
     void insertReviews(@Param("reviews") List<ReviewDTO> reviews);
 
-//    // 리뷰 리스트 조회
-//    List<ReviewDTO> getReviewList(PagenationDTO reviewDTO);
-//
-//    // 리뷰 총 개수 조회
-//    int getReviewCount(PagenationDTO reviewDTO);
-//
-//    int insertReview(ReviewDTO reviewDTO);
-//
-//    // [추가] 포토리뷰 리스트 조회
-//    List<ReviewDTO> getPhotoReviewList(PagenationDTO pagenationDTO);
+    // 리뷰 리스트 조회
+    List<ReviewDTO> getReviewList(PagenationDTO reviewDTO);
+
+    // 리뷰 총 개수 조회
+    int getReviewCount(PagenationDTO reviewDTO);
 
 }

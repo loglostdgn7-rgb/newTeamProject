@@ -142,36 +142,36 @@ function add_content(event) {
 
 
 
-// 업로드 이미지 처리하기
-const thumbnailImage = document.querySelector('.image > img');
-let labelFileInput = document.querySelector('input[type=file]');
-
-labelFileInput.onchange = add_content;
-
-function add_content(event) {
-    const files = event.target.files;
-    if (files.length !== 1) {
-        return;
-    }
-    const file = files[0];
-    const blobURL = URL.createObjectURL(file);
-    thumbnailImage.src = blobURL;
-    thumbnailImage.style.display = 'block';
-
-    const fileInput = document.getElementById('upload');
-    const preview = document.querySelector('.image-box');
-    const labelText = document.querySelector('.image > span');
-
-    fileInput.addEventListener('change', () => {
-        const file = fileInput.files[0];
-        var imageSrc;
-        imageSrc = URL.createObjectURL(file);
-
-        preview.src = imageSrc;
-        preview.style.display = 'block';   // 미리보기 표시
-        labelText.style.display = 'none';  // 안내 텍스트 숨김
-    });
-}
+// // 업로드 이미지 처리하기
+// const thumbnailImage = document.querySelector('.image > img');
+// let labelFileInput = document.querySelector('input[type=file]');
+//
+// labelFileInput.onchange = add_content;
+//
+// function add_content(event) {
+//     const files = event.target.files;
+//     if (files.length !== 1) {
+//         return;
+//     }
+//     const file = files[0];
+//     const blobURL = URL.createObjectURL(file);
+//     thumbnailImage.src = blobURL;
+//     thumbnailImage.style.display = 'block';
+//
+//     const fileInput = document.getElementById('upload');
+//     const preview = document.querySelector('.image-box');
+//     const labelText = document.querySelector('.image > span');
+//
+//     fileInput.addEventListener('change', () => {
+//         const file = fileInput.files[0];
+//         var imageSrc;
+//         imageSrc = URL.createObjectURL(file);
+//
+//         preview.src = imageSrc;
+//         preview.style.display = 'block';   // 미리보기 표시
+//         labelText.style.display = 'none';  // 안내 텍스트 숨김
+//     });
+// }
 
 
 

@@ -109,6 +109,7 @@
                 <div class="order-detail-grid-contents" th:each="product : ${order.orderDetails}">
                     <div class="order-detail-info">
                         <a th:href="@{/shop/product/detail/{productId}(productId=${product.productId})}">
+                            <p th:text="${product.productId}" style="display: none;"></p>
                             <img th:src="${product.base64Image}"
                                  alt="상품 이미지">
                             <span th:text="${product.productName}">상품 이름</span>
