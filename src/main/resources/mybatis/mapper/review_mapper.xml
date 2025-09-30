@@ -51,7 +51,7 @@
     </select>
 
     <insert id="insertReview" parameterType="team.project.dto.ReviewDTO">
-        INSERT INTO review (image, content, at, userId, productId, order_id)
+        INSERT INTO review (image, content, at, userId, productId, orderid)
         VALUES (#{image}, #{content}, NOW(), #{user.id}, #{product.productId}, #{order.orderId})
     </insert>
 
