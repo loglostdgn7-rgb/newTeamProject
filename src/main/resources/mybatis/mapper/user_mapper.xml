@@ -83,7 +83,7 @@
         ##주문상세내역 상품 수를 확인한 다음, 리뷰 종류 갯수를 세서 동일한지?
         CASE
         WHEN (SELECT COUNT(*) FROM order_detail od_total WHERE od_total.order_id = o.order_id) =
-        (SELECT COUNT(DISTINCT productId) FROM review rv WHERE rv.order_id = o.order_id)
+        (SELECT COUNT(DISTINCT product_id) FROM review rv WHERE rv.order_id = o.order_id)
         THEN TRUE
         ELSE FALSE
         END AS hasAllReviewedItems
