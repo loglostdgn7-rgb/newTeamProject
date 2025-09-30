@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Base64;
 import java.util.List;
 
 @Getter
@@ -33,4 +34,10 @@ public class ProductDTO {
 
     @Setter private List<ProductDetailDTO> elements;
 
+    public void setImageData(byte[] imageData) {
+        this.imageData = imageData;
+        if (imageData != null) {
+            this.base64ImageData = "data:image/*;base64," + Base64.getEncoder().encodeToString(imageData);
+        }
+    }
 }

@@ -4,21 +4,90 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main-layout}"
 >
-
-
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/user/my-page/review.css}">
 </th:block>
 
-
 <main layout:fragment="content">
     <div class="aside-container">
         <aside th:replace="~{layout/aside :: aside}"></aside>
+
         <section class="review-section">
-            여긴 "리뷰" 페이지 입니다
-            아직 구현 안됐지롱
+            <h1>작성한 리뷰</h1>
+
+            <section class="review-container">
+                <a th:each="review: ${pagenation.elements}" class="review-card" th:href="@{|/shop/product/detail/${review.product.productId}|}">
+                    <img th:src="${review.product.base64ImageData}" alt="#" class="product-image">
+                    <div class="review-header">
+                        <b class="product-name" th:text="${review.product.name}">상품명</b>
+                    </div>
+                    <div class="review-content">
+                        <p class="content" th:text="${review.content}">작성내용</p>
+                        <span class="review-at" th:text="${review.at}">작성일</span>
+                        <img th:if="${review.image != null}" th:src="${review.base64ImageData}" alt="#" class="review-image">
+                    </div>
+                </a>
+
+                <a class="review-card" href="#">
+                    <img alt="#" class="product-image">
+                    <div class="review-header">
+                        <b class="product-name">상품명</b>
+                    </div>
+                    <div class="review-content">
+                        <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet inventore itaque molestiae quod? Consectetur deserunt dolor expedita facilis, itaque molestiae nesciunt quam quidem quo quod rerum sit soluta, totam?</p>
+                        <span class="review-at">작성일</span>
+                        <img alt="#" class="review-image">
+                    </div>
+                </a>
+            </section>
+
+            <nav class="paging-container">
+                <ul th:if="${not #lists.isEmpty(pagenation.elements)}">
+                    <!-- 이전 페이지로 버튼 -->
+                    <li th:if="${pagenation.startPageIndex != 1}">
+                        <a th:href="@{/user/my-page/review(page=${pagenation.startPageIndex - 1},
+                                                          size=${pagenation.size})}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    <!-- 현재 보다 이전 페이지 나열 -->
+                    <th:block th:if="${pagenation.page != 1}">
+                        <li th:each="index : ${#numbers.sequence(pagenation.startPageIndex, pagenation.page - 1)}">
+                            <a th:href="@{/user/my-page/review(page=${index},
+                                                              size=${pagenation.size})}"
+                               th:text="${index}">1</a>
+                        </li>
+                    </th:block>
+
+                    <!-- 현재 페이지 -->
+                    <li class="now-page">
+                        <a th:href="@{/user/my-page/review(page=${pagenation.page},
+                                                          size=${pagenation.size})}"
+                           th:text="${pagenation.page}" th:active="true">1</a>
+                    </li>
+
+                    <!-- 현재 보다 다음 페이지 나열 -->
+                    <th:block th:if="${pagenation.page != pagenation.totalPageCount}">
+                        <li th:each="index: ${#numbers.sequence(pagenation.page + 1, pagenation.endPageIndex)}">
+                            <a th:href="@{/user/my-page/review(page=${index},
+                                                              size=${pagenation.size})}"
+                               th:text="${index}">1</a>
+                        </li>
+                    </th:block>
+
+                    <!-- 다음 페이지로 버튼-->
+                    <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
+                        <a th:href="@{/user/my-page/review(page=${pagenation.endPageIndex+1},
+                                                          size=${pagenation.size})}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </section>
     </div>
 </main>
+
 <footer th:replace="~{layout/fragments/footer :: footer}"></footer>
 </html>

@@ -1,7 +1,86 @@
 .review-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 420px;
+    width: 70%;
+    min-width: 1300px;
     margin: 0 auto;
+}
+.review-section > h1 {
+    font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.review-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 400px);
+    grid-gap: 10px;
+}
+.review-card{
+    display: grid;
+    grid-template-areas:
+            'product-image review-header'
+            'product-image review-content';
+    grid-template-columns: 130px 1fr;
+    grid-template-rows: auto 1fr;
+    background-color: white;
+    margin: 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    &:hover{
+        color: black;
+        box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    }
+}
+.product-image{
+    display: block;
+    grid-area: product-image;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+}
+.review-header{
+    display: flex;
+    padding: 5px 10px;
+    align-items: center;
+    grid-area: review-header;
+    background-color: #28dd35;
+}
+.product-name{
+    font-size: 13px;
+    font-weight: bold;
+}
+.review-content{
+    display: grid;
+    grid-area: review-content;
+    grid-template-areas:
+            'content review-image'
+            'review-at review-image';
+    grid-template-columns: 1fr 80px;
+    grid-template-rows: 1fr auto;
+    padding: 5px 10px;
+}
+.review-image{
+    grid-area: review-image;
+    align-self: start;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center;
+}
+
+.review-content .content {
+    font-size: 13px;
+    grid-area: content;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
+.review-content .review-at{
+    font-size: 13px;
+    align-self: end;
+    grid-area: review-at;
 }

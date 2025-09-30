@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import team.project.dto.OrderDTO;
 import team.project.dto.PagenationDTO;
+import team.project.dto.ReviewDTO;
 import team.project.dto.UserDTO;
+import team.project.service.ReviewService;
 import team.project.service.user.UserMyPageService;
 import team.project.service.user.UserService;
 
@@ -30,6 +32,8 @@ public class UserMyPageController {
     UserService userService;
     @Autowired
     UserMyPageService userMyPageService;
+    @Autowired
+    private ReviewService reviewService;
 
     //장바구니 ->주문 내역 orders table에 삽입
     @ResponseBody
@@ -207,8 +211,13 @@ public class UserMyPageController {
 
     //리뷰
     @GetMapping("/my-page/review")
-    public void get_review() {
-
+    public void get_review(
+            @AuthenticationPrincipal UserDTO user,
+            PagenationDTO<ReviewDTO> pagenation,
+            Model model
+    ) {
+        reviewService.getUserReviews(pagenation, user);
+        model.addAttribute("pagenation", pagenation);
     }
 
 

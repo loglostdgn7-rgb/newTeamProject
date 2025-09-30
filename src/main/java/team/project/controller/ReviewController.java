@@ -20,11 +20,4 @@ public class ReviewController {
     public String reviewPage() {
         return "shop/product/review"; // review.html 렌더링
     }
-
-    // 2) 리뷰 데이터 반환 (AJAX)
-    @GetMapping("/list")
-    @ResponseBody
-    public PagenationDTO getReviewList(PagenationDTO pagenationDTO) {
-        return reviewService.getReviews(pagenationDTO);
-    }
 }
