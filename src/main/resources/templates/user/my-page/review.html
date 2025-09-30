@@ -16,7 +16,7 @@
             <h1>작성한 리뷰</h1>
 
             <section class="review-container">
-                <a th:each="review: ${pagenation.elements}" class="review-card" href="#">
+                <a th:each="review: ${pagenation.elements}" class="review-card" th:href="@{|/shop/product/detail/${review.product.productId}|}">
                     <img th:src="${review.product.base64ImageData}" alt="#" class="product-image">
                     <div class="review-header">
                         <b class="product-name" th:text="${review.product.name}">상품명</b>
@@ -34,7 +34,7 @@
                         <b class="product-name">상품명</b>
                     </div>
                     <div class="review-content">
-                        <p class="content">작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용작성내용</p>
+                        <p class="content">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias amet inventore itaque molestiae quod? Consectetur deserunt dolor expedita facilis, itaque molestiae nesciunt quam quidem quo quod rerum sit soluta, totam?</p>
                         <span class="review-at">작성일</span>
                         <img alt="#" class="review-image">
                     </div>

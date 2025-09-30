@@ -14,8 +14,8 @@
         SELECT *
         FROM review R
             INNER JOIN product P
-            ON R.productId = P.product_id
-        WHERE userId = #{user.id}
+            ON R.product_id = P.product_id
+        WHERE user_id = #{user.id}
         LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
     </select>
 
@@ -23,6 +23,6 @@
     <select id="selectReviewCount" resultType="int">
         SELECT COUNT(*)
         FROM review
-        WHERE userId = #{id}
+        WHERE user_id = #{id}
     </select>
 </mapper>
