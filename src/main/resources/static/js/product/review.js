@@ -37,10 +37,10 @@ function loadPhotoReviews() {
                                     <div class="product-image">
                                         <img src="${review.product.base64ImageData}" alt="상품 썸네일">
                                     </div>
-                                    
                                     <div class="product-detail">
                                         <div class="product-name">
                                             <span>${review.product ? review.product.name : ''}</span>
+                                        </a>
                                         </div>
                                         <div class="product-photo-review-count">
                                             리뷰<span>3</span>    

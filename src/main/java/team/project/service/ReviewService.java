@@ -15,6 +15,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewMapper reviewMapper;
+    
+    //2025.10.12 정윤호 추가
+    public List<ReviewDTO> getDetailReview(int id) {
+        return reviewMapper.selectDetailReview(id);
+    }
 
     public void getUserReviews(PagenationDTO<ReviewDTO> pagenation, UserDTO user) {
         List<ReviewDTO> elements = reviewMapper.selectUserReviews(pagenation, user);

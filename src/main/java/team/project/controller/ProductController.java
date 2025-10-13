@@ -2,6 +2,7 @@ package team.project.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import team.project.dto.ProductDTO;
 import team.project.dto.ProductDetailDTO;
 import team.project.dto.*;
 import team.project.service.ProductService;
+import team.project.service.ReviewService;
 import team.project.util.ImageUtils;
 
 import java.util.Base64;
@@ -24,7 +26,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     ProductService productService;
-
+    @Autowired
+    ReviewService reviewService;
     //    @GetMapping("/product/list/{parentId}")
 //    public void get_list(
 //            Model model,
@@ -107,13 +110,25 @@ public class ProductController {
         return "search_result";
     }
 
+    //리뷰
+    @GetMapping("/my-page/review")
+    public void get_review(
+            @AuthenticationPrincipal UserDTO user,
+            PagenationDTO<ReviewDTO> pagenation,
+            Model model
+    ) {
+        reviewService.getUserReviews(pagenation, user);
+        model.addAttribute("pagenation", pagenation);
+    }
+
 
     @GetMapping("/product/detail/{id}")
     public String get_detail(
             Model model,
             //////// Integer -> int로 [김영수]님이 수정(9/19) ///////////
             @PathVariable("id") int id,
-            ProductDTO product
+            ProductDTO product,
+            ReviewDTO review
     ) {
         productService.get_details(product);
 
@@ -124,7 +139,10 @@ public class ProductController {
                 productDetail.setBaseDetailImageData(base64Image);
             }
         }
+
+        var reviews = reviewService.getDetailReview(id);
         var productDetails = productService.get_id_product_detail(id);
+        model.addAttribute("reviews", reviews);
         model.addAttribute("productDetails", productDetails);
         model.addAttribute("product", product);
         return "shop/product/detail";

@@ -37,6 +37,13 @@
         LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
     </select>
 
+    <select id="selectDetailReview" resultMap="reviewWithUserMap">
+        SELECT * FROM review R
+            INNER JOIN product P
+            ON R.product_id = P.product_id
+        WHERE P.product_id = #{id}
+    </select>
+
     <select id="getReviewList" resultMap="reviewWithDetailsMap">
         SELECT
             r.review_id  AS review_id,
