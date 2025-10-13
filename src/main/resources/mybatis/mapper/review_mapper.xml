@@ -5,7 +5,7 @@
 <mapper namespace="team.project.mapper.ReviewMapper">
     <resultMap id="reviewWithUserMap" type="ReviewDTO" autoMapping="true">
         <association property="product" javaType="ProductDTO" autoMapping="true">
-            <id property="productId" column="product_id" />
+            <id property="productId" column="product_id"/>
         </association>
     </resultMap>
 
@@ -31,32 +31,29 @@
     <select id="selectUserReviews" resultMap="reviewWithUserMap">
         SELECT *
         FROM review R
-            INNER JOIN product P
-            ON R.product_id = P.product_id
+                 INNER JOIN product P
+                            ON R.product_id = P.product_id
         WHERE user_id = #{user.id}
         LIMIT #{pagenation.size} OFFSET #{pagenation.offset}
     </select>
 
     <select id="getReviewList" resultMap="reviewWithDetailsMap">
-        SELECT
-            r.review_id  AS review_id,
-            r.content    AS review_content,
-            r.at         AS review_at,
-            r.image      AS review_image,
-            u.id         AS user_id,
-            u.nickname   AS user_nickname,
+        SELECT r.review_id  AS review_id,
+               r.content    AS review_content,
+               r.at         AS review_at,
+               r.image      AS review_image,
+               u.id         AS user_id,
+               u.nickname   AS user_nickname,
 
-            p.product_id AS product_id,
-            p.name       AS product_name,
-            p.image_data AS product_image_data -- 상품 이미지 SELECT
-        FROM
-            review r
-                LEFT JOIN
-            user u ON r.user_id = u.id
-                LEFT JOIN
-            product p ON r.product_id = p.product_id
-        ORDER BY
-            r.review_id DESC
+               p.product_id AS product_id,
+               p.name       AS product_name,
+               p.image_data AS product_image_data -- 상품 이미지 SELECT
+        FROM review r
+                 LEFT JOIN
+             user u ON r.user_id = u.id
+                 LEFT JOIN
+             product p ON r.product_id = p.product_id
+        ORDER BY r.review_id DESC
         LIMIT #{size} OFFSET #{offset}
     </select>
 
@@ -68,7 +65,8 @@
     </select>
 
     <select id="getReviewCount" resultType="int">
-        SELECT COUNT(*) FROM review
+        SELECT COUNT(*)
+        FROM review
     </select>
 
     <!-- 리뷰 된 상품 아이디.   김영수 추가 9/29 -->
@@ -84,26 +82,22 @@
     </insert>
 
     <select id="getPhotoReviewList" resultMap="reviewWithDetailsMap">
-        SELECT
-            r.review_id  AS review_id,
-            r.content    AS review_content,
-            r.at         AS review_at,
-            r.image      AS review_image,
-            u.id         AS user_id,
-            u.nickname   AS user_nickname,
-            p.product_id AS product_id,
-            p.name       AS product_name,
-            p.image_data AS product_image_data
-        FROM
-            review r
-                LEFT JOIN
-            user u ON r.user_id = u.id
-                LEFT JOIN
-            product p ON r.product_id = p.product_id
-        WHERE
-            r.image IS NOT NULL  -- 이미지가 있는 리뷰만 선택
-        ORDER BY
-            r.review_id DESC
+        SELECT r.review_id  AS review_id,
+               r.content    AS review_content,
+               r.at         AS review_at,
+               r.image      AS review_image,
+               u.id         AS user_id,
+               u.nickname   AS user_nickname,
+               p.product_id AS product_id,
+               p.name       AS product_name,
+               p.image_data AS product_image_data
+        FROM review r
+                 LEFT JOIN
+             user u ON r.user_id = u.id
+                 LEFT JOIN
+             product p ON r.product_id = p.product_id
+        WHERE r.image IS NOT NULL -- 이미지가 있는 리뷰만 선택
+        ORDER BY r.review_id DESC
         LIMIT #{size}
     </select>
 
@@ -114,18 +108,32 @@
         WHERE user_id = #{userId}
     </delete>
 
-    <select id="selectDefaultReviewsByUserId" resultType="team.project.dto.ReviewDTO">
+    <resultMap id="defaultReviewMAp" type="ReviewDTO" autoMapping="true">
+        <id property="reviewId" column="review_id"/>
+
+        <association property="user" javaType="UserDTO">
+            <id property="id" column="user_id"/>
+        </association>
+        <association property="product" javaType="ProductDTO">
+            <id property="productId" column="product_id"/>
+        </association>
+        <association property="order" javaType="OrderDTO">
+            <id property="orderId" column="order_id"/>
+        </association>
+    </resultMap>
+
+    <select id="selectDefaultReviewsByUserId" resultMap="defaultReviewMAp">
         SELECT *
         FROM review_defaults
-        WHERE userId = #{userId}
+        WHERE user_Id = #{userId}
     </select>
 
     <insert id="insertReviews">
-        INSERT INTO review (content, order_id, at, userId, product_id, image)
+        INSERT INTO review (content, order_id, at, user_id, product_id, image)
         VALUES
         <foreach collection="reviews" item="review" separator=",">
-            (#{review.content}, #{review.orderId}, #{review.at}, #{review.userId}, #{review.productId},
-            #{review.imageData})
+            (#{review.content}, #{review.order.orderId}, #{review.at}, #{review.user.id}, #{review.product.productId},
+            #{review.base64ImageData})
         </foreach>
     </insert>
 
