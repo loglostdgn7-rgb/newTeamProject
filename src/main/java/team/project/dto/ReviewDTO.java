@@ -20,8 +20,12 @@ public class ReviewDTO {
     private String base64ImageData; // Base64 Image String
     private String content;      // content
     private OrderDTO order;     // order
+    private String orderId;
+    private String userId;
     private UserDTO user;       // writer
     private ProductDTO product; // order product
+    private ProductDetailDTO productDetail;
+    private String productId; // review 테이블의 product_id
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime at;

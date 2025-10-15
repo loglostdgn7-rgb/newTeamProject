@@ -83,17 +83,12 @@ main {
 
 /* 리뷰 섹션 */
 .photo-review-section {
-    display: flex;
-    justify-content: center;
+    display:  grid;
 }
 
 .photo-review-all-item {
     display: grid;
-    grid-template-columns: repeat(4, minmax(100px, 1fr));
-    column-gap: 40px;
-    margin: 0;
-    padding: 0;
-    overflow-x: auto;
+    grid-template-columns: repeat(4,1fr);
 }
 
 /* 개별 리뷰 아이템 */
@@ -110,8 +105,8 @@ main {
 
 .photo-review-image img,
 .product-image img {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     object-fit: cover;
     display: block;
 }
@@ -135,7 +130,7 @@ main {
     padding-left: 20px;
 }
 
-.product-name > span {
+.product-name > a > span {
     font-weight: 700;
     color: #14161a;
     cursor: pointer;
@@ -195,6 +190,7 @@ main {
     background: transparent;
     color: #14161a;
 }
+
 .photo-plus-btn {
     display: flex;
     justify-content: center;
@@ -212,7 +208,7 @@ main {
 }
 
 
- /* normal 리뷰 */
+/* normal 리뷰 */
 
 /* 전체 리뷰 박스 */
 .normal-review-product {
@@ -231,6 +227,7 @@ main {
     border: 1px solid #ddd;
     margin-right: 20px;
 }
+
 .normal-product-image img {
     width: 100%;
     height: 100%;
@@ -253,10 +250,12 @@ main {
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
-.product-name {
+
+.product-name > a {
     font-weight: bold;
     font-size: 16px;
 }
+
 .product-rating {
     font-size: 14px;
     color: #666;
