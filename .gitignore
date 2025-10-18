@@ -2,7 +2,7 @@ HELP.md
 target/
 logs/
 ##보이면 안되는거
-application.properties
+#application.properties
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
