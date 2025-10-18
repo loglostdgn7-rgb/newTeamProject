@@ -7,7 +7,7 @@ services:
       context: ../  # docker-compose.yml 파일 기준 상위 폴더(프로젝트 루트)
       dockerfile: ./.deploy/Dockerfile # 프로젝트 루트 기준 .deploy/Dockerfile
     ports:
-      - "8081:8080" # 외부 8081 -> 내부 8080
+      - "8081:8081" # 외부 8081 -> 내부 8080
     depends_on:
       - team-db     # team-db가 먼저 실행되어야 함
     restart: always
