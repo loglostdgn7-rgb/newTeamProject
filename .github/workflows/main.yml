@@ -9,55 +9,39 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 1. 소스 코드 체크아웃
+      - name: 1. 소스 코드 체크아K웃
         uses: actions/checkout@v4
 
       - name: 2. JDK 21 설정
         uses: actions/setup-java@v4
         with:
-          java-version: "21" #
+          java-version: "21"
           distribution: "temurin"
 
       - name: 3. Maven으로 프로젝트 빌드 (테스트 스킵)
-        run: mvn clean install -DskipTests
+        run: mvn clean install -DskipTests # .jar 파일 생성
 
-      - name: 4. 빌드 결과물(.jar) Artifact로 업로드
-        uses: actions/upload-artifact@v4
+      - name: 4. Docker Hub 로그인
+        uses: docker/login-action@v3
         with:
-          name: java-app-jar
-          path: target/project-0.0.1-SNAPSHOT.jar
+          username: ${{ secrets.DOCKERHUB_USERNAME }} # GitHub Secret에서 ID 가져오기
+          password: ${{ secrets.DOCKERHUB_TOKEN }}    # GitHub Secret에서 토큰 가져오기
+
+      - name: 5. Docker 이미지 빌드 및 Docker Hub에 Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .  # 프로젝트 루트 디렉토리
+          file: ./.deploy/Dockerfile # Dockerfile 경로
+          push: true  # 빌드 후 Push 실행
+          # Docker Hub 리포지토리 태그 (예: loglost/new-team-project:latest)
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/new-team-project:latest
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: 1. 빌드 결과물(.jar) Artifact 다운로드
-        uses: actions/download-artifact@v4
-        with:
-          name: java-app-jar
-
-      - name: 2. (필수) .jar 파일이 복사될 'target' 디렉토리 서버에 생성
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.HOST_IP }}
-          username: ${{ secrets.HOST_USERNAME }}
-          password: ${{ secrets.HOST_PASSWORD }}
-          port: 22
-          script: |
-            mkdir -p /root/newTeamProject/target
-
-      - name: 3. .jar 파일을 원격 서버로 복사 (SCP)
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.HOST_IP }}
-          username: ${{ secrets.HOST_USERNAME }}
-          password: ${{ secrets.HOST_PASSWORD }}
-          port: 22
-          source: "project-0.0.1-SNAPSHOT.jar"
-          target: "/root/newTeamProject/target/"
-
-      - name: 4. 원격 서버에서 배포 스크립트 실행
+      - name: 1. 원격 서버에서 배포 스크립트 실행
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.HOST_IP }}
@@ -66,9 +50,13 @@ jobs:
           port: 22
           script: |
             cd /root/newTeamProject
+            # [유지] 변경된 docker-compose.yml 파일을 받기 위해 git pull 실행
             git pull origin Youngsoo-deploy
             
-            # GitHub Secrets 환경변수로 주입
+            # [추가] docker-compose.yml 파일이 사용할 Docker Hub ID 주입
+            export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+
+            # GitHub Secrets 환경변수로 주입 (DB 비번 등)
             export DB_PASS=${{ secrets.DB_PASS }}
             export PORTONE_API_KEY=${{ secrets.PORTONE_API_KEY }}
             export PORTONE_SECRET=${{ secrets.PORTONE_SECRET }}
@@ -77,9 +65,13 @@ jobs:
             export NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}
             export NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}
             
-            # Docker Compose 실행
+            # [추가] Docker Hub에서 최신 이미지 PULL
+            docker pull ${DOCKERHUB_USERNAME}/new-team-project:latest
+
+            # Docker Compose 실행 (기존 down)
             docker compose -f .deploy/docker-compose.yml down
-            docker compose -f .deploy/docker-compose.yml up --build -d
+            # [변경] --build 플래그 제거!! (서버에서 빌드 안 함)
+            docker compose -f .deploy/docker-compose.yml up -d
             
             # Docker 이미지 정리
             docker image prune -f

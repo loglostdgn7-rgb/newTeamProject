@@ -3,16 +3,16 @@ services:
   # 1. Spring Boot 애플리케이션 서비스
   my-app:
     container_name: new-team-project-app
-    build:
-      context: ../  # docker-compose.yml 파일 기준 상위 폴더(프로젝트 루트)
-      dockerfile: ./.deploy/Dockerfile # 프로젝트 루트 기준 .deploy/Dockerfile
+    # [변경] Docker Hub에서 이미지를 가져오도록 설정
+    # DOCKERHUB_USERNAME은 GHA Secret에서 주입되며, new-team-project는 1단계에서 만든 리포지토리 이름입니다.
+    image: ${DOCKERHUB_USERNAME}/new-team-project:latest
     ports:
       - "8081:8080" # 외부 8081 -> 내부 8080
     depends_on:
       - team-db     # team-db가 먼저 실행되어야 함
     restart: always
     environment:
-      # 젠킨스에서 주입받을 7개의 환경 변수
+      # [수정] GHA Secret에서 주입받을 7개의 환경 변수
       - PORTONE_API_KEY=${PORTONE_API_KEY}
       - PORTONE_SECRET=${PORTONE_SECRET}
       - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
@@ -24,7 +24,8 @@ services:
       # DB 호스트를 'localhost'가 아닌 DB 서비스 이름 'team-db'로 지정
       - SPRING_DATASOURCE_URL=jdbc:mysql://team-db:3306/team
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASS} # 젠킨스에서 주입받을 DB 비번
+      # [수정] GHA Secret에서 주입받을 DB 비번
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASS}
 
   # 2. MySQL 데이터베이스 서비스
   team-db:
@@ -34,7 +35,8 @@ services:
     environment:
       MYSQL_DATABASE: "team"
       MYSQL_ROOT_USER: "root"
-      MYSQL_ROOT_PASSWORD: ${DB_PASS} # 젠킨스에서 주입받을 DB 비번
+      # [수정] GHA Secret에서 주입받을 DB 비번
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
     volumes:
       - db-data:/var/lib/mysql
       # 서버(호스트)의 /home/ubuntu/init.sql 파일을 컨테이너 시작 시 실행
