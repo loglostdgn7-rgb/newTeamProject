@@ -239,12 +239,13 @@ public class UserMyPageService {
 
     //프로필 로그인 연동/ sns 로그인은 핸들러로
     //oauth2 토큰
-    private String request_oauth2_user_token(String clientName, String code) {
+    private String request_oauth2_user_token(String clientName, String code, String redirectUri) {
         var builder = UriComponentsBuilder.fromUriString("{uri}")
                 .queryParam("client_id", "{clientName}")
                 .queryParam("client_secret", "{clientSecret}")
                 .queryParam("grant_type", "authorization_code")
-                .queryParam("code", code);
+                .queryParam("code", code)
+                .queryParam("redirect_uri", redirectUri);
 
         var uri = switch (clientName) {
             case "kakao" -> builder.buildAndExpand(KAKAO_TOKEN_URI, KAKAO_CLIENT_ID, KAKAO_CLIENT_SECRET).toUriString();
@@ -288,8 +289,10 @@ public class UserMyPageService {
     }
 
     //sns 연동
-    public void link_sns(UserDTO user, String clientName, String code) {
-        String token = request_oauth2_user_token(clientName, code);
+    public void link_sns(UserDTO user, String clientName, String code, String baseUrl) {
+        String redirectUri = baseUrl + "/user/my-page/oauth2/" + clientName;
+        String token = request_oauth2_user_token(clientName, code, redirectUri);
+
         if (Objects.isNull(token)) {
             return;
         }

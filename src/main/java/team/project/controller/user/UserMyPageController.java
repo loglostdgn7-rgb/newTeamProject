@@ -220,10 +220,14 @@ public class UserMyPageController {
     public String get_oauth2(
             @AuthenticationPrincipal UserDTO user,
             @PathVariable String clientName,
-            @RequestParam("code") String code
+            @RequestParam("code") String code,
+            HttpServletRequest request
     ) {
         if (user.getSnsUsers().parallelStream().noneMatch(u -> u.getClientName().equalsIgnoreCase(clientName))) {
-            userMyPageService.link_sns(user, clientName, code);
+            // Nginx를 통해 들어온 실제 서버 주소를 가져옵니다.
+            // (Nginx의 proxy_set_header X-Forwarded-Host $server_name; 설정 덕분에 가능)
+            String baseUrl = request.getScheme() + "://" + request.getServerName();
+            userMyPageService.link_sns(user, clientName, code, baseUrl);
         }
         return "redirect:/user/my-page/profile";
     }
