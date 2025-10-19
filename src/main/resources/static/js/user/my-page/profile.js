@@ -106,7 +106,7 @@ snsLinkBtns.forEach(btn => {
 
 function sns_link_request(AUTH_ENDPOINT, CLIENT_ID, CLIENT_NAME) {
     const RESPONSE_TYPE = "code";
-    const REDIRECT_URI = `http://localhost:8080/user/my-page/oauth2/${CLIENT_NAME}`;
+    const REDIRECT_URI = `http://${location.origin}/user/my-page/oauth2/${CLIENT_NAME}`;
 
     const request_url = `${AUTH_ENDPOINT}?` +
         `response_type=${RESPONSE_TYPE}&` +
