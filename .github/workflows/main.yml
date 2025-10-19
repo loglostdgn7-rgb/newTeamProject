@@ -36,14 +36,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: java-app-jar
-          #  path를 지정 안하면 현재 작업 폴더에 .jar 파일이 다운로드됩니다.
 
       - name: 2. (필수) .jar 파일이 복사될 'target' 디렉토리 서버에 생성
-        uses: appleboy/ssh-action@v1 # (참고) @master를 @v1로 수정 (권장사항)
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.HOST_IP }}
           username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.HOST_SSH_KEY }}
+          password: ${{ secrets.HOST_PASSWORD }}
           port: 22
           script: |
             mkdir -p /root/newTeamProject/target
@@ -53,23 +52,21 @@ jobs:
         with:
           host: ${{ secrets.HOST_IP }}
           username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.HOST_SSH_KEY }}
+          password: ${{ secrets.HOST_PASSWORD }}
           port: 22
-          source: "project-0.0.1-SNAPSHOT.jar" # 1번 스텝에서 다운로드한 파일
-          target: "/root/newTeamProject/target/" # 2번 스텝에서 생성한 서버의 target 디렉토리
+          source: "project-0.0.1-SNAPSHOT.jar"
+          target: "/root/newTeamProject/target/"
 
       - name: 4. 원격 서버에서 배포 스크립트 실행
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.HOST_IP }}
           username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.HOST_SSH_KEY }}
+          password: ${{ secrets.HOST_PASSWORD }}
           port: 22
           script: |
             cd /root/newTeamProject
             git pull origin Youngsoo-deploy
-            
-            # --- Maven 빌드 명령어(mvn ...)는 여기서 제거! ---
             
             # GitHub Secrets 환경변수로 주입
             export DB_PASS=${{ secrets.DB_PASS }}
@@ -80,9 +77,9 @@ jobs:
             export NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}
             export NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}
             
-            # Docker Compose 실행 (Jenkinsfile과 동일)
+            # Docker Compose 실행
             docker compose -f .deploy/docker-compose.yml down
             docker compose -f .deploy/docker-compose.yml up --build -d
             
-            # Docker 이미지 정리 (Jenkinsfile과 동일)
+            # Docker 이미지 정리
             docker image prune -f
