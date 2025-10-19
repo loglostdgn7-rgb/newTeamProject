@@ -1,0 +1,40 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - "Youngsoo-deploy"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+
+        with:
+          host: ${{secrets.HOST_IP}}
+          username: ${{secrets.HOST_USERNAME}}
+          key: ${{secrets.HOST_SSH_KEY}}
+          port: 22
+
+          script: |
+            cd /root/newTeamProject
+            git pull origin Youngsoo-deploy
+            mvn clean install -DskipTests
+            
+            # 젠킨스 배포 명령어와 동일
+            # 깃헙 시크릿을 docker-compose가 쓸 수 있게 주입
+            export DB_PASS=${{ secrets.DB_PASS }}
+            export PORTONE_API_KEY=${{ secrets.PORTONE_API_KEY }}
+            export PORTONE_SECRET=${{ secrets.PORTONE_SECRET }}
+            export KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}
+            export KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}
+            export NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}
+            export NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }}
+            
+            docker compose -f .deploy/docker-compose.yml down
+            docker compose -f .deploy/docker-compose.yml up --build -d
+            
+            # 젠킨스 정리 명령어와 동일
+            docker image prune -f
