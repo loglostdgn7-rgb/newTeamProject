@@ -36,7 +36,7 @@ navButtons.forEach(button => {
     }
 });
 
-// 헤더 카트 알림
+// 카트 알림(cart alert)
 const basketSection = document.querySelector(".basket-section");
 const cartAlert = document.querySelector(".cart-container .cart-alert");
 

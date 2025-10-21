@@ -10,6 +10,8 @@ const formDate = date => {
 const dropdownGroups = document.querySelectorAll(".order-select-container > li:has(.option-box)");
 const selectButtons = document.querySelectorAll("label.select-box[data-target]");
 let openOptionBox = null;
+let isPeriodSelection = false;
+let isPageLoading = true;
 
 // 옵션 창 닫기
 const closeOptionBox = () => {
@@ -59,6 +61,8 @@ dropdownGroups.forEach(dropdown => {
                 const today = new Date();
                 const startDate = new Date();
 
+                isPeriodSelection = true; // 신호등 켜기: 기간 선택 택스트 변경 금지
+
                 switch (selectedText) {
                     case "일주일":
                         startDate.setDate(today.getDate() - 7);
@@ -78,6 +82,9 @@ dropdownGroups.forEach(dropdown => {
                 startDateInput.datepicker.setDate(formDate(startDate));
                 endDateInput.datepicker.setDate(formDate(today));
 
+                setTimeout(() => {
+                    isPeriodSelection = false;
+                }, 0); //신호등 끄기
 
                 //달력글자 깜박거리기
                 startDateInput.style.fontWeight = "bold";
@@ -117,6 +124,8 @@ dateInputs.forEach(input => {
 
 // 날짜 유효성 검사 이벤트
 endDateInput.addEventListener("changeDate", event => {
+    if (isPageLoading || isPeriodSelection) return; //신호등 켜져있으면 여기서 중단
+
     const selectedDate = event.detail.date;
     const today = new Date();
     const startDay = startDateInput.datepicker.getDate();
@@ -129,11 +138,12 @@ endDateInput.addEventListener("changeDate", event => {
         alert("시작일보다 이전은 선택 할 수 없습니다!");
         endDateInput.datepicker.setDate(startDay);
     }
-
     document.getElementById("select-period").value = "직접선택";
 });
 
 startDateInput.addEventListener("changeDate", event => {
+    if (isPageLoading || isPeriodSelection) return; //신호등 켜져있으면 여기서 중단
+
     const selectedDate = event.detail.date;
     const endDay = endDateInput.datepicker.getDate();
 
@@ -141,7 +151,6 @@ startDateInput.addEventListener("changeDate", event => {
         alert("종료일보다 나중은 선택 할 수 없습니다!");
         startDateInput.datepicker.setDate(endDay);
     }
-
     document.getElementById("select-period").value = "직접선택";
 });
 
@@ -151,17 +160,24 @@ document.querySelectorAll('.no-drag').forEach(input => {
 });
 
 /*******************************/
-const params = new URLSearchParams(window.location.search);
 // 조회 버튼 클릭 이벤트
 getHistoryBtn.onclick = () => {
+    // 항상 새로운 파라미터 객체를 생성합니다.
+    const params = new URLSearchParams();
+
+    // 현재 화면의 날짜와 상태 값을 가져옴
     const startDate = document.getElementById("date-picker-start").value;
     const endDate = document.getElementById("date-picker-end").value;
     const statusText = document.getElementById("select-status").value;
-    let status = "";
+    const periodText = document.getElementById("select-period").value;
 
-    //상태 옵션
-    // data-status 값 찾기
-    if (statusText && statusText !== "주문상태") {
+    // 백엔드 로직에 필수적인 startDate와 endDate를 항상 포함
+    params.set("startDate", startDate);
+    params.set("endDate", endDate);
+
+    // 주문 상태 값을 파라미터로 변환하여 추가
+    let status = "";
+    if (statusText && statusText !== "전체") {
         const statusOptions = document.querySelectorAll(".status-option a");
         for (const option of statusOptions) {
             if (option.textContent.trim() === statusText) {
@@ -170,14 +186,13 @@ getHistoryBtn.onclick = () => {
             }
         }
     }
+    if (status) {
+        params.set("status", status);
+    }
 
-    if (status === "ALL") status = "";
-
-    //기간 옵션
-    const periodText = document.getElementById("select-period").value;
-    let period = "";
-
-    if (periodText) {
+    //  직접선택이 아닐 경우에만 period 파라미터를 추가
+    if (periodText !== "직접선택") {
+        let period = "";
         const periodOptions = document.querySelectorAll(".period-option a");
         for (const option of periodOptions) {
             if (option.textContent.trim() === periodText) {
@@ -185,43 +200,14 @@ getHistoryBtn.onclick = () => {
                 break;
             }
         }
+        if (period) {
+            params.set("period", period);
+        }
     }
 
-    if (period === "")
-
-        // URL 파라미터
-        params.set("startDate", startDate);
-    params.set("endDate", endDate);
-
-    if (status) params.set("status", status);
-    else params.delete("status");
-
-    if (period) params.set("period", period);
-    else params.delete("period");
-
+    // 완성된 파라미터로 URL을 만들어 페이지를 이동
     location.href = `${location.pathname}?${params.toString()}`;
 };
-
-////앞의 두개 드랍다운 선택 유지///
-const periodInput = document.getElementById("select-period");
-const statusInput = document.getElementById("select-status")
-
-// 기간
-const periodParam = params.get("period");
-const periodOption = document.querySelector(`.period-option a[data-period=${periodParam}]`);
-
-if (periodParam && periodOption) {
-    periodInput.value = periodOption.textContent;
-} else if (params.has("startDate")) periodInput.value = "직접선택";
-else periodInput.value = "일주일";
-
-//상태
-const statusParam = params.get("status");
-const statusOption = document.querySelector(`.status-option a[data-status=${statusParam}]`);
-
-if (statusParam && statusOption) {
-    statusInput.value = statusOption.textContent;
-} else statusInput.value = "전체";
 
 
 /************ 주문 상태 초기화 *******************/
@@ -258,3 +244,5 @@ if (resetBtn) {
             });
     });
 }
+
+isPageLoading = false;

@@ -3,12 +3,9 @@ package team.project.service.user;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import team.project.dto.BasketDTO;
-import team.project.dto.ProductDTO;
 import team.project.dto.UserDTO;
 import team.project.mapper.UserMapper;
 

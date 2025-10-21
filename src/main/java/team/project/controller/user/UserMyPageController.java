@@ -55,8 +55,55 @@ public class UserMyPageController {
     public String get_order(
             @AuthenticationPrincipal UserDTO principal,
             Model model,
-            PagenationDTO<OrderDTO> pagenation
+            PagenationDTO<OrderDTO> pagenation,
+            @RequestParam(required = false) String period,
+            @RequestParam(required = false) String status
     ) {
+        Map<String, String> periodMap = Map.of(
+                "oneWeek", "일주일",
+                "oneMonth", "1개월",
+                "threeMonths", "3개월",
+                "sixMonths", "6개월"
+        );
+
+        Map<String, String> statusMap = Map.of(
+                "ALL", "전체",
+                "PENDING", "입금전",
+                "PREPARING", "배송준비중",
+                "SHIPPED", "배송중",
+                "DELIVERED", "배송완료",
+                "CANCEL", "취소",
+                "EXCHANGE", "교환",
+                "REFUND", "반품"
+        );
+
+        model.addAttribute("periodMap", periodMap);
+        model.addAttribute("statusMap", statusMap);
+
+        String currentPeriodText;
+        if (period != null && periodMap.containsKey(period)) {
+            // URL에 period 파라미터가 있으면(예: oneMonth) Map 에서 값을 찾음(예: "1개월").
+            currentPeriodText = periodMap.get(period);
+        } else if (pagenation.getStartDate() != null && !pagenation.getStartDate().isBlank()) {
+            // period는 없지만 날짜(startDate)가 있으면 직접선택으로 설정
+            currentPeriodText = "직접선택";
+        } else {
+            // 아무 조건도 없으면 기본값인 일주일로 설정
+            currentPeriodText = "일주일";
+        }
+        model.addAttribute("currentPeriodText", currentPeriodText);
+
+        // 주문상태(Status) 드롭다운에 표시될 텍스트를 결정
+        String currentStatusText;
+        if (status != null && statusMap.containsKey(status)) {
+            // URL에 'status' 파라미터가 있으면 Map에서 값을 찾음
+            currentStatusText = statusMap.get(status);
+        } else {
+            // 조건이 없으면 기본값인 '전체'로 설정
+            currentStatusText = "전체";
+        }
+        model.addAttribute("currentStatusText", currentStatusText);
+
         pagenation.setSize(5); //주문내역 주문갯수
         pagenation.setPageViewOffset(1);//현재 페이지 앞뒤 번호 표시 갯수
 
@@ -173,10 +220,14 @@ public class UserMyPageController {
     public String get_oauth2(
             @AuthenticationPrincipal UserDTO user,
             @PathVariable String clientName,
-            @RequestParam("code") String code
+            @RequestParam("code") String code,
+            HttpServletRequest request
     ) {
         if (user.getSnsUsers().parallelStream().noneMatch(u -> u.getClientName().equalsIgnoreCase(clientName))) {
-            userMyPageService.link_sns(user, clientName, code);
+            // Nginx를 통해 들어온 실제 서버 주소를 가져옵니다.
+            // (Nginx의 proxy_set_header X-Forwarded-Host $server_name; 설정 덕분에 가능)
+            String baseUrl = request.getScheme() + "://" + request.getServerName();
+            userMyPageService.link_sns(user, clientName, code, baseUrl);
         }
         return "redirect:/user/my-page/profile";
     }

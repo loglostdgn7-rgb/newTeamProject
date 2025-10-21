@@ -16,9 +16,7 @@ import team.project.mapper.UserMapper;
 import team.project.service.PortoneService;
 import team.project.service.user.UserService;
 
-import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RequestMapping("/user")
 @Controller
