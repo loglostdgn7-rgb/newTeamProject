@@ -134,7 +134,8 @@
                 <div class="all-review-item">
                     <div class="review-item" th:each="review: ${reviews}">
                         <div class="review-image">
-                            <img th:src="${review.product.base64ImageData}" alt="#" class="product-image">
+                            <img th:if="${review.base64ImageData == null}" th:src="${review.product.base64ImageData}" alt="#" class="product-image">
+                            <img th:if="${review.base64ImageData != null}" th:src="${review.base64ImageData}" alt="#" class="product-image">
                         </div>
                         <div class="review-comment">
                             <div class="review-star">

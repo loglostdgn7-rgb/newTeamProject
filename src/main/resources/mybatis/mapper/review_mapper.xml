@@ -50,6 +50,7 @@
         WHERE P.product_id = #{id}
     </select>
 
+
     <select id="getReviewList" resultMap="reviewWithDetailsMap">
         SELECT
             r.review_id  AS review_id,
@@ -116,11 +117,10 @@
                 LEFT JOIN
             product p ON r.product_id = p.product_id
         WHERE
-            r.image IS NOT NULL  -- 이미지가 있는 리뷰만 선택
+            r.image IS NOT NULL
         ORDER BY
             r.review_id DESC
-        LIMIT #{size}
-    </select>
+            LIMIT #{size} OFFSET #{offset} </select>
 
     <!--************  초기화 김영수 9/29 **************-->
     <delete id="deleteReviewsByUserId">

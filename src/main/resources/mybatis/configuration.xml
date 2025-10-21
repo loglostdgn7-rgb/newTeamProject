@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration
-        PUBLIC "-//mybatis.org/DTO Config 3.0/EN"
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
-
 <configuration>
-<settings>
-    <setting name="mapUnderscoreToCamelCase" value="true"/>
-    <setting name="jdbcTypeForNull" value="NULL"/>
-</settings>
+    <settings>
+        <!-- 언더스코어를 camelCase로 매핑 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- null 처리 방법 -->
+        <setting name="jdbcTypeForNull" value="NULL"/>
+    </settings>
 
     <typeAliases>
-        <typeAlias type="team.project.dto.UserDTO" alias="UserDTO" />
-        <typeAlias type="team.project.dto.SnsUserDTO" alias="SnsUserDTO" />
-        <typeAlias type="team.project.dto.ProductDTO" alias="ProductDTO" />
-        <typeAlias type="team.project.dto.ProductDetailDTO" alias="ProductDetailDTO" />
-        <typeAlias type="team.project.dto.PagenationDTO" alias="PagenationDTO" />
-        <typeAlias type="team.project.dto.OrderDTO" alias="OrderDTO" />
-        <typeAlias type="team.project.dto.OrderDetailDTO" alias="OrderDetailDTO" />
-        <typeAlias type="team.project.dto.CategoryDTO" alias="CategoryDTO" />
-        <typeAlias type="team.project.dto.ReviewDTO" alias="ReviewDTO" />
+        <typeAlias type="team.project.dto.UserDTO" alias="UserDTO"/>
+        <typeAlias type="team.project.dto.SnsUserDTO" alias="SnsUserDTO"/>
+        <typeAlias type="team.project.dto.ProductDTO" alias="ProductDTO"/>
+        <typeAlias type="team.project.dto.ProductDetailDTO" alias="ProductDetailDTO"/>
+        <typeAlias type="team.project.dto.PagenationDTO" alias="PagenationDTO"/>
+        <typeAlias type="team.project.dto.OrderDTO" alias="OrderDTO"/>
+        <typeAlias type="team.project.dto.OrderDetailDTO" alias="OrderDetailDTO"/>
+        <typeAlias type="team.project.dto.CategoryDTO" alias="CategoryDTO"/>
+        <typeAlias type="team.project.dto.ReviewDTO" alias="ReviewDTO"/>
     </typeAliases>
 </configuration>

@@ -53,17 +53,31 @@ public class PagenationDTO<T> {
     // 13개 5개 3페이지 13 / 5
     public void setTotalElementsCount(Integer totalElementsCount) {
         this.totalElementsCount = totalElementsCount;
+
+        // 1. 전체 페이지 개수 계산
         this.totalPageCount = (int) Math.ceil((double) totalElementsCount / (double) this.size);
-        this.startPageIndex = Math.max(1, page - pageViewOffset); // 화면에 보여줄 시작 페이지 번호
-        this.endPageIndex = Math.min(page + pageViewOffset, totalPageCount); // 화면에 보여줄 마지막 페이지 번호
-        // 앞에 표시해야 하는 페이지 번호 개수가 부족하다면
-        if (page <= pageViewOffset) {
-            this.endPageIndex = Math.min(this.endPageIndex + pageViewOffset - page + 1, totalPageCount);
+
+        // 2. 현재 페이지가 1보다 작거나 totalPageCount보다 클 경우 조정
+        if (this.page < 1) {
+            this.page = 1;
+        } else if (this.page > this.totalPageCount && this.totalPageCount > 0) {
+            this.page = this.totalPageCount;
         }
-        // 뒤에 표시해야 하는 페이지 번호 개수가 부족하다면
-        if (endPageIndex - page < pageViewOffset) {
-            this.startPageIndex = Math.max(this.startPageIndex - pageViewOffset + (endPageIndex - page), 1);
-        }
+
+        // 3. 페이지 블록 시작 번호 계산 (totalPageViewCount=3 을 기준으로)
+        // 예: 1, 4, 7... 또는 1, 6, 11... (totalPageViewCount가 5인 경우)
+        int BLOCK_COUNT = 5; // 화면에 보여줄 페이지 버튼 총 개수를 5개로 가정 (pageViewOffset=2였으므로)
+
+        // 시작 페이지 계산: ((page - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1
+        this.startPageIndex = ((this.page - 1) / BLOCK_COUNT) * BLOCK_COUNT + 1;
+
+        // 4. 페이지 블록 끝 번호 계산 (전체 페이지 수를 넘지 않도록 Math.min으로 제한)
+        this.endPageIndex = Math.min(this.startPageIndex + BLOCK_COUNT - 1, this.totalPageCount);
+
+        /*
+         * 원본 DTO의 복잡한 경계 조정 로직은 버그의 원인이 될 수 있어 완전히 제거했습니다.
+         * 이 새로운 로직은 totalPageCount가 2일 때 endPageIndex를 2로 정확히 계산합니다.
+         */
     }
 
 

@@ -122,6 +122,8 @@
                     <a th:href="@{/shop/product/list(sort=${pagenation.sort}, page=${pagenation.startPageIndex-1}, size=${pagenation.size})}"><</a>
                 </li>
 
+
+
                 <th:block th:if="${pagenation.page != 1}">
                     <li th:each="index: ${#numbers.sequence(pagenation.startPageIndex, pagenation.page - 1)}">
                         <a th:href="@{/shop/product/list/{parentId}(parentId=${parentId},sort=${pagenation.sort}, page=${index}, size=${pagenation.size})}"
@@ -142,12 +144,13 @@
                     </li>
                 </th:block>
 
+
+
                 <li th:if="${pagenation.endPageIndex != pagenation.totalPageCount}">
                     <a th:href="@{/shop/product/list/{parentId}(parentId=${parentId},sort=${pagenation.sort}, page=${pagenation.endPageIndex+1}, size=${pagenation.size})}">></a>
                 </li>
             </ul>
         </nav>
-
     </main>
 </div>
 </html>
