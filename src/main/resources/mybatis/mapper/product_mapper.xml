@@ -26,10 +26,19 @@
         LIMIT #{size} OFFSET #{offset}
     </select>
     <!--  개수  -->
-    <select id="countProducts" resultType="int">
-        SELECT COUNT(*) AS product_count
+    <select id="selectProductsCategoryCount" resultType="int" parameterType="int">
+        SELECT COUNT(*)
         FROM product
+        WHERE product.category_id IN (
+            SELECT CHILD.category_id
+            FROM category PARENT
+                     INNER JOIN category CHILD ON PARENT.category_id = CHILD.parent_id
+            WHERE CHILD.parent_id = #{parentId}
+               OR CHILD.category_id = #{parentId}
+        )
     </select>
+
+
 
     <select id="selectProducts" resultMap="productMap">
         SELECT *

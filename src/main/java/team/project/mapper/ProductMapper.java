@@ -67,7 +67,7 @@ public interface ProductMapper {
 //    List<Map<String, Object>> list(Map<String, Object> paramMap);
 
     // 전체 제품 개수 조회 (페이징용)
-    int countProducts();
+    int selectProductsCategoryCount(int parentId);
 
     // ----------------------------
     // 카테고리(Category)

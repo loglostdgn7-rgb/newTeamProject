@@ -76,26 +76,26 @@ public class ProductService {
 
 
     // 모든 상품을 가져오는 기능
-    public void get_products(PagenationDTO pagenation) {
-        List<ProductDTO> elements = productMapper.selectProducts(pagenation);
-        // 화면에 표시할 요소가 있다면
-        if(elements != null && !elements.isEmpty()) {
-            Integer totalElementCount = productMapper.countProducts();
-            pagenation.setTotalElementsCount(totalElementCount);
-            // 페이지네이션 객체가 실제로 화면에 표시할 데이터들을 가지게 한다
-            pagenation.setElements(elements);
-        }
-        // 화면에 표시할 요소가 없다면
-        else{
-            pagenation.setTotalElementsCount(0);
-            pagenation.setElements(List.of());
-        }
-    }    // 카테고리별 상품을 가져오는 기능
+//    public void get_products(PagenationDTO pagenation) {
+//        List<ProductDTO> elements = productMapper.selectProducts(pagenation);
+//        // 화면에 표시할 요소가 있다면
+//        if(elements != null && !elements.isEmpty()) {
+//            Integer totalElementCount = productMapper.countProducts();
+//            pagenation.setTotalElementsCount(totalElementCount);
+//            // 페이지네이션 객체가 실제로 화면에 표시할 데이터들을 가지게 한다
+//            pagenation.setElements(elements);
+//        }
+//        // 화면에 표시할 요소가 없다면
+//        else{
+//            pagenation.setTotalElementsCount(0);
+//            pagenation.setElements(List.of());
+//        }
+//    }    // 카테고리별 상품을 가져오는 기능
     public void get_productsCategory( int parentId, PagenationDTO pagenation) {
         List<ProductDTO> elements = productMapper.selectProductsCategory( parentId, pagenation);
         // 화면에 표시할 요소가 있다면
         if(elements != null && !elements.isEmpty()) {
-            Integer totalElementCount = productMapper.countProducts();
+            Integer totalElementCount = productMapper.selectProductsCategoryCount(parentId);
             pagenation.setTotalElementsCount(totalElementCount);
             // 페이지네이션 객체가 실제로 화면에 표시할 데이터들을 가지게 한다
             pagenation.setElements(elements);

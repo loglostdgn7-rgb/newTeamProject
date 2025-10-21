@@ -5,7 +5,7 @@
 // 🌟 페이지 변수 분리 및 초기화
 let photoPage = 1;
 let normalPage = 1;
-const size = 3;
+const size = 4;
 
 // 🌟 전역 요소 정의 (getElementById 호출은 한 번만)
 const photoReviewContainer = document.getElementById('photo-review-container');
@@ -127,7 +127,6 @@ function loadNormalReviews() {
             }
 
             data.reviews.forEach((review) => {
-                if (review.base64ImageData == null) {
                     const reviewItem = document.createElement("div");
                     reviewItem.className = 'normal-review-item';
                     let imgSrc = "/images/default_icon.png";
@@ -161,7 +160,7 @@ function loadNormalReviews() {
                         </div>
                     `;
                     normalReviewContainer.appendChild(reviewItem);
-                }
+
             });
 
             // 🌟 페이지 증가 로직 수정: normalPage 사용

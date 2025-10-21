@@ -8,6 +8,17 @@
     gap: 20px;
     box-sizing: border-box;
 }
+.no-review {
+    display: flex;
+    justify-content: center; /* 가로 가운데 */
+    align-items: center; /* 세로 가운데 */
+    height: 150px; /* 적당한 높이 설정 */
+}
+
+.no-review > span {
+    font-size: 30px;
+    font-weight: 500;
+}
 
 /* 이미지 영역 */
 .product-image {
@@ -221,6 +232,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
     gap: 30px;
+    margin-bottom: 80px;
 }
 
 .review-item {
