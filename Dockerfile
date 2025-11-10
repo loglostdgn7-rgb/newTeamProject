@@ -1,5 +1,5 @@
-# 1. 빌드를 위한 베이스 이미지 (Java 21)
-FROM openjdk:21-jdk-slim as builder
+# 1. 빌드를 위한 베이스 이미지 (Java 21) - eclipse-temurin 사용
+FROM eclipse-temurin:21-jdk-alpine as builder
 
 # 작업 디렉토리 설정
 WORKDIR /app
@@ -12,8 +12,8 @@ COPY src ./src
 # Maven으로 프로젝트 빌드 (의존성 다운로드 후 패키징)
 RUN ./mvnw package -DskipTests
 
-# 2. 실행을 위한 경량 이미지
-FROM openjdk:21-slim
+# 2. 실행을 위한 경량 이미지 - eclipse-temurin (JRE) 사용
+FROM eclipse-temurin:21-jre-alpine
 
 # 작업 디렉토리 설정
 WORKDIR /app
