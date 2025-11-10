@@ -97,6 +97,7 @@ jobs:
               -e NAVER_CLIENT_ID="${{ secrets.NAVER_CLIENT_ID }}" \
               -e NAVER_CLIENT_SECRET="${{ secrets.NAVER_CLIENT_SECRET }}" \
               -e PORTONE_API_KEY="${{ secrets.PORTONE_API_KEY }}" \
+              -e PORTONE_SECRET="${{ secrets.PORTONE_SECRET }}" \
               ${{ secrets.DOCKERHUB_USERNAME }}/new-team-project:latest
 
             
