@@ -52,7 +52,7 @@ jobs:
           file: ./Dockerfile
           push: true
           # (중요) 본인 Docker Hub ID로 수정하세요 (예: kimyoungsoo/new-team-project)
-          tags: ${{ secrets.DOKCER_USERNAME }}/loglost/new-team-project:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/loglost/new-team-project:latest
 
   # 3. 두 번째 잡: OCI 서버에 배포
   deploy-to-oci:
@@ -78,7 +78,7 @@ jobs:
           ssh $SSH_OPTS ${{ secrets.HOST_USERNAME }}@${{ secrets.HOST_IP }} << 'EOF'
           
             # 1. Docker Hub에서 새 이미지 받아오기
-            docker pull ${{ secrets.DOKCER_USERNAME }}/new-team-project:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/new-team-project:latest
           
             # 2. 기존에 돌아가던 컨테이너 중지 및 삭제 (있으면)
             docker stop shopping-mall || true
@@ -93,6 +93,6 @@ jobs:
               -e SPRING_DATASOURCE_URL=${{ secrets.DB_URL }} \
               -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USER }} \
               -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASS }} \
-              ${{ secrets.DOKCER_USERNAME }}/new-team-project:latest
+              ${{ secrets.DOCKER_USERNAME }}/new-team-project:latest
           
           EOF
