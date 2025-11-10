@@ -13,7 +13,7 @@ COPY src ./src
 RUN ./mvnw package -DskipTests
 
 # 2. 실행을 위한 경량 이미지
-FROM openjdk:21-jre-slim
+FROM openjdk:21-slim
 
 # 작업 디렉토리 설정
 WORKDIR /app
